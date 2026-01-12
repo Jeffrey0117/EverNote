@@ -1,16 +1,16 @@
 ---
 layout: ../../layouts/PostLayout.astro
-title: 為什麼選 Astro 做技術筆記網站
+title: 這個網站是怎麼來的：為什麼選 Astro
 date: 2026-01-13T06:00
-description: 從 Vibe Coding 的混亂中誕生的整理需求，以及為什麼 Astro 是最適合的選擇
+description: Jeffrey0117 技術筆記網站的誕生緣由，以及為什麼用 Astro 來做
 tags:
   - Astro
   - 專案心得
 ---
 
-最近在瘋狂 Vibe Coding。
+你現在看的這個網站，就是用 Astro 做的。
 
-一個語音辨識桌面應用、一個 AI 聊天介面、一個自動化腳本... 專案開了一堆，學到的東西也不少。但問題來了：
+最近在瘋狂 Vibe Coding——一個語音辨識桌面應用、一個 AI 聊天介面、一個自動化腳本... 專案開了一堆，學到的東西也不少。但問題來了：
 
 **學到的東西都散落在各個專案的對話紀錄裡。**
 
