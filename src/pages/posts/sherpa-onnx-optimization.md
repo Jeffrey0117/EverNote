@@ -267,6 +267,8 @@ int8 量化對 Paraformer 是加速神器，對 Zipformer 是品質殺手。
 - [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
 - [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
 - [離線語音辨識模型大亂鬥](/Evernote/posts/speech-recognition-models-comparison)
+- [優化方法論：從語音辨識學到的事](/Evernote/posts/optimization-methodology)
+- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
 
 ---
 

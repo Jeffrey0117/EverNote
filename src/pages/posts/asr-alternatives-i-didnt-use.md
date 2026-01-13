@@ -150,3 +150,4 @@ Kaldi 和 WeNet 太重了，不適合我的場景。
 
 - [離線語音辨識模型大亂鬥](/Evernote/posts/speech-recognition-models-comparison)
 - [名詞科普：VAD、ASR、STT 到底在講什麼？](/Evernote/posts/speech-recognition-glossary)
+- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)

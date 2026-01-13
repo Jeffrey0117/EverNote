@@ -177,3 +177,4 @@ Open Neural Network Exchange。一種模型格式標準。
 
 - [離線語音辨識模型大亂鬥](/Evernote/posts/speech-recognition-models-comparison)
 - [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
+- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)

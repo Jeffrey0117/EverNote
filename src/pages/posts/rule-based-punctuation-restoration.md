@@ -322,3 +322,9 @@ add_sentence_starter("結果")  # 「結果」前面加逗號
 不用重新訓練模型，改完立刻生效。
 
 這大概是我寫過最有成就感的「小工具」。用最簡單的方法解決問題，不用無腦套 AI。
+
+相關文章：
+
+- [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
+- [離線語音辨識模型大亂鬥](/Evernote/posts/speech-recognition-models-comparison)
+- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)

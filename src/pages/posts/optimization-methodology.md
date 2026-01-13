@@ -111,6 +111,7 @@ tags:
 - [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
 - [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
 - [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
+- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
 
 ---
 

@@ -175,4 +175,9 @@ VAD 過濾靜音（Silero VAD）
 
 下一篇會詳細講 FunASR 的優化過程。當初花了不少時間調參數，最後把速度拉到跟 Sherpa-ONNX 差不多，甚至比一些商業方案還快。
 
-敬請期待：[FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
+相關文章：
+
+- [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
+- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
+- [名詞科普：VAD、ASR、STT 到底在講什麼？](/Evernote/posts/speech-recognition-glossary)
+- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)

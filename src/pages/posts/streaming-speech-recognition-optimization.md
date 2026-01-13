@@ -321,3 +321,9 @@ else:
 - [Sherpa-ONNX 模型下載](https://github.com/k2-fsa/sherpa-onnx/releases/tag/asr-models)
 - [Web Audio API - MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 - [int8 量化原理](https://huggingface.co/docs/optimum/concept_guides/quantization)——為什麼有時候會壞掉
+
+相關文章：
+
+- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
+- [用 5KB 正規表達式幹掉 500MB 深度學習模型](/Evernote/posts/rule-based-punctuation-restoration)
+- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
