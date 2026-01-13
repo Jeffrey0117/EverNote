@@ -220,10 +220,17 @@ body {
   color: var(--accent);
 }
 
-.post-excerpt {
+.post-desc {
   font-size: 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.6;
+  margin-bottom: var(--space-xs);
+}
+
+.post-content-preview {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
 }
 
 .post-tags {

@@ -40,14 +40,13 @@ const formatDate = (dateStr: string) => {
   return `${datePart} ${timePart}`;
 };
 
-// 取得文章摘要（description + 內文前 100 字）
-const getExcerpt = (post: any) => {
-  const desc = post.frontmatter.description || '';
+// 取得文章內文摘要（清理 markdown 和 HTML）
+const getContentExcerpt = (post: any) => {
   const content = post.rawContent?.() || '';
-  // 移除 frontmatter、標題、markdown 語法
-  const cleanContent = content
+  return content
     .replace(/^---[\s\S]*?---/, '')       // frontmatter
     .replace(/^#+\s+.*/gm, '')            // 標題
+    .replace(/<[^>]+>/g, '')              // HTML 標籤
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) -> text
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, '') // 圖片移除
     .replace(/`{3}[\s\S]*?`{3}/g, '')     // code block
@@ -60,16 +59,7 @@ const getExcerpt = (post: any) => {
     .replace(/\d+\.\s+/g, '')             // numbered list
     .replace(/\n+/g, ' ')
     .trim()
-    .slice(0, 100);
-
-  // 保留原本的 description，再加內文
-  if (desc) {
-    if (cleanContent) {
-      return `${desc} — ${cleanContent}...`;
-    }
-    return desc;
-  }
-  return cleanContent ? `${cleanContent}...` : '';
+    .slice(0, 120);
 };
 
 // 分頁設定
@@ -118,7 +108,12 @@ const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
               {post.frontmatter.pinned && <span class="pinned-badge">置頂</span>}
               <a href={post.url}>{post.frontmatter.title}</a>
             </h2>
-            <p class="post-excerpt">{getExcerpt(post)}</p>
+            {post.frontmatter.description && (
+              <p class="post-desc">{post.frontmatter.description}</p>
+            )}
+            {getContentExcerpt(post) && (
+              <p class="post-content-preview">{getContentExcerpt(post)}...</p>
+            )}
             {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
               <div class="post-tags">
                 {post.frontmatter.tags.map((tag: string) => (
