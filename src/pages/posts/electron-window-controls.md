@@ -19,6 +19,9 @@ tags:
 
 ## 我一開始想的方法
 
+![Windows 通知區域設定](https://static0.howtogeekimages.com/wordpress/wp-content/uploads/2020/08/notification-area-settings-on-windows-10.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>Windows 設定裡的通知區域選項。每個圖示都可以選擇要不要顯示。我們的應用也會出現在這裡。</small></p>
+
 講完一段，Alt+Tab 切到聲聲慢，看辨識結果，Ctrl+C 複製，Alt+Tab 切回去，Ctrl+V 貼上。
 
 重複二十次之後，我手指開始痛。
@@ -30,6 +33,9 @@ tags:
 一行程式碼。我之前在幹嘛。
 
 ## 置頂功能
+
+![PowerToys Always On Top 功能](https://learn.microsoft.com/en-us/windows/powertoys/images/pt-always-on-top.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>微軟 PowerToys 的置頂功能，會在視窗周圍加藍色邊框。我們要做的就是這個效果。</small></p>
 
 Electron 內建：
 
@@ -77,8 +83,8 @@ mainWindow.setAlwaysOnTop(alwaysOnTop);
 
 ## 縮小到托盤
 
-![Electron 系統托盤範例](https://www.tutorialspoint.com/electron/images/tray.jpg)
-<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>Windows 右下角那排小圖示。點一下就能叫出應用。</small></p>
+![Windows 通知區域](https://static0.howtogeekimages.com/wordpress/wp-content/uploads/2020/08/notification-area-overflow.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>Windows 右下角那排小圖示，微軟叫它「通知區域」。點那個箭頭會展開更多。</small></p>
 
 語音辨識應用通常要「一直開著」。
 
@@ -156,6 +162,9 @@ function createTray() {
 
 ### 要不要給選項
 
+![Electron Preferences 設定介面](https://raw.githubusercontent.com/snapcrunch/electron-preferences/development/misc/demo.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>electron-preferences 套件提供的設定介面。我的應用沒這麼複雜，但概念一樣：讓使用者選擇自己喜歡的行為。</small></p>
+
 有些使用者可能不喜歡這個行為。
 
 「我點 X 就是要關閉，不要幫我縮小。」
@@ -176,6 +185,9 @@ mainWindow.on('close', (event) => {
 預設是縮小到托盤，但使用者可以在設定裡關掉。
 
 ## macOS 的差異
+
+![macOS Menu Bar](https://help.apple.com/assets/68FBBA193607B5D7D10E93FA/68FBBA1F5B40BB61910BDFBB/en_US/62a24ce3b2745abaa8344ab3ce1d050f.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>macOS 的選單列。右上角那排圖示就是 Menu Bar Extras，等於 Windows 的通知區域。</small></p>
 
 macOS 的托盤叫 Menu Bar，行為不太一樣。
 

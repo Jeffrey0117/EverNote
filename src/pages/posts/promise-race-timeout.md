@@ -220,3 +220,10 @@ Promise.race 是 JavaScript 原生 API，不用裝套件。除了超時，還可
 - **備援機制**：主要服務沒回應，就用備援的結果
 
 任何「不想無限等待」的場景，都可以用這招。理解原理之後，你會發現很多卡住的問題都能用同一個模式解決。
+
+---
+
+## 延伸閱讀
+
+- [JavaScript 的賽跑問題](/posts/javascript-race) — race condition 是什麼？這篇講完整觀念
+- [forEach 配 async 是個陷阱](/posts/foreach-async-trap) — 反過來的問題：想等，但程式不等你

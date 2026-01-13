@@ -17,6 +17,9 @@ tags:
 
 ## 原本想得很美好
 
+![Web Audio API 節點連接示意圖](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API/graph2.jpg)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>Web Audio API 的世界觀：所有東西都是節點，連來連去就能處理音頻。看起來很美好對吧？</small></p>
+
 Web Audio API 有個東西叫 `ScriptProcessor`，用法超直覺：
 
 ```javascript
@@ -40,6 +43,9 @@ processor.connect(audioContext.destination);
 `createScriptProcessor` 被劃掉了。Deprecated。
 
 ## 2014 年就說要移除了
+
+![Chrome DevTools Issues 面板](https://developer.chrome.com/static/docs/devtools/issues/image/issues-grouped-three-kin-b459bf779c6f2.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>Chrome DevTools 的警告分三種：錯誤、棄用、建議。ScriptProcessor 就是那個黃色的「棄用」。</small></p>
 
 查了一下，Chrome 從 **2014 年**就標記 `ScriptProcessor` 為 deprecated。
 
@@ -124,6 +130,9 @@ source.connect(workletNode);
 
 ### 還有資料傳輸的問題
 
+![AudioWorklet 節點與處理器通訊](https://developer.chrome.com/static/blog/audio-worklet/image/audio-worklet-node-proce-5cdb8f8650c7a.svg)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>AudioWorkletNode 和 AudioWorkletProcessor 之間要用 MessagePort 通訊。又多一層複雜度。</small></p>
+
 `AudioWorklet` 跑在獨立線程，要把資料傳回主線程得用 `postMessage`。
 
 每次 `postMessage` 都會**複製資料**。
@@ -151,6 +160,9 @@ source.connect(workletNode);
 ## 其他小坑
 
 ### 緩衝區大小要 2 的冪次
+
+![音頻波形視覺化](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API/wave.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>音頻數據就是這種波形。緩衝區太小，波形會斷；太大，延遲會高。</small></p>
 
 `createScriptProcessor(bufferSize, inputChannels, outputChannels)`
 

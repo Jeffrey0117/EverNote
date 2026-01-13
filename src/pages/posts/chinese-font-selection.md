@@ -49,7 +49,8 @@ Windows 是微軟正黑體，macOS 是蘋方。
 
 ## 我選了什麼
 
-<!-- 需要人工補圖：放一張源雲明體 vs 微軟正黑體的對比截圖，展示同一段文字用不同字體的差異 -->
+![思源黑體與思源宋體比較](https://daydayding.com/wp-content/uploads/2023/10/思源字體_工作區域-1-複本-1024x289.jpg)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>左邊是黑體（無襯線），右邊是宋體（襯線）。同樣是「思源」家族，風格差很多。</small></p>
 
 ### 主字體：源雲明體
 
@@ -62,6 +63,9 @@ Windows 是微軟正黑體，macOS 是蘋方。
 而且是 OFL 授權，免費開源，商用也沒問題。
 
 ### 次字體：jf open 粉圓
+
+![jf open 粉圓字體設計](https://blog.justfont.com/wp-content/uploads/2020/02/設計尬聊配圖-01-1024x576.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>粉圓的名字來自珍珠奶茶。圓圓的筆畫，看起來就很 Q 彈。</small></p>
 
 [jf open 粉圓](https://justfont.com/huninn/) 是 justfont 出的免費字體。
 
@@ -107,6 +111,9 @@ src/
 
 ## 中文字體要大一點
 
+![粉圓字體調整前後](https://blog.justfont.com/wp-content/uploads/2020/02/設計尬聊配圖-04-1024x576.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>字體大小差一點，閱讀體驗差很多。中文筆畫多，要比英文大才舒服。</small></p>
+
 中文字體需要比英文大一點才好讀。
 
 英文 14px 剛好，中文最好 16px。
@@ -124,6 +131,9 @@ body {
 
 順便整理一下我看過的字體。
 
+![思源黑體字重變化](https://daydayding.com/wp-content/uploads/2023/10/思源字體_工作區域-1-複本-2-1024x782.jpg)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>思源黑體有七種字重，從極細到極粗都有。微軟正黑體只有兩種，根本沒得比。</small></p>
+
 ### 黑體（無襯線）
 
 | 字體 | 特點 | 授權 |
@@ -140,6 +150,9 @@ body {
 | [源雲明體](https://github.com/nickchou/GenWanMin) | 基於思源宋體，更有韻味 | OFL |
 
 ### 手寫/特殊
+
+![霞鶩文楷字體樣本](https://raw.githubusercontent.com/lxgw/LxgwWenKai/main/documentation/wenkai-1.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>霞鶩文楷，基於日本 Klee One 改作。介於仿宋和楷體之間，優雅得不像免費字體。</small></p>
 
 | 字體 | 特點 | 授權 |
 |------|------|------|

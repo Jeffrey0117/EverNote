@@ -49,6 +49,9 @@ def apply_dictionary(text):
 
 ## 熱詞 vs 字典替換
 
+![語音辨識錯誤範例](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/media/custom-speech/custom-speech-dis-words.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>微軟的 WER 計算範例。I 是插入、D 是刪除、S 是替換。這種錯誤，熱詞處理不了，只能靠字典硬換。</small></p>
+
 | | 熱詞 | 字典替換 |
 |---|------|----------|
 | **時機** | 辨識過程中 | 辨識完成後 |
@@ -85,6 +88,9 @@ TS → TypeScript
 
 ### 統一用詞
 
+![Visual Studio 尋找與取代](https://learn.microsoft.com/en-us/visualstudio/ide/media/vs-2022/find-and-replace-box.png?view=vs-2022)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>寫程式的人都熟悉「尋找與取代」。字典替換就是自動版的尋找與取代。</small></p>
+
 模型輸出的是中國用語，想換成台灣用語：
 
 ```
@@ -116,6 +122,9 @@ DEFAULT_REPLACEMENTS = {
 
 ### 使用者自訂字典
 
+![微軟語音服務自訂模型](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/media/custom-speech/ai-foundry/new-fine-tune-test-model.png)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>微軟 Azure 也有類似功能。但我們不需要上雲，本地字典就夠用了。</small></p>
+
 每個人講的專有名詞不一樣。老闆名字、公司名字、專案代號...
 
 讓使用者可以自己加：
@@ -137,6 +146,9 @@ def load_dictionary():
 ```
 
 ## 我搞錯順序的那天
+
+![NLP 處理流程](https://media.geeksforgeeks.org/wp-content/uploads/20230118132334/NLP-Pipeline-GIF.gif)
+<p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>NLP 處理是有順序的。順序錯了，結果就錯了。這是我花一小時 debug 學到的教訓。</small></p>
 
 一開始我把字典替換放在標點恢復之前。
 
