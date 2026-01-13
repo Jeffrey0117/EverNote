@@ -1,6 +1,6 @@
 ---
 layout: ../../layouts/PostLayout.astro
-title: PyClick — 自己寫一個找圖自動點擊器
+title: 自己寫一個按鍵精靈
 date: 2026-01-13T15:30
 description: 為了讓 Claude Code 自動同意，乾脆自己寫一個通用工具
 tags:

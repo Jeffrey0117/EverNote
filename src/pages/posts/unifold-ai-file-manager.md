@@ -1,6 +1,6 @@
 ---
 layout: ../../layouts/PostLayout.astro
-title: Unifold：用 AI 幫你整理文件的桌面應用
+title: 讓 AI 幫你整理亂七八糟的檔案
 date: 2026-01-13T10:30
 description: 使用 Electron + React + Gemini API 打造的智能文件管理工具
 tags:
