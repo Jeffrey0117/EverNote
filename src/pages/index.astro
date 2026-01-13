@@ -42,6 +42,13 @@ const formatDate = (dateStr: string) => {
 
 // 最近 5 篇文章（給側邊欄用）
 const recentPosts = sortedPosts.filter(p => !p.frontmatter.pinned).slice(0, 5);
+
+// 統計
+const totalPosts = sortedPosts.length;
+const totalWords = sortedPosts.reduce((sum, post) => {
+  const content = post.rawContent?.() || '';
+  return sum + content.length;
+}, 0);
 ---
 
 <BaseLayout title="Jeffrey0117 技術筆記">
@@ -97,6 +104,11 @@ const recentPosts = sortedPosts.filter(p => !p.frontmatter.pinned).slice(0, 5);
 
     <!-- 側邊欄 -->
     <aside class="sidebar">
+      <div class="sidebar-stats">
+        <p>這裡有 {totalPosts} 篇文章</p>
+        <p>大約 {Math.round(totalWords / 1000)}k 字</p>
+      </div>
+
       <div class="sidebar-section">
         <h3>關於</h3>
         <p>紀錄開發專案時學到的技術、踩過的坑、一些想法。</p>
@@ -285,6 +297,17 @@ const recentPosts = sortedPosts.filter(p => !p.frontmatter.pinned).slice(0, 5);
   /* 側邊欄 */
   .sidebar {
     font-size: 0.85rem;
+  }
+
+  .sidebar-stats {
+    margin-bottom: var(--space-lg);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1.8;
+  }
+
+  .sidebar-stats p {
+    margin: 0;
   }
 
   .sidebar-section {
