@@ -22,6 +22,82 @@ Google 搜尋「Python web framework」，答案通常是 Flask 或 Django。
 
 ---
 
+## 等等，FastAPI 不是 API
+
+先澄清一件事，因為這名字真的很容易誤會。
+
+**FastAPI 是框架，不是 API。**
+
+### API 是什麼
+
+API（Application Programming Interface）是程式之間溝通的介面。
+
+想像你去餐廳吃飯：
+
+- 你不會跑進廚房自己炒菜
+- 你看菜單，告訴服務生「我要一份炒飯」
+- 服務生把菜端上來
+
+**菜單就是 API**——它告訴你「有什麼可以點」、「怎麼點」，但你不用知道廚房怎麼運作。
+
+程式的世界也一樣：
+
+```python
+# 你不用知道 YouTube 的伺服器怎麼運作
+# 只要照著 API 格式發請求
+requests.get("https://youtube.com/api/video/abc123")
+```
+
+### 框架是什麼
+
+框架是「幫你把髒活累活都做完」的工具。
+
+沒有框架，你要自己處理：
+
+```python
+# 自己處理 HTTP 請求
+import socket
+
+server = socket.socket()
+server.bind(("0.0.0.0", 8080))
+server.listen(5)
+
+while True:
+    client, addr = server.accept()
+    request = client.recv(4096).decode()
+
+    # 自己解析 HTTP 格式
+    method, path, _ = request.split("\r\n")[0].split(" ")
+
+    # 自己組 HTTP 回應
+    if path == "/download":
+        response = "HTTP/1.1 200 OK\r\n\r\n{\"status\": \"ok\"}"
+    else:
+        response = "HTTP/1.1 404 Not Found\r\n\r\nNot Found"
+
+    client.send(response.encode())
+    client.close()
+```
+
+用框架，同樣的事變這樣：
+
+```python
+from fastapi import FastAPI
+app = FastAPI()
+
+@app.get("/download")
+def download():
+    return {"status": "ok"}
+```
+
+**框架把 HTTP 解析、路由、回應格式這些瑣事都包好了**，你只要專心寫業務邏輯。
+
+所以 FastAPI 的意思是：「一個很快的、用來寫 API 的框架」。
+
+名字沒取好，不是它的錯。
+
+---
+
 ## 問題：API 會卡住
 
 我在做 [Ytify](/posts/ytify-self-hosted-youtube-downloader)（一個 YouTube 下載服務）時遇到一個問題。
@@ -139,6 +215,56 @@ asyncio.run(main())
 ```
 
 `await` 的意思是：「這邊要等，但你可以先去忙別的」。
+
+### 等等，JavaScript 不是本來就有嗎？
+
+如果你寫過 JavaScript，可能會想：「這不是 JS 本來就會的事嗎？」
+
+沒錯。**JavaScript 的事件循環是內建的**，從第一天就是非同步的。
+
+```javascript
+// JavaScript：天生非同步
+fetch('/api/download')
+  .then(res => res.json())
+  .then(data => console.log(data));
+
+console.log('我先跑');  // 這行會先印出來
+```
+
+你不用做任何事，JS 就是非同步的。這是因為瀏覽器和 Node.js 都內建事件循環。
+
+**但 Python 不一樣。**
+
+```python
+# Python：預設是同步的
+import requests
+
+response = requests.get('/api/download')  # 卡住，等它跑完
+data = response.json()
+print(data)
+
+print('我後跑')  # 真的會後跑
+```
+
+Python 預設是「一行跑完才跑下一行」。想要非同步，你要：
+
+1. 用 `asyncio` 模組
+2. 函數前面加 `async`
+3. 等待的地方加 `await`
+4. 用支援非同步的函式庫（`aiohttp` 而不是 `requests`）
+
+這就是為什麼 Python 需要選框架——Flask 是同步的，FastAPI 是非同步的。
+
+在 JavaScript 的世界，Express 和 Fastify 都是非同步的，因為 JS 本身就是。
+
+| 語言 | 事件循環 | 要特別處理嗎 |
+|------|----------|--------------|
+| JavaScript | 內建 | 不用，天生非同步 |
+| Python | 要自己加 | 要，選對框架 + async/await |
+| Go | 內建（goroutine） | 不用，用 `go` 關鍵字 |
+| Java | 要自己加 | 要，用 CompletableFuture 或 Virtual Threads |
+
+所以如果你是 JS 開發者轉 Python，會覺得「怎麼這麼麻煩」——因為 JS 把你寵壞了。（但 [JS 的非同步也沒那麼簡單](/posts/javascript-async-you-still-need-to-learn)，別得意）
 
 ### 所以如果要自幹一個簡單的事件循環...
 
