@@ -266,44 +266,17 @@ Python 預設是「一行跑完才跑下一行」。想要非同步，你要：
 
 所以如果你是 JS 開發者轉 Python，會覺得「怎麼這麼麻煩」——因為 JS 把你寵壞了。（但 [JS 的非同步也沒那麼簡單](/posts/javascript-async-you-still-need-to-learn)，別得意）
 
-### 所以如果要自幹一個簡單的事件循環...
-
-```python
-# 極簡版事件循環
-class SimpleEventLoop:
-    def __init__(self):
-        self.ready = []      # 可以執行的任務
-        self.waiting = []    # 在等待的任務
-
-    def run(self):
-        while self.ready or self.waiting:
-            # 檢查等待中的任務是否可以繼續
-            for task in self.waiting[:]:
-                if task.is_ready():
-                    self.waiting.remove(task)
-                    self.ready.append(task)
-
-            # 執行一個可以執行的任務
-            if self.ready:
-                task = self.ready.pop(0)
-                task.run_one_step()
-                if not task.is_done():
-                    self.waiting.append(task)
-```
-
-實際的 asyncio 比這複雜得多（要處理 I/O、計時器、例外...），但核心概念就是這個：
-
-1. 維護一個待辦清單
-2. 任務說「我要等」時，去做別的
-3. 任務可以繼續時，再回來執行
-
 ---
 
-## FastAPI 還有一個殺手級功能：自動 API 文檔
+## FastAPI 讓我回不去的功能
 
-除了非同步，FastAPI 還有一個讓我回不去 Flask 的理由。
+講完非同步，來看 FastAPI 還有什麼殺手級功能。
 
-它會根據你的程式碼，**自動產生互動式 API 文檔**。
+### 1. 自動產生 API 文檔
+
+用 Flask 寫 API，文檔要自己寫。寫完還要維護，程式改了文檔忘了改，就會對不上。
+
+FastAPI 會根據你的程式碼，**自動產生互動式文檔**。
 
 ```python
 from pydantic import BaseModel
@@ -315,27 +288,203 @@ class DownloadRequest(BaseModel):
 
 @app.post("/download")
 async def download(req: DownloadRequest):
+    """下載 YouTube 影片"""
     ...
 ```
 
-就這樣，打開 `/docs`，你會看到一個漂亮的 Swagger UI，可以直接在網頁上測試 API。
+打開 `/docs`，你會看到 Swagger UI，可以直接在網頁上測試 API。
 
-不用寫文檔，不用開 Postman，程式碼就是文檔。
+打開 `/redoc`，你會看到另一種風格的文檔。
 
-用 Flask 的話，要自己裝 flask-swagger 或 flask-restx，還要手動寫一堆裝飾器。
+**程式碼就是文檔，文檔永遠是對的。**
+
+### 2. 請求驗證：幫你擋掉垃圾資料
+
+Flask 要自己檢查參數：
+
+```python
+# Flask：自己驗證
+@app.route("/download", methods=["POST"])
+def download():
+    data = request.get_json()
+    if not data.get("url"):
+        return {"error": "url is required"}, 400
+    if not data["url"].startswith("http"):
+        return {"error": "invalid url"}, 400
+    # ... 還要檢查一堆
+```
+
+FastAPI 用 Pydantic 自動驗證：
+
+```python
+# FastAPI：自動驗證
+from pydantic import BaseModel, HttpUrl
+
+class DownloadRequest(BaseModel):
+    url: HttpUrl                    # 自動檢查是不是合法網址
+    format: str = "mp4"
+    quality: int = Field(ge=1, le=4)  # 1~4 之間
+
+@app.post("/download")
+async def download(req: DownloadRequest):
+    # 走到這裡，req 一定是合法的
+    ...
+```
+
+參數不對？FastAPI 自動回 422，還附上哪個欄位錯了。
+
+### 3. 依賴注入：不用到處寫重複的程式碼
+
+每個 API 都要檢查使用者身份、取得資料庫連線、記錄 log...
+
+Flask 要自己處理：
+
+```python
+# Flask：每個路由都要寫
+@app.route("/history")
+def get_history():
+    token = request.headers.get("Authorization")
+    user = verify_token(token)  # 每個路由都要寫這行
+    if not user:
+        return {"error": "unauthorized"}, 401
+    db = get_db_connection()    # 每個路由都要寫這行
+    ...
+```
+
+FastAPI 用依賴注入：
+
+```python
+# FastAPI：寫一次，到處用
+from fastapi import Depends
+
+async def get_current_user(token: str = Header(...)):
+    user = verify_token(token)
+    if not user:
+        raise HTTPException(401, "unauthorized")
+    return user
+
+async def get_db():
+    db = Database()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@app.get("/history")
+async def get_history(
+    user: User = Depends(get_current_user),  # 自動注入
+    db: Database = Depends(get_db)           # 自動注入
+):
+    # user 和 db 都準備好了
+    return db.get_history(user.id)
+```
+
+定義一次，所有路由都能用。而且測試的時候可以輕鬆替換成 mock。
+
+### 4. 路徑參數和查詢參數
+
+```python
+# 路徑參數
+@app.get("/video/{video_id}")
+async def get_video(video_id: str):
+    ...
+
+# 查詢參數（有預設值 = 選填）
+@app.get("/search")
+async def search(
+    q: str,                    # 必填
+    limit: int = 10,           # 選填，預設 10
+    offset: int = 0            # 選填，預設 0
+):
+    ...
+# GET /search?q=python&limit=20
+```
+
+Flask 要用 `request.args.get()`，還要自己轉型、設預設值。
+
+FastAPI 直接寫在函數參數，型別自動轉換。
+
+### 5. 背景任務
+
+下載完成後要發通知，但不想讓使用者等：
+
+```python
+from fastapi import BackgroundTasks
+
+async def send_notification(email: str, video_title: str):
+    # 寄信，可能要幾秒
+    ...
+
+@app.post("/download")
+async def download(
+    req: DownloadRequest,
+    background_tasks: BackgroundTasks
+):
+    task_id = start_download(req.url)
+
+    # 下載完成後在背景寄信，不阻塞回應
+    background_tasks.add_task(
+        send_notification,
+        user.email,
+        req.title
+    )
+
+    return {"task_id": task_id}  # 馬上回應
+```
+
+### 6. WebSocket 原生支援
+
+做即時進度推送？FastAPI 內建支援：
+
+```python
+@app.websocket("/ws/progress/{task_id}")
+async def websocket_progress(websocket: WebSocket, task_id: str):
+    await websocket.accept()
+
+    while True:
+        progress = get_progress(task_id)
+        await websocket.send_json(progress)
+
+        if progress["status"] == "done":
+            break
+
+        await asyncio.sleep(0.5)
+```
+
+Flask 要裝 flask-socketio，還要額外設定。
 
 ---
 
-## 研究完之後
+## Flask vs FastAPI：功能對比
 
-理解 async/await 的原理後，我更清楚 FastAPI 幫我省了多少事：
+| 功能 | Flask | FastAPI |
+|------|-------|---------|
+| 非同步 | 要自己處理 | 原生支援 |
+| API 文檔 | 要裝套件 | 自動產生 |
+| 請求驗證 | 自己寫 | Pydantic 自動驗證 |
+| 依賴注入 | 沒有 | 內建 |
+| WebSocket | 要裝套件 | 原生支援 |
+| 型別提示 | 可選 | 深度整合 |
+| 效能 | 普通 | 快 3~5 倍 |
 
-- 不用自己管理事件循環
-- 不用自己處理 WebSocket 連線
-- 不用自己寫 API 文檔
-- 型別檢查和資料驗證都內建
+---
 
-對於需要處理大量 I/O 的 API 服務，FastAPI 目前是我的首選。
+## 效能差多少
+
+FastAPI 官方 benchmark 說它跟 Node.js 和 Go 同級，是 Flask 的好幾倍。
+
+實測起來，同樣的 API：
+
+- Flask + Gunicorn：~1,000 requests/sec
+- FastAPI + Uvicorn：~5,000 requests/sec
+
+當然實際數字看你的業務邏輯，但 FastAPI 確實快很多。
+
+原因是：
+
+1. 非同步架構，I/O 不阻塞
+2. Starlette（底層框架）本身就快
+3. Pydantic v2 用 Rust 重寫，驗證速度提升 5~50 倍
 
 ---
 
@@ -343,8 +492,48 @@ async def download(req: DownloadRequest):
 
 公平起見，FastAPI 不是萬靈丹：
 
-- **如果你在學 Python**：Flask 更簡單，更適合入門
-- **如果你要做傳統網站**：Django 有完整的模板、ORM、Admin 系統
-- **如果你的服務是 CPU 密集**：async 救不了你，要用 multiprocessing
+| 情境 | 建議 |
+|------|------|
+| 學 Python 中 | Flask 更簡單，適合入門 |
+| 做傳統網站 | Django 有模板、ORM、Admin |
+| CPU 密集運算 | async 救不了，用 multiprocessing |
+| 團隊沒人會 async | 同步程式碼比較好 debug |
+| 要用的 library 沒有 async 版本 | 強行 async 反而更慢 |
 
-但如果你要寫「API 服務」，而且有大量 I/O 操作（資料庫查詢、外部 API 呼叫、檔案下載），FastAPI 值得一試。
+---
+
+## 總結：為什麼我換到 FastAPI
+
+| 我要的 | Flask | FastAPI |
+|--------|-------|---------|
+| 同時處理多個下載 | 卡 | 不卡 |
+| API 文檔 | 自己寫 | 自動產生 |
+| 參數驗證 | 自己寫 | 自動驗證 |
+| WebSocket 進度推送 | 要裝套件 | 內建 |
+| 效能 | 1x | 3~5x |
+
+對於 [Ytify](/posts/ytify-self-hosted-youtube-downloader) 這種 I/O 密集的服務，FastAPI 是目前最適合的選擇。
+
+如果你也在寫 API 服務，試試看，你可能也會回不去。
+
+```bash
+pip install fastapi uvicorn
+```
+
+```python
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+async def hello():
+    return {"message": "歡迎來到 FastAPI"}
+```
+
+```bash
+uvicorn main:app --reload
+```
+
+打開 http://localhost:8000/docs，你會看到自動產生的文檔。
+
+這就是 FastAPI。
