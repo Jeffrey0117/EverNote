@@ -77,9 +77,13 @@ yazi %*
 
 寫完這個之後我就想：**欸，那我幹嘛不把其他 Unix 指令也做出來？**
 
-`ls`、`cat`、`grep`... 這些在 Linux 和 macOS 上很自然的指令，Windows 上都沒有。每次手指習慣性打 `ls`，出來的是「不是內部或外部命令」。
+`ls`、`cat`、`grep`... 這些在 Linux 和 macOS 上很自然的指令，Windows 上都沒有。
 
-於是我真的做了一個工具，用 JSON 設定檔產生一堆 batch 檔，讓 Windows 也能用 Unix 指令。詳情見：[在 Windows 上跑 Unix 指令不用裝 WSL](/posts/cmdx-unix-commands-on-windows)
+每次手指習慣性打 `ls`，出來的是「不是內部或外部命令」。
+
+於是我真的做了一個工具，用 JSON 設定檔產生一堆 batch 檔，讓 Windows 也能用 Unix 指令。
+
+詳情見：[在 Windows 上跑 Unix 指令不用裝 WSL](/posts/cmdx-unix-commands-on-windows)
 
 ## 為什麼選 yazi
 
