@@ -8,11 +8,13 @@ tags:
   - 觀念
 ---
 
-寫 JavaScript 寫久了，一定會遇到一種 bug：程式碼明明寫對了，但結果每次都不一樣。
+你有沒有遇過這種情況：
 
-有時候正常，有時候爆掉，有時候資料少一半。
+批次刪除 100 筆資料，跑完發現只刪了 73 筆。再跑一次，變成 81 筆。第三次，剩 12 筆沒刪到。
 
-這種 bug 叫 **race condition**，中文叫「競爭條件」或「賽跑問題」。
+或是購物車結帳，明明只按了一次，卻扣了兩次款。
+
+這種「每次結果都不一樣」的 bug，叫 **race condition**。
 
 ## 什麼是 race condition
 
@@ -90,7 +92,7 @@ const result = await Promise.race([
 
 讓「實際工作」跟「計時器」比賽。計時器贏了就代表超時，不用繼續等。
 
-詳細實作看這篇：[Promise.race 處理 OCR 超時](/posts/promise-race-timeout)
+詳細實作看這篇：[Promise.race 處理 OCR 超時](/Evernote/posts/promise-race-timeout)
 
 ## 怎麼分辨好壞
 

@@ -225,5 +225,5 @@ Promise.race 是 JavaScript 原生 API，不用裝套件。除了超時，還可
 
 ## 延伸閱讀
 
-- [JavaScript 的賽跑問題](/posts/javascript-race) — race condition 是什麼？這篇講完整觀念
-- [forEach 配 async 是個陷阱](/posts/foreach-async-trap) — 反過來的問題：想等，但程式不等你
+- [JavaScript 的賽跑問題](/Evernote/posts/javascript-race) — race condition 是什麼？這篇講完整觀念
+- [forEach 配 async 是個陷阱](/Evernote/posts/foreach-async-trap) — 反過來的問題：想等，但程式不等你
