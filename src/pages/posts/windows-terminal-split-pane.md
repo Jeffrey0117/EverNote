@@ -15,7 +15,7 @@ tags:
 
 結果這東西就躺在那邊，免費、好看、功能完整。
 
-## 為什麼會發現這東西
+## 少即是多
 
 之前寫 code 習慣開 VS Code。
 
@@ -86,4 +86,6 @@ tmux 功能確實更強，但我在 Windows 上用，內建的就夠了。
 三直排 + 各自上下分，對我來說最舒服。
 
 沒想到用久了，很多事情反而不開 VS Code 了。
+
+想玩更多可以參考：[Windows Terminal 官方文件](https://learn.microsoft.com/en-us/windows/terminal/)
 
