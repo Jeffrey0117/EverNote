@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/PostLayout.astro
 title: 在 Windows 上跑 Unix 指令不用裝 WSL
-date: 2026-01-13T15:30
+date: 2026-01-13T07:30
 description: 用宣告式 JSON 設定檔產生 batch 檔，在 cmd.exe 直接打 ls、cat、grep
 tags:
   - Python

@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/PostLayout.astro
 title: VSCode + Claude Code 開發 Electron 時的環境變數陷阱
-date: 2026-01-13T18:30
+date: 2026-01-13T10:30
 description: 解決在 VSCode 終端中執行 Electron 開發命令時 require('electron') 返回字串而非模組的問題
 tags:
   - Electron
