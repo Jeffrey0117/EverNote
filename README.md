@@ -1,46 +1,59 @@
-# vibe.notes
+<div align="center">
 
-一個乾淨簡約的 Astro 部落格，用於記錄 Vibe Coding 過程中的技術知識。
+# Jeffrey0117 技術筆記
+
+**一個乾淨、極簡的 Astro 技術部落格**
+
+記錄開發專案時學到的技術、踩過的坑、一些想法。
+
+[![Astro](https://img.shields.io/badge/Astro-FF5D01?logo=astro&logoColor=white)](https://astro.build)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+[線上預覽](https://jeffrey0117.github.io/Evernote/) · [回報問題](https://github.com/Jeffrey0117/Evernote/issues)
+
+</div>
+
+---
 
 ## 特色
 
-- 🎨 溫暖米白灰色調，工程師筆記風格
-- 📝 Markdown 內容管理
-- ⚡ Astro 靜態網站，載入極快
-- 🔤 精選字型：IBM Plex Mono + Noto Sans TC
+| 功能 | 說明 |
+|------|------|
+| **極簡設計** | 溫暖米白灰色調，專注閱讀體驗 |
+| **分類過濾** | 技術 / 觀念 / 專案 / 工具，快速找到文章 |
+| **全站搜尋** | Pagefind 靜態搜尋，無需後端 |
+| **RSS 訂閱** | 支援 RSS feed |
+| **SEO 優化** | Open Graph、Twitter Card、Sitemap |
+| **響應式** | 桌面、平板、手機都能看 |
+
+## 技術棧
+
+```
+Astro          靜態網站框架，載入極快
+Pagefind       全站搜尋
+@astrojs/rss   RSS feed 生成
+@astrojs/sitemap   Sitemap 生成
+```
 
 ## 快速開始
 
 ```bash
-# 安裝依賴
+# Clone
+git clone https://github.com/Jeffrey0117/Evernote.git
+cd Evernote
+
+# 安裝
 npm install
 
-# 開發模式
+# 開發
 npm run dev
 
-# 建置
+# 建置（含搜尋索引）
 npm run build
 
-# 預覽建置結果
+# 預覽
 npm run preview
-```
-
-## 新增文章
-
-在 `src/pages/posts/` 目錄下新增 `.md` 檔案：
-
-```markdown
----
-layout: ../../layouts/PostLayout.astro
-title: 文章標題
-date: 2025-01-12
-description: 文章描述
-tags:
-  - 標籤1
-  - 標籤2
----
-
-文章內容...
 ```
 
 ## 專案結構
@@ -48,39 +61,95 @@ tags:
 ```
 src/
 ├── layouts/
-│   ├── BaseLayout.astro    # 基礎版型
-│   └── PostLayout.astro    # 文章版型
+│   ├── BaseLayout.astro      # 基礎版型（SEO、搜尋）
+│   └── PostLayout.astro      # 文章版型
 ├── pages/
-│   ├── index.astro         # 首頁（文章列表）
-│   ├── about.astro         # 關於頁面
-│   └── posts/              # Markdown 文章
+│   ├── index.astro           # 首頁（文章列表、分頁、過濾）
+│   ├── about.astro           # 關於
+│   ├── rss.xml.ts            # RSS feed
+│   └── posts/                # Markdown 文章
 ├── styles/
-│   └── global.css          # 全域樣式
+│   └── global.css            # 全域樣式（CSS 變數）
 public/
-└── favicon.svg             # 網站圖示
+├── favicon.svg
+├── robots.txt
+└── og-default.png            # 預設 OG 圖片
 ```
+
+## 新增文章
+
+在 `src/pages/posts/` 新增 `.md` 檔：
+
+```markdown
+---
+layout: ../../layouts/PostLayout.astro
+title: 文章標題
+date: 2026-01-13T12:00
+description: 一句話描述
+tags:
+  - Electron
+  - React
+pinned: false
+---
+
+文章內容...
+```
+
+### Frontmatter 參數
+
+| 參數 | 必填 | 說明 |
+|------|------|------|
+| `layout` | ✓ | 固定為 `../../layouts/PostLayout.astro` |
+| `title` | ✓ | 文章標題 |
+| `date` | ✓ | 發布日期時間 `YYYY-MM-DDTHH:mm` |
+| `description` | ✓ | 文章描述（顯示在列表） |
+| `tags` | ✓ | 標籤陣列 |
+| `pinned` |  | 是否置頂，預設 `false` |
+
+### 分類對應
+
+文章會根據 tags 自動歸類：
+
+| 分類 | 標籤 |
+|------|------|
+| 技術 | Electron, React, Python, Node.js, CSS, TypeScript, Astro... |
+| 觀念 | 開發觀念, 專案管理, 寫作, Vibe Coding... |
+| 專案 | 專案心得, 專案文件 |
+| 工具 | CLI, VSCode, 開發工具, DX, Windows... |
 
 ## 自訂樣式
 
-編輯 `src/styles/global.css` 中的 CSS 變數：
+編輯 `src/styles/global.css`：
 
 ```css
 :root {
-  --bg-primary: #F9F7F4;      /* 主背景色 */
-  --text-primary: #2C2C2C;     /* 主文字色 */
-  --accent: #9C8B7A;           /* 強調色 */
+  --bg-primary: #F9F7F4;      /* 背景 */
+  --text-primary: #2C2C2C;    /* 文字 */
+  --accent: #9C8B7A;          /* 強調色 */
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-sans: 'Noto Sans TC', sans-serif;
 }
 ```
 
 ## 部署
 
-建置後的靜態檔案在 `dist/` 目錄，可部署到：
+已設定 GitHub Actions 自動部署到 GitHub Pages。
 
-- Vercel
-- Netlify
-- GitHub Pages
-- Cloudflare Pages
+Push 到 `main` 分支即自動部署。
+
+手動部署到其他平台：
+
+```bash
+npm run build
+# dist/ 目錄即為靜態檔案
+```
+
+支援：Vercel、Netlify、Cloudflare Pages、任何靜態空間
 
 ---
 
-Built with ♥ and Astro
+<div align="center">
+
+Built with [Astro](https://astro.build)
+
+</div>
