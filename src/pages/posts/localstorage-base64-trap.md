@@ -14,7 +14,9 @@ tags:
 
 做內容行銷的人會用到，把國外的素材翻成中文版。
 
-## 圖片預覽要用 Base64
+這次踩的坑很有意思——不是因為我做錯什麼，而是**三個正確的決策組合在一起，就爆了**。
+
+## 第一個正確決策：圖片預覽用 Base64
 
 使用者上傳圖片後，要在網頁上顯示預覽。
 
@@ -31,27 +33,44 @@ reader.readAsDataURL(file);
 
 然後就可以直接塞進 `<img src={base64} />`，不用另外建立 Object URL。
 
-這樣做很正常，沒什麼問題。
+這是前端的標準做法，沒毛病。
 
-## 問題是我後來加了自動存檔
+## 第二個正確決策：用 useEffect 監聽狀態
 
 想讓使用者重新整理頁面後，進度還在。
 
-想法很簡單：用 `useEffect` 監聽狀態變化，變了就存到 [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)。
+狀態變了就做某件事，用 `useEffect` 加 dependency array。
 
 ```typescript
 useEffect(() => {
-  // images 裡面有圖片的 Base64
+  // 狀態變了就存檔
+  saveToStorage(data);
+}, [data]);
+```
+
+React 官方推薦的寫法，沒毛病。
+
+## 第三個正確決策：自動存檔用 localStorage
+
+[localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) 是瀏覽器內建的，不用裝套件，API 簡單。
+
+```typescript
+localStorage.setItem('session', JSON.stringify(data));
+```
+
+聽起來也沒毛病。
+
+## 三個加在一起就爆了
+
+把三個決策組合起來：
+
+```typescript
+useEffect(() => {
   const data = { images, fieldTemplates, canvasSettings };
+  // images 裡面有圖片的 Base64
   localStorage.setItem('session', JSON.stringify(data));
 }, [images, fieldTemplates, canvasSettings]);
 ```
-
-當時沒多想，state 長怎樣就存怎樣。
-
-看起來很完美對吧？
-
-## 然後就爆了
 
 上傳幾張圖片，瀏覽器 console 噴錯：
 
@@ -93,6 +112,16 @@ Google 了「compress base64 javascript」，找到 [lz-string](https://github.c
 所以一張 1MB 的圖片，Base64 後會變成 1.33MB。
 
 存兩三張就把 localStorage 塞爆了。
+
+## 為什麼三個「對」會變成「錯」
+
+| 決策 | 單獨來看 | 組合起來的問題 |
+|------|----------|----------------|
+| 預覽用 Base64 | 前端標準做法 | 資料膨脹 33% |
+| useEffect 監聽 | React 標準做法 | 每次變化都觸發存檔 |
+| 存檔用 localStorage | 簡單方便 | 只有 5MB 限制 |
+
+每個工具都有它的邊界。單獨用的時候不明顯，混在一起就撞牆了。
 
 ## 怎麼解決
 
