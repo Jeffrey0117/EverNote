@@ -2,85 +2,73 @@
 layout: ../../layouts/PostLayout.astro
 title: 用 YouTube Playlist 當 NoSQL 資料庫
 date: 2026-01-12T23:50
-description: 一個異想天開、很北爛、很 POC 的專案，用 YouTube 免費幫你存資料
+description: 一個異想天開的 POC，把 YouTube 當免費雲端資料庫來薅
 tags:
   - React
   - YouTube API
-  - 北爛專案
 ---
 
-我一直在想一個問題。
+我之前在搞一些 side project。
 
-雲端資料庫要錢。Firebase 要錢、Supabase 免費額度用完要錢、自己架 server 更要錢。
+每次做到要存資料的時候就很煩。Firebase 免費額度不夠用，Supabase 要綁信用卡，自己架 PostgreSQL 又太重。
 
-對於一個只是想做 side project 的人來說，**光是資料庫這一塊就夠煩了**。
+搞了幾個專案，每次都卡在「資料要存哪」這個問題。
 
-然後某天我在整理 YouTube 播放清單的時候，突然想到一件事。
+然後某天我在整理 YouTube 播放清單的時候，盯著那個描述欄位發呆。
 
-## YouTube 其實是免費的雲端儲存
+突然想到一件事。
 
-你想想看：
+**這個欄位可以寫 5000 個字欸。**
 
-- YouTube 讓你上傳影片，**免費**
-- 每部影片有標題、描述欄位，**你可以寫任何東西**
-- 播放清單可以無限建立，**就像資料表**
-- 有完整的 API 可以 CRUD
+## 等等，這不就是免費的雲端儲存嗎
 
-等等，這不就是一個免費的 NoSQL 資料庫嗎？
+你想想看 YouTube 提供了什麼：
 
-**Playlist = Table**
-**Video = Document**
-**Description = JSON Data**
+- 上傳影片，**免費**
+- 每部影片有標題、描述欄位
+- 播放清單可以無限建
+- 有完整的 [YouTube Data API](https://developers.google.com/youtube/v3) 可以 CRUD
 
-我越想越覺得這個想法很北爛。
+然後我就開始歪腦筋了。
 
-但也越想越覺得，**好像真的可以**。
+播放清單不就是資料表嗎？每部影片就是一筆記錄，描述欄位塞 JSON 就是你的資料。
 
-## 所以我就做了一個
+越想越北爛，**所以我一定要把它做出來。**
 
-YouTubeDB——一個用 YouTube Playlist 當後端的 NoSQL 資料庫管理介面。
+## 先看看其他免費方案有多爛
 
-說真的，這個專案從頭到尾都透著一股「我就故意的」的氣息：
+在動手之前，我先盤點了一下現有的免費資料庫方案：
 
-- 你建立一個 Playlist，它就是一張資料表
-- 你新增一筆資料，它就上傳一個 1 秒的黑畫面影片
-- 資料存在影片的 description 裡面，JSON 格式
-- 支援 CRUD，有搜尋，有排序
+| 方案 | 免費額度 | 問題 |
+|------|----------|------|
+| [Firebase Firestore](https://firebase.google.com/pricing) | 1GB 儲存、50K 讀/天 | 讀寫次數限制很容易爆 |
+| [Supabase](https://supabase.com/pricing) | 500MB、專案會暫停 | 7 天沒活動就暫停，要手動喚醒 |
+| [PlanetScale](https://planetscale.com/pricing) | 已取消免費方案 | 沒了 |
+| [GitHub Gist](https://gist.github.com/) | 無限 | API 難用，沒辦法 query |
+| [Google Sheets](https://developers.google.com/sheets/api) | 無限 | 速度慢，資料結構受限 |
 
-完全不需要後端伺服器。完全免費。
+每個都有毛病。不是額度不夠，就是用起來很麻煩。
 
-## 技術上怎麼做的
+然後 YouTube 呢？
 
-整個專案是 React + TypeScript，用 Vite 建的。
+- 儲存空間：**無限**（至少目前是）
+- API 配額：每天 10,000 單位，夠用
+- 會不會被停：只要不違反 ToS，不會
 
-核心就是 YouTube Data API v3，做了幾件事：
+聽起來很香對吧。
 
-### 把 Playlist 當資料表
+## 所以我就真的做了一個
 
-```typescript
-// 建立新「資料表」
-export async function createPlaylist(
-  accessToken: string,
-  title: string
-): Promise<YouTubePlaylist> {
-  const response = await fetch(`${BASE_URL}/playlists?part=snippet,status`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      snippet: { title, description: '' },
-      status: { privacyStatus: 'unlisted' },
-    }),
-  });
-  return response.json();
-}
-```
+花了幾天，用 React + TypeScript 刻了一個管理介面出來。
 
-### 把影片描述當 JSON 欄位
+### 新增資料的時候發生什麼事
 
-新增資料的時候，會上傳一個最小的 WebM 影片（就是 1 秒黑畫面），然後把 JSON 資料塞在 description 裡面：
+當你按下「新增記錄」，背後會：
+
+1. 產生一個 1 秒的黑畫面 WebM 影片（超小，只有幾 KB）
+2. 用 [Resumable Upload API](https://developers.google.com/youtube/v3/guides/using_resumable_upload_protocol) 上傳到 YouTube
+3. 把你的 JSON 資料塞進影片描述
+4. 把影片加到對應的 Playlist
 
 ```typescript
 const metadata = {
@@ -89,86 +77,92 @@ const metadata = {
     description: JSON.stringify(record), // 資料就存這裡
     categoryId: '22',
   },
-  status: { privacyStatus: 'unlisted' },
+  status: { privacyStatus: 'unlisted' }, // 不公開
 };
 ```
 
-讀取的時候就 parse 回來：
+對，每新增一筆資料，就是上傳一部影片。
+
+很北爛，但 it works。
+
+### 讀取的時候怎麼辦
+
+讀取就是反過來。把 Playlist 裡的影片撈出來，parse 描述欄位：
 
 ```typescript
-const jsonData = JSON.parse(item.snippet.description);
-return {
-  id: item.snippet.title,
-  ...jsonData,
-};
+const items = await getPlaylistItems(token, playlistId);
+
+return items.map(item => {
+  const data = JSON.parse(item.snippet.description);
+  return {
+    id: item.snippet.title,
+    ...data,
+  };
+});
 ```
 
-### 分頁和重試
+YouTube API 一次最多回傳 50 筆，所以要處理分頁。這部分用 `pageToken` 迴圈處理就好。
 
-YouTube API 一次最多回傳 50 筆，所以要處理 pagination：
+### 網路爛的時候會怎樣
+
+一開始沒處理，網路一斷就整個掛掉。
+
+後來加了重試機制，用指數退避：
 
 ```typescript
-do {
-  const response = await fetchWithRetry(url.toString(), { ... });
-  const data = await response.json();
-  allItems.push(...(data.items || []));
-  pageToken = data.nextPageToken;
-} while (pageToken);
+async function fetchWithRetry(url, options, { maxRetries = 3 } = {}) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.status >= 500 || response.status === 429) {
+        // 伺服器錯誤或被限流，等一下再試
+        await sleep(1000 * Math.pow(2, attempt));
+        continue;
+      }
+      return response;
+    } catch (error) {
+      if (attempt < maxRetries - 1) {
+        await sleep(1000 * Math.pow(2, attempt));
+      } else {
+        throw error;
+      }
+    }
+  }
+}
 ```
 
-網路不穩的時候會自動重試，用指數退避：
+429 是 YouTube 跟你說「你太頻繁了」，這時候就要退後重試。
 
-```typescript
-const delay = baseDelay * Math.pow(2, attempt);
-await new Promise(resolve => setTimeout(resolve, delay));
-```
+## 這東西潛力其實無敵的吧
 
-## 這東西能幹嘛
+目前還有一些可以補強的地方：
 
-老實說，**大部分情況下你不應該用這個**。
+1. **速度很慢**：上傳一部影片要等 YouTube 處理，少說 5-10 秒，這算什麼鬼資料庫
+2. **沒有 index**：要搜尋就是全撈出來在前端 filter，資料量一大就爆炸
+3. **沒有 transaction**：兩個人同時改同一筆，誰後面誰贏，沒有鎖
+4. **配額會用完**：YouTube API 每天 10,000 單位，高頻操作會撞牆
+5. **Google 可能會 ban 你**：這種用法很明顯不是 YouTube 預期的，哪天被發現搞不好就掰了
 
-但有些場景還真的可以：
+但反過來想，這些都是可以繼續玩的方向。
 
-| 場景 | 為什麼可以 |
-|------|----------|
-| POC / Demo | 不想花錢架資料庫，先 demo 給人看 |
-| 個人小工具 | 資料量不大，不需要正經後端 |
-| 教學範例 | 展示 API 怎麼用，順便惡搞 |
-| 純粹好玩 | 就...好玩啊 |
+## 不乖乖用就是爽
 
-## 限制超多
+這個專案本來就不是要拿來 production 用的。
 
-當然，這東西限制一堆：
+它就是一個 POC，一個「我想證明這個北爛想法可以動」的實驗。
 
-- **上傳有 quota** — YouTube API 每天有配額限制，大量寫入會爆
-- **速度很慢** — 上傳影片要處理，不像真的資料庫那麼快
-- **沒有 index** — 搜尋就是全撈出來 filter，資料多會很慢
-- **沒有 transaction** — 沒有原子操作，race condition 要自己處理
-- **Google 可能會 ban 你** — 用途太詭異可能違反 ToS
+而且說真的，做完之後有一種奇怪的成就感。
 
-所以這真的就是一個 POC，一個「我就是想證明這個北爛想法可以動」的專案。
+以前都是乖乖用別人設計好的服務，Firebase 叫你怎麼用就怎麼用，Supabase 說什麼就是什麼。
 
-## 但說真的
-
-這個專案讓我想到一件事。
-
-很多時候我們被「正確的做法」框住了。資料庫就該用 PostgreSQL、MongoDB、Firebase。雲端儲存就該用 S3、GCS。
-
-但其實很多服務都有「意料之外」的用法：
-
-- GitHub Gist 可以當 JSON 儲存
-- Google Sheets 可以當簡易資料庫
-- Notion API 可以當 CMS
-- 現在 YouTube Playlist 也可以當 NoSQL 了
-
-這些用法正不正經？不正經。
-
-能不能用？**能用**。
+這次反過來，把一個影音平台硬掰成資料庫。沒想到吧，這種鬼操作就是 side project 無限的靈感來源。
 
 ---
 
-反正這個專案的精神就是：
+其實還有很多可以聊的，像是：
 
-**免費的最貴，但如果你夠北爛，免費的就是免費的。**
+- **OAuth 流程** — Google 登入那套搞起來也是一堆坑
+- **React Query 怎麼接** — 用 mutation 處理 CRUD 的 pattern
+- **批次刪除怎麼不會 race condition** — 順序執行 + 節流
 
-薅羊毛薅到 YouTube 頭上，也算是一種成就吧。
+反正，**免費的東西就是要榨乾啊，不然你以為我很有錢喔？**
