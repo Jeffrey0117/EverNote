@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/PostLayout.astro
 title: localStorage 存圖片 Base64 的大坑
-date: 2026-01-13T02:49
+date: 2026-01-13T10:58
 description: 做自動存檔功能時踩到的 localStorage 容量限制，以及怎麼處理
 tags:
   - React
