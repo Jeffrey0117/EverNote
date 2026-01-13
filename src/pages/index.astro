@@ -107,7 +107,7 @@ const totalWords = sortedPosts.reduce((sum, post) => {
       <div class="sidebar-stats">
         <p>這裡有 {totalPosts} 篇文章</p>
         <p>共 {totalWords.toLocaleString()} 字</p>
-        <p class="stats-joke">大概是你喝完一杯咖啡的量</p>
+        <p class="stats-joke">比太陽系的行星多 {Math.round(totalWords / 8).toLocaleString()} 倍</p>
       </div>
 
       <div class="sidebar-section">
@@ -302,20 +302,22 @@ const totalWords = sortedPosts.reduce((sum, post) => {
 
   .sidebar-stats {
     margin-bottom: var(--space-lg);
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    line-height: 1.8;
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--bg-tertiary);
   }
 
   .sidebar-stats p {
     margin: 0;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
   }
 
   .sidebar-stats .stats-joke {
-    margin-top: var(--space-xs);
+    margin-top: var(--space-sm);
     font-size: 0.7rem;
-    opacity: 0.6;
-    font-style: italic;
+    color: var(--text-muted);
+    opacity: 0.5;
   }
 
   .sidebar-section {
