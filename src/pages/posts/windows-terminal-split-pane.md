@@ -9,7 +9,7 @@ tags:
   - 速查
 ---
 
-Windows Terminal 內建分割視窗功能，不用另外裝 tmux。
+[Windows Terminal](https://github.com/microsoft/terminal) 內建分割視窗功能，不用另外裝 tmux。
 
 ## 快捷鍵
 
