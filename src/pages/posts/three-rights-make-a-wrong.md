@@ -15,11 +15,9 @@ tags:
 
 ## 這叫組合拳陷阱
 
-軟體開發裡到處都是這種情況。
+軟體開發裡到處都是這種情況。每個決策單獨看都合理，但組合起來就出事。
 
-每個決策單獨看都合理，但組合起來就出事。
-
-### ORM + 迴圈查詢 + 流量 = N+1 問題
+## ORM + 迴圈查詢 + 流量 = N+1 問題
 
 **ORM**（Object-Relational Mapping）是讓你用程式語言的物件來操作資料庫，不用寫 SQL。Django 的 Model、Rails 的 ActiveRecord、TypeORM 都是這類工具。
 
@@ -50,7 +48,7 @@ for user in users:
 users = User.objects.prefetch_related('orders').all()
 ```
 
-### React 狀態提升 + 大量子元件 + 頻繁更新 = 卡頓
+## React 狀態提升 + 大量子元件 + 頻繁更新 = 卡頓
 
 React 的 **re-render** 是指元件重新執行一次函式，計算新的 UI 長怎樣。父元件 re-render，所有子元件預設也會跟著 re-render。
 
@@ -84,7 +82,7 @@ function App() {
 
 解法是用 `React.memo` 避免不必要的 re-render，或是把 `searchText` 往下移到真正需要它的地方。
 
-### 快取 + 分散式系統 + 資料更新 = 不一致
+## 快取 + 分散式系統 + 資料更新 = 不一致
 
 **快取**（Cache）是把常用資料存在記憶體，下次直接讀記憶體，不用再去資料庫撈。Redis、Memcached 都是做這個的。
 
@@ -109,7 +107,7 @@ function App() {
 
 分散式快取不是不能用，但要處理失效策略、一致性協議、fallback 機制。「加個快取」從來不是三行 code 的事。
 
-### 微服務 + 同步呼叫 + 服務鏈 = 延遲疊加
+## 微服務 + 同步呼叫 + 服務鏈 = 延遲疊加
 
 **微服務**是把一個大系統拆成很多小服務，每個服務只做一件事。這是 Netflix、Amazon 這些大公司推廣的架構。
 
