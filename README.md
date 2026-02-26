@@ -122,8 +122,30 @@ node scripts/generate-note.js --repo C:/path/to/project --auto-commit
 
 | 類型 | 路徑 | 產生方式 | 用途 |
 |------|------|----------|------|
-| **筆記** | `/notes` | Git hook 自動 / 手動 | 技術細節、debug 紀錄、踩坑經驗 |
-| **文章** | `/posts` | AI 寫作工具 / 手動 | 整理過的、有觀點的文章 |
+| **筆記** | `/notes` | Git hook 自動 / Telegram `/write-note` / 手動 | 技術細節、debug 紀錄、踩坑經驗 |
+| **文章** | `/posts` | Telegram `/write` / AI 寫作工具 / 手動 | 整理過的、有觀點的文章 |
+
+## Telegram Bot 快速寫文
+
+透過 ClaudeBot 的 `/write` 和 `/write-note` 指令，直接在 Telegram 產生文章。
+
+**生成正式文章：**
+```
+/write React useEffect 清理函數踩坑
+```
+Bot 會產生文章預覽，確認後自動 commit 並 push 到 `/posts`。
+
+**生成技術筆記：**
+```
+/write-note Electron IPC timeout 問題
+```
+Bot 會產生筆記，確認後自動 commit 並 push 到 `/notes`。
+
+**優點：**
+- 隨時隨地用手機寫文章
+- AI 自動生成，省時間
+- 預覽確認後再發布
+- 自動 commit & push
 
 ## 技術棧
 
