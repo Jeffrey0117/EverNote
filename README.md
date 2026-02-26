@@ -100,22 +100,32 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 
 ```bash
 cd C:/Users/jeffb/Desktop/code/Evernote
-node scripts/install-hook.js --target C:/path/to/your/project
+node scripts/install-hook.cjs --target C:/path/to/your/project
 ```
 
-裝完後，該專案每次 commit 都會自動產生技術筆記。
+**實際範例（安裝到 CloudPipe）：**
+```bash
+node scripts/install-hook.cjs --target C:/Users/jeffb/Desktop/code/CloudPipe
+```
+
+裝完後，該專案每次 commit 都會自動產生技術筆記並 push 到這個 repo 的 `notes/` 資料夾。
 
 ### 手動產生筆記
 
 ```bash
 # Dry run (不寫檔案，只預覽)
-node scripts/generate-note.js --repo C:/path/to/project --dry-run
+node scripts/generate-note.cjs --repo C:/path/to/project --dry-run
 
 # 產生筆記（不 commit）
-node scripts/generate-note.js --repo C:/path/to/project
+node scripts/generate-note.cjs --repo C:/path/to/project
 
 # 產生筆記並自動 commit
-node scripts/generate-note.js --repo C:/path/to/project --auto-commit
+node scripts/generate-note.cjs --repo C:/path/to/project --auto-commit
+```
+
+**實際範例（從 CloudPipe 產生筆記）：**
+```bash
+node scripts/generate-note.cjs --repo C:/Users/jeffb/Desktop/code/CloudPipe --dry-run
 ```
 
 ### 筆記 vs 文章
