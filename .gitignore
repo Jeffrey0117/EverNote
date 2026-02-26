@@ -27,3 +27,6 @@ tmpclaude-*
 src/pages/posts/project-guide.md
 src/pages/posts/ai-image-guidelines.md
 context-spec.md
+
+# Note generation history
+.note-history.json
