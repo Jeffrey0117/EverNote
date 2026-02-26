@@ -415,6 +415,32 @@ body {
 }
 
 /* ====================================
+   Note Badges
+   ==================================== */
+
+.note-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--bg-primary);
+  background: #7A8B9C;
+  padding: 0.2em 0.5em;
+  border-radius: 3px;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  letter-spacing: 0.05em;
+}
+
+.source-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  padding: 0.15em 0.5em;
+  border-radius: 3px;
+}
+
+/* ====================================
    Footer
    ==================================== */
 

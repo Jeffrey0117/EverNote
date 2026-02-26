@@ -1,0 +1,277 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await Astro.glob('./*.md');
+
+const sortedPosts = posts.sort((a, b) =>
+  new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
+);
+
+const allTags = [...new Set(sortedPosts.flatMap(post => post.frontmatter.tags || []))];
+
+const formatDate = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const datePart = date.toLocaleDateString('zh-TW', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).replace(/\//g, '.');
+  const timePart = date.toLocaleTimeString('zh-TW', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+  return `${datePart} ${timePart}`;
+};
+
+const NOTES_PER_PAGE = 20;
+const totalNotes = sortedPosts.length;
+---
+
+<BaseLayout title="筆記 | Jeffrey0117">
+  <div class="notes-page">
+    <header class="notes-header">
+      <h1 class="notes-title">技術筆記</h1>
+      <p class="notes-desc">開發時的技術細節、debug 紀錄、踩坑筆記。自動產生或隨手記。</p>
+      <span class="notes-count">共 {totalNotes} 則筆記</span>
+    </header>
+
+    {allTags.length > 0 && (
+      <div class="notes-tags">
+        <button class="filter-btn active" data-tag="all">全部</button>
+        {allTags.map((tag) => (
+          <button class="filter-btn" data-tag={tag}>{tag}</button>
+        ))}
+      </div>
+    )}
+
+    <ul class="notes-list">
+      {sortedPosts.map((post) => (
+        <li class="note-item" data-tags={JSON.stringify(post.frontmatter.tags || [])}>
+          <div class="note-meta">
+            <time datetime={post.frontmatter.date}>{formatDate(post.frontmatter.date)}</time>
+            {post.frontmatter.source && (
+              <span class="source-badge">{post.frontmatter.source}</span>
+            )}
+          </div>
+          <a href={post.url} class="note-title">{post.frontmatter.title}</a>
+          {post.frontmatter.description && (
+            <p class="note-desc">{post.frontmatter.description}</p>
+          )}
+          {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
+            <div class="note-tags">
+              {post.frontmatter.tags.map((tag: string) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <div class="pagination">
+      <button class="page-btn" id="prev-page" disabled>← 上一頁</button>
+      <span class="page-info">第 <span id="current-page">1</span> / <span id="total-pages">1</span> 頁</span>
+      <button class="page-btn" id="next-page">下一頁 →</button>
+    </div>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ NOTES_PER_PAGE }}>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const noteItems = document.querySelectorAll('.note-item');
+  const prevBtn = document.getElementById('prev-page');
+  const nextBtn = document.getElementById('next-page');
+  const currentPageSpan = document.getElementById('current-page');
+  const totalPagesSpan = document.getElementById('total-pages');
+
+  let currentPage = 1;
+
+  function getFilteredNotes() {
+    const activeBtn = document.querySelector('.filter-btn.active');
+    const tag = activeBtn?.getAttribute('data-tag');
+
+    if (!tag || tag === 'all') return [...noteItems];
+
+    return [...noteItems].filter(item => {
+      const tags = JSON.parse(item.getAttribute('data-tags') || '[]');
+      return tags.includes(tag);
+    });
+  }
+
+  function updatePagination() {
+    const filtered = getFilteredNotes();
+    const totalPages = Math.max(1, Math.ceil(filtered.length / NOTES_PER_PAGE));
+
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    currentPageSpan.textContent = currentPage;
+    totalPagesSpan.textContent = totalPages;
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= totalPages;
+
+    noteItems.forEach(item => item.style.display = 'none');
+
+    const start = (currentPage - 1) * NOTES_PER_PAGE;
+    const end = start + NOTES_PER_PAGE;
+    filtered.slice(start, end).forEach(item => item.style.display = '');
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentPage = 1;
+      updatePagination();
+    });
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      updatePagination();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    const filtered = getFilteredNotes();
+    const totalPages = Math.ceil(filtered.length / NOTES_PER_PAGE);
+    if (currentPage < totalPages) {
+      currentPage++;
+      updatePagination();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  updatePagination();
+</script>
+
+<style>
+  .notes-page {
+    max-width: 750px;
+  }
+
+  .notes-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .notes-title {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+  }
+
+  .notes-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .notes-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .notes-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+  }
+
+  .notes-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .note-item {
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--bg-tertiary);
+  }
+
+  .note-item:last-child {
+    border-bottom: none;
+  }
+
+  .note-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+  }
+
+  .note-meta time {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .note-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: block;
+    margin-bottom: var(--space-xs);
+  }
+
+  .note-title:hover {
+    color: var(--accent);
+  }
+
+  .note-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .note-tags {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--bg-tertiary);
+  }
+
+  .page-btn {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--bg-tertiary);
+    padding: 0.5em 1em;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .page-btn:hover:not(:disabled) {
+    border-color: var(--accent-light);
+    color: var(--text-primary);
+  }
+
+  .page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .page-info {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+</style>
