@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>上傳彈窗一出來，游標就不見了</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版面：單欄講義，最上面是可以動手玩的截圖覆蓋層模型，下面依序拆解三個觀念 */
+:root {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --fg: #23211c;
+  --muted: #6d685d;
+  --line: #e4e0d6;
+  --accent: #c9730a;
+  --accent-soft: #fdf0db;
+  --code-bg: #f3f0e8;
+  --bad: #b3261e;
+  --good: #1f7a3d;
+  --shot-bg: #2b3140;
+  --shot-win: #46506a;
+  --shot-win-2: #5b6788;
+  --shot-text: #f4f5f8;
+  --duck: #f59e1e;
+  --dialog-bg: #ffffff;
+  --dialog-fg: #22252c;
+  --dialog-btn: #0b6fd6;
+  --dialog-btn-fg: #ffffff;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  color-scheme: light;
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17171a; --surface: #202024; --fg: #ecebe6; --muted: #a09c92; --line: #34343a;
+    --accent: #f2a53a; --accent-soft: #3a2c14; --code-bg: #26262b; --bad: #ff8a80; --good: #6fd08c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17171a; --surface: #202024; --fg: #ecebe6; --muted: #a09c92; --line: #34343a;
+  --accent: #f2a53a; --accent-soft: #3a2c14; --code-bg: #26262b; --bad: #ff8a80; --good: #6fd08c;
+  color-scheme: dark;
+}
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+section, header { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+h1 { font-size: 30px; line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-size: 21px; line-height: 1.4; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.lead { font-size: 17px; color: var(--muted); }
+code, pre { font-family: var(--font-mono); font-size: 13.5px; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre {
+  margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px;
+  padding: 14px 16px; overflow-x: auto; line-height: 1.6;
+}
+pre code { background: none; padding: 0; }
+.cmt { color: var(--muted); }
+.hl { color: var(--accent); font-weight: 600; }
+
+/* ── 動手玩的模型 ── */
+.controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); }
+.seg label { padding: 7px 16px; cursor: pointer; font-weight: 500; font-size: 15px; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg input:checked + label { background: var(--accent); color: var(--bg); }
+.seg input:focus-visible + label { outline: 2px solid var(--fg); outline-offset: -2px; }
+.btn {
+  font: inherit; font-size: 15px; font-weight: 500; padding: 7px 16px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer;
+}
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.stage {
+  position: relative; isolation: isolate; overflow: hidden;
+  height: 360px; border-radius: 10px; background: var(--shot-bg);
+  border: 1px solid var(--line); user-select: none;
+}
+.stage.hide-cursor, .stage.hide-cursor * { cursor: none !important; }
+
+.fake-win { position: absolute; border-radius: 6px; background: var(--shot-win); }
+.fake-win::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 14px; border-radius: 6px 6px 0 0; background: var(--shot-win-2); }
+.w1 { left: 5%; top: 10%; width: 42%; height: 52%; }
+.w2 { left: 54%; top: 22%; width: 38%; height: 60%; }
+.selection {
+  position: absolute; left: 12%; top: 18%; width: 46%; height: 44%;
+  border: 2px dashed var(--duck); z-index: 1000;
+}
+.toolbar {
+  position: absolute; left: 12%; top: calc(62% + 10px); display: flex; gap: 6px; z-index: 1001;
+  background: var(--dialog-bg); border-radius: 8px; padding: 5px;
+}
+.toolbar button, .dialog button {
+  font: inherit; font-size: 13px; border: 0; border-radius: 5px; padding: 5px 12px;
+  background: var(--dialog-btn); color: var(--dialog-btn-fg);
+}
+.toolbar button.plain { background: transparent; color: var(--dialog-fg); }
+
+.cross { position: absolute; background: var(--duck); opacity: .6; z-index: 1004; pointer-events: none; }
+.cross.h { left: 0; top: 0; width: 100%; height: 1px; }
+.cross.v { left: 0; top: 0; height: 100%; width: 1px; }
+.duck { position: absolute; left: 0; top: 0; z-index: 1005; pointer-events: none; }
+.duck i {
+  position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--duck); border: 2px solid var(--shot-text); box-sizing: border-box;
+}
+
+.modal {
+  position: absolute; inset: 0; z-index: 2000; display: none;
+  align-items: center; justify-content: center; background: rgba(0, 0, 0, .7);
+}
+.modal.show { display: flex; }
+.dialog {
+  background: var(--dialog-bg); color: var(--dialog-fg); border-radius: 10px;
+  padding: 18px 20px; width: min(300px, 82%); display: flex; flex-direction: column; gap: 10px;
+  font-size: 14px; line-height: 1.5;
+}
+.dialog b { font-size: 16px; color: var(--good); }
+.dialog .url { font-family: var(--font-mono); font-size: 12px; border: 1px solid var(--line); border-radius: 5px; padding: 5px 8px; color: var(--dialog-fg); }
+.dialog .row { display: flex; justify-content: flex-end; }
+
+/* ── 修正：只在 .fixed 時生效，對應 capture.html 新增的三條規則 ── */
+.stage.fixed.hide-cursor .modal.show,
+.stage.fixed.hide-cursor .modal.show * { cursor: default !important; }
+.stage.fixed.hide-cursor .modal.show button,
+.stage.fixed.hide-cursor .modal.show .url { cursor: pointer !important; }
+.stage.fixed.hide-cursor:has(.modal.show) .duck,
+.stage.fixed.hide-cursor:has(.modal.show) .cross { display: none !important; }
+
+.readout {
+  display: grid; grid-template-columns: auto 1fr; gap: 4px 14px;
+  font-size: 14px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; padding: 12px 16px;
+}
+.readout dt { color: var(--muted); }
+.readout dd { margin: 0; font-family: var(--font-mono); font-size: 13px; min-width: 0; overflow-wrap: anywhere; }
+.readout .bad { color: var(--bad); font-weight: 600; }
+.readout .good { color: var(--good); font-weight: 600; }
+.hint { font-size: 14px; color: var(--muted); }
+
+/* ── 圖層堆疊 ── */
+.layers { display: flex; flex-direction: column; gap: 6px; }
+.layer {
+  display: grid; grid-template-columns: 88px 1fr; gap: 12px; align-items: center;
+  border: 1px solid var(--line); border-radius: 8px; padding: 9px 14px; background: var(--surface);
+}
+.layer .z { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.layer.top { border-color: var(--accent); background: var(--accent-soft); }
+.layer small { color: var(--muted); display: block; line-height: 1.5; }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 500; white-space: nowrap; }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.bad { color: var(--bad); }
+.good { color: var(--good); }
+ul { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>上傳彈窗一出來，游標就不見了</h1>
+    <p class="lead">DuckShot v1.2.6 修的這個 bug 只動了 16 行 CSS，但裡面有三個值得記住的觀念：假游標、圖層順序、選擇器的權重。先動手玩，再往下看原因。</p>
+  </header>
+
+  <section>
+    <h2>先玩一次：把滑鼠移進白色卡片</h2>
+    <div class="controls">
+      <div class="seg" role="radiogroup" aria-label="版本">
+        <input type="radio" name="ver" id="ver-before" value="before" checked><label for="ver-before">修正前</label>
+        <input type="radio" name="ver" id="ver-after" value="after"><label for="ver-after">修正後</label>
+      </div>
+      <button class="btn" id="toggle-modal" type="button">關掉上傳彈窗</button>
+    </div>
+
+    <div class="stage hide-cursor" id="stage">
+      <div class="fake-win w1"></div>
+      <div class="fake-win w2"></div>
+      <div class="selection"></div>
+      <div class="toolbar">
+        <button class="plain" type="button" tabindex="-1">儲存</button>
+        <button class="plain" type="button" tabindex="-1">複製</button>
+        <button type="button" id="stage-upload">上傳</button>
+      </div>
+      <div class="cross h" id="cross-h"></div>
+      <div class="cross v" id="cross-v"></div>
+      <div class="duck" id="duck"><i></i></div>
+      <div class="modal show" id="modal">
+        <div class="dialog">
+          <b>上傳成功</b>
+          <span>連結已複製到剪貼簿</span>
+          <span class="url">https://example.com/a1b2c3.png</span>
+          <div class="row"><button type="button" id="stage-done">完成</button></div>
+        </div>
+      </div>
+    </div>
+
+    <dl class="readout">
+      <dt>滑鼠底下是</dt><dd id="ro-el">（把滑鼠移進上面的框）</dd>
+      <dt>真游標</dt><dd id="ro-real">—</dd>
+      <dt>橘色假游標</dt><dd id="ro-fake">—</dd>
+    </dl>
+    <p class="hint">「修正前」移進白色卡片：真游標是 none、假游標被卡片蓋住，畫面上什麼都沒有，「完成」只能用猜的點。切到「修正後」再試一次。</p>
+  </section>
+
+  <section>
+    <h2>為什麼截圖時要把真游標藏起來</h2>
+    <p>DuckShot 按下快捷鍵後，會先抓一張整個螢幕的畫面，再蓋上一層全螢幕的覆蓋層讓你框選。如果這時候滑鼠游標還在，它會被一起抓進圖裡。所以覆蓋層用一條規則把游標整個關掉：</p>
+<pre><code>body.hide-cursor,
+body.hide-cursor * {
+  cursor: none !important;   <span class="cmt">/* 覆蓋層裡每一個元素都沒有游標 */</span>
+}</code></pre>
+    <p>沒有游標就沒辦法瞄準，所以另外畫了一個「假游標」：一個橘色圓點加上十字線，其實只是普通的 <code>div</code>，用 <code>mousemove</code> 事件跟著滑鼠跑。它設了 <code>pointer-events: none</code>，所以點擊會穿過它，落在底下真正的按鈕上。</p>
+  </section>
+
+  <section>
+    <h2>觀念一：誰蓋住誰，看 z-index</h2>
+    <p>覆蓋層裡的東西是一層一層疊起來的，<code>z-index</code> 數字越大越上面。上傳彈窗是後來才加的功能，為了確保它蓋住所有東西，數字給了 2000，比假游標的 1005 還大。</p>
+    <div class="layers">
+      <div class="layer top"><span class="z">2000</span><div>上傳彈窗<small>整片半透明黑幕加中間的白色卡片</small></div></div>
+      <div class="layer"><span class="z">1005</span><div>假游標（橘色圓點和鴨鴨）<small>被彈窗壓在下面：黑幕上變很暗，白色卡片上完全看不到</small></div></div>
+      <div class="layer"><span class="z">1004</span><div>十字對齊線</div></div>
+      <div class="layer"><span class="z">更低</span><div>選取框、工具列、凍結的螢幕畫面</div></div>
+    </div>
+    <p>於是兩件事同時成立：真游標被 <code>cursor: none</code> 關掉了，假游標又被彈窗蓋住。兩個都沒了，使用者就看不到自己指在哪裡。單看任何一段程式都沒有錯，是兩個功能疊在一起才出事。</p>
+  </section>
+
+  <section>
+    <h2>觀念二：兩條都寫 !important 時，比誰的選擇器比較具體</h2>
+    <p>修法是「彈窗裡面把真游標還回來」。但原本那條規則有 <code>!important</code>，新規則光寫 <code>cursor: default</code> 會輸。兩邊都有 <code>!important</code> 的時候，瀏覽器比的是選擇器的權重，算法是數裡面有幾個 class、幾個標籤名稱：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>選擇器</th><th>class 數</th><th>標籤數</th><th>結果</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">body.hide-cursor *</td><td class="mono">1</td><td class="mono">1</td><td>原本的規則（<code>*</code> 不算分）</td></tr>
+          <tr><td class="mono">body.hide-cursor .upload-modal.show *</td><td class="mono">3</td><td class="mono">1</td><td class="good">class 比較多，贏</td></tr>
+          <tr><td class="mono">body.hide-cursor .upload-modal.show button</td><td class="mono">3</td><td class="mono">2</td><td class="good">再多一個標籤，蓋過上一條</td></tr>
+        </tbody>
+      </table>
+    </div>
+<pre><code><span class="cmt">/* 彈窗和裡面所有東西：還原成一般箭頭 */</span>
+body.hide-cursor <span class="hl">.upload-modal.show</span>,
+body.hide-cursor <span class="hl">.upload-modal.show</span> * {
+  cursor: default !important;
+}
+<span class="cmt">/* 可以點的東西：手指 */</span>
+body.hide-cursor .upload-modal.show button,
+body.hide-cursor .upload-modal.show .link-value {
+  cursor: pointer !important;
+}</code></pre>
+    <p>這時候把真游標放出來是安全的：螢幕畫面在彈窗出現之前早就抓好凍結了，游標不會再被拍進去。</p>
+  </section>
+
+  <section>
+    <h2>觀念三：用 :has() 讓「裡面的狀態」影響「外面的元素」</h2>
+    <p>真游標回來之後，假游標還留在彈窗底下的黑幕上，會變成同時有兩個游標。要在彈窗打開時把假游標收起來，但假游標不在彈窗裡面，一般的選擇器只能往內選，選不到它。</p>
+    <p><code>:has()</code> 可以反過來問：「這個 body 裡面，有沒有一個正在顯示的彈窗？」有的話，再去選 body 底下的假游標：</p>
+<pre><code>body.hide-cursor<span class="hl">:has(.upload-modal.show)</span> .duck-cursor,
+body.hide-cursor<span class="hl">:has(.upload-modal.show)</span> .crosshair-line {
+  display: none !important;
+}</code></pre>
+    <p>好處是完全不用改 JavaScript。彈窗有四個地方會開關（上傳中、成功、失敗、點背景關閉），如果用 JS 去加減 class，四個地方都要記得寫；用 CSS 直接跟著 <code>.show</code> 走，以後再多幾個開關的地方也不會漏。</p>
+  </section>
+
+  <section>
+    <h2>為什麼不直接把假游標的 z-index 調到 2001</h2>
+    <ul>
+      <li>這樣也能看到游標，但白色對話框上會跑著一個瞄準用的十字線和圓點，看起來很怪。</li>
+      <li>對話框是一般的介面，使用者預期的是箭頭和手指。手指游標還能告訴他哪裡可以點，假游標做不到。</li>
+      <li>假游標存在的理由是「不要被拍進截圖」，彈窗出現時這個理由已經不存在了。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>怎麼確認真的修好</h2>
+    <p>開一個看不見的視窗，分別載入修改前和修改後的頁面，把彈窗打開，直接問瀏覽器「這個元素現在算出來的游標是什麼」（<code>getComputedStyle(el).cursor</code>）。這比用眼睛看可靠，也不用動到你正在用的 DuckShot。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>彈窗打開時</th><th>修正前</th><th>修正後</th></tr></thead>
+        <tbody>
+          <tr><td>黑幕上的游標</td><td class="mono bad">none</td><td class="mono good">default</td></tr>
+          <tr><td>白色卡片上的游標</td><td class="mono bad">none</td><td class="mono good">default</td></tr>
+          <tr><td>按鈕上的游標</td><td class="mono bad">none</td><td class="mono good">pointer</td></tr>
+          <tr><td>連結上的游標</td><td class="mono bad">none</td><td class="mono good">pointer</td></tr>
+          <tr><td>假游標和十字線</td><td class="mono">顯示（但被蓋住）</td><td class="mono">收起</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>彈窗關著的時候，兩個版本的數值完全一樣，代表框選時的行為沒有被動到。改動在 <code>renderer/capture.html</code> 第 238 行附近。</p>
+  </section>
+</div>
+
+<script>
+  (function () {
+    var stage = document.getElementById('stage');
+    var modal = document.getElementById('modal');
+    var duck = document.getElementById('duck');
+    var crossH = document.getElementById('cross-h');
+    var crossV = document.getElementById('cross-v');
+    var toggleBtn = document.getElementById('toggle-modal');
+    var roEl = document.getElementById('ro-el');
+    var roReal = document.getElementById('ro-real');
+    var roFake = document.getElementById('ro-fake');
+    var last = null;
+
+    function place(x, y) {
+      duck.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      crossH.style.transform = 'translateY(' + y + 'px)';
+      crossV.style.transform = 'translateX(' + x + 'px)';
+    }
+    place(stage.clientWidth * 0.3, 96);
+
+    function nameOf(el) {
+      if (el.closest('.dialog')) return el.tagName === 'BUTTON' ? '彈窗裡的「完成」按鈕' : (el.classList.contains('url') ? '彈窗裡的連結' : '彈窗的白色卡片');
+      if (el.closest('.modal')) return '彈窗的黑幕';
+      if (el.closest('.toolbar')) return '工具列';
+      if (el.classList.contains('selection')) return '選取框';
+      return '凍結的螢幕畫面';
+    }
+
+    function report() {
+      if (!last) return;
+      var el = last;
+      var open = modal.classList.contains('show');
+      var real = getComputedStyle(el).cursor;
+      roEl.textContent = nameOf(el);
+      roReal.textContent = 'cursor: ' + real;
+      roReal.className = real === 'none' && open ? 'bad' : (open ? 'good' : '');
+      var fakeHidden = getComputedStyle(duck).display === 'none';
+      if (fakeHidden) { roFake.textContent = '已收起（彈窗開著，改用真游標）'; roFake.className = 'good'; }
+      else if (open && el.closest('.dialog')) { roFake.textContent = '被白色卡片完全蓋住'; roFake.className = 'bad'; }
+      else if (open) { roFake.textContent = '被黑幕壓暗，勉強看得到'; roFake.className = 'bad'; }
+      else { roFake.textContent = '正常顯示，跟著滑鼠'; roFake.className = ''; }
+    }
+
+    stage.addEventListener('pointermove', function (e) {
+      var r = stage.getBoundingClientRect();
+      place(e.clientX - r.left, e.clientY - r.top);
+      last = e.target;
+      report();
+    });
+
+    function setModal(open) {
+      modal.classList.toggle('show', open);
+      toggleBtn.textContent = open ? '關掉上傳彈窗' : '打開上傳彈窗';
+      report();
+    }
+    toggleBtn.addEventListener('click', function () { setModal(!modal.classList.contains('show')); });
+    document.getElementById('stage-upload').addEventListener('click', function () { setModal(true); });
+    document.getElementById('stage-done').addEventListener('click', function () { setModal(false); });
+
+    document.querySelectorAll('input[name="ver"]').forEach(function (r) {
+      r.addEventListener('change', function () {
+        stage.classList.toggle('fixed', r.value === 'after' && r.checked);
+        report();
+      });
+    });
+  })();
+</script>
+</body>
+</html>
