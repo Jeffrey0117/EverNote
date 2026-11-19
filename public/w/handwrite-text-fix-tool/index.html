@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>手寫一支改字工具</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* 版面:單欄講義,整頁同一個底色;上面一條進度,五關各一節,每關有目標、驗收、可展開的提示與寫法 */
+:root {
+  --paper: #efe4d6;
+  --ink: #14110e;
+  --soft: #5d5348;
+  --line: rgba(20, 17, 14, 0.16);
+  --panel: rgba(255, 255, 255, 0.5);
+  --code-bg: #14110e;
+  --code-fg: #efe4d6;
+  --code-dim: #a3978a;
+  --pass: #1f6b3a;
+  --block: #a32a1c;
+  --mark: #f2c14e;
+  --font-text: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-code: "JetBrains Mono", Consolas, "Courier New", monospace;
+  color-scheme: light;
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14110e; --ink: #efe4d6; --soft: #a3978a; --line: rgba(239, 228, 214, 0.2);
+    --panel: rgba(239, 228, 214, 0.06); --code-bg: #0a0807; --code-fg: #efe4d6; --code-dim: #8d8277;
+    --pass: #6fcf8f; --block: #f08a7a; --mark: #8a6a12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14110e; --ink: #efe4d6; --soft: #a3978a; --line: rgba(239, 228, 214, 0.2);
+  --panel: rgba(239, 228, 214, 0.06); --code-bg: #0a0807; --code-fg: #efe4d6; --code-dim: #8d8277;
+  --pass: #6fcf8f; --block: #f08a7a; --mark: #8a6a12; color-scheme: dark;
+}
+html, body { margin: 0; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--font-text);
+  font-size: 17px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 80px;
+}
+main { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 52px; }
+section { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+h1 { font-size: clamp(28px, 6vw, 42px); font-weight: 900; line-height: 1.2; margin: 0; text-wrap: balance; }
+h2 { font-size: 25px; font-weight: 900; line-height: 1.3; margin: 0; padding-top: 24px; border-top: 2px solid var(--line); text-wrap: balance; }
+h3 { font-size: 18px; font-weight: 900; margin: 8px 0 0; }
+p { margin: 0; }
+.lead { font-size: 19px; font-weight: 700; }
+.soft { color: var(--soft); font-size: 15px; }
+code { font-family: var(--font-code); font-size: 0.86em; background: var(--panel); border: 1px solid var(--line); padding: 1px 6px; border-radius: 4px; word-break: break-all; }
+pre { margin: 0; background: var(--code-bg); color: var(--code-fg); border-radius: 12px; padding: 18px 20px; overflow-x: auto; font-family: var(--font-code); font-size: 13.5px; line-height: 1.7; }
+pre code { background: none; border: 0; padding: 0; font-size: inherit; word-break: normal; }
+pre .dim { color: var(--code-dim); }
+ul, ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; }
+
+/* 進度 */
+.steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.steps label { display: flex; flex-direction: column; gap: 4px; border: 2px solid var(--ink); border-radius: 12px; padding: 10px 12px; font-size: 14px; line-height: 1.4; font-weight: 700; cursor: pointer; min-width: 0; }
+.steps label small { font-weight: 400; color: var(--soft); font-size: 12px; }
+.steps input { width: 18px; height: 18px; margin: 0; accent-color: var(--pass); }
+.steps label:has(input:checked) { background: var(--panel); border-color: var(--pass); }
+.steps label:has(input:focus-visible) { outline: 3px solid var(--soft); outline-offset: 2px; }
+@media (max-width: 620px) { .steps { grid-template-columns: 1fr 1fr; } }
+
+/* 每關的小標籤 */
+.tag { font-size: 13px; font-weight: 700; color: var(--soft); letter-spacing: 0.04em; }
+.goal { border: 2px solid var(--ink); border-radius: 14px; padding: 14px 16px; font-weight: 700; }
+.need { display: flex; flex-wrap: wrap; gap: 6px; }
+.need span { font-family: var(--font-code); font-size: 13px; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; background: var(--panel); }
+
+details { border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; }
+details[open] { padding-bottom: 16px; }
+summary { cursor: pointer; font-weight: 700; padding: 12px 0; }
+summary:focus-visible { outline: 3px solid var(--soft); outline-offset: 2px; border-radius: 4px; }
+details > * + * { margin-top: 12px; }
+
+/* 小實驗 */
+.lab { border: 2px solid var(--ink); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fields.three { grid-template-columns: 1.4fr 1fr 1fr; }
+.fields label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--soft); min-width: 0; }
+.fields input { font: 16px var(--font-code); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); width: 100%; min-width: 0; }
+.fields input:focus-visible { outline: 3px solid var(--soft); outline-offset: 1px; }
+@media (max-width: 560px) { .fields, .fields.three { grid-template-columns: 1fr; } }
+.out { font-family: var(--font-code); font-size: 15px; line-height: 1.7; word-break: break-all; }
+.out mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+.rows { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.rowx { display: grid; grid-template-columns: 11em 1fr auto; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--line); align-items: baseline; }
+.rowx:first-child { border-top: 0; }
+.rowx b { font-family: var(--font-code); font-size: 13px; }
+.rowx i { font-style: normal; font-weight: 700; font-size: 14px; white-space: nowrap; }
+.rowx i.pass { color: var(--pass); }
+.rowx i.block { color: var(--block); }
+@media (max-width: 560px) { .rowx { grid-template-columns: 1fr; gap: 2px; } }
+.picks { display: flex; flex-wrap: wrap; gap: 8px; }
+.picks button { font: inherit; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
+.picks button:focus-visible { outline: 3px solid var(--soft); outline-offset: 2px; }
+
+/* 表 */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--soft); font-weight: 700; white-space: nowrap; }
+td.mono { font-family: var(--font-code); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>手寫一支改字工具：找字、換字、推上去</h1>
+    <p class="lead">我有一個工具，在自己的網站上點一段字就能改掉原始碼。它有一千多行，但核心只有一件事：在專案裡找到那句話，換掉，推上去。這一頁帶你把核心自己寫出來，五關，寫完大約 60 行。</p>
+    <p>寫完你會有一支這樣用的程式：</p>
+    <pre><code>node fix.js 專案資料夾 "立即免費開始" "先用再說"</code></pre>
+    <p>它會在那個專案裡找到「立即免費開始」，換成「先用再說」，然後 commit、push。只有一處才改，有好幾處就列出來然後停。</p>
+    <p class="soft">規則只有一條：每一關先自己寫。卡住超過十分鐘再開「提示」，寫完再開「我的寫法」對照。直接看答案抄一遍，等於沒練。</p>
+  </section>
+
+  <section>
+    <h2>進度</h2>
+    <div class="steps" id="steps">
+      <label><input type="checkbox" data-step="1"><span>第 1 關</span><small>在一個檔案裡找字</small></label>
+      <label><input type="checkbox" data-step="2"><span>第 2 關</span><small>換掉並存檔</small></label>
+      <label><input type="checkbox" data-step="3"><span>第 3 關</span><small>在整個專案裡找</small></label>
+      <label><input type="checkbox" data-step="4"><span>第 4 關</span><small>好幾處就停</small></label>
+      <label><input type="checkbox" data-step="5"><span>第 5 關</span><small>commit 和 push</small></label>
+    </div>
+    <p class="soft" id="steps-note">過一關就勾一關。勾選記在這台瀏覽器裡。</p>
+  </section>
+
+  <section>
+    <h2>開始前：做一個練習場</h2>
+    <p>不要拿真的專案練。下面這段會做出一個假網站 <code>play</code>，還有一個假的遠端 <code>play.git</code>，push 會推到那裡，弄壞了整個刪掉重做就好。</p>
+    <p>需要先裝好 Node 20 以上和 git。開一個空資料夾，在 Git Bash 裡貼上：</p>
+    <pre><code>mkdir play &amp;&amp; cd play
+git init -q -b main
+git config user.email you@example.com
+git config user.name you
+git config core.autocrlf false
+printf '&lt;h1&gt;立即免費開始&lt;/h1&gt;\n&lt;p&gt;了解方案&lt;/p&gt;\n&lt;p&gt;了解方案&lt;/p&gt;\n' &gt; index.html
+printf '關於我們\n' &gt; about.txt
+git add -A &amp;&amp; git commit -q -m init
+git init -q --bare -b main ../play.git
+git remote add origin ../play.git
+git push -q -u origin main
+cd ..</code></pre>
+    <p>做完之後資料夾裡有 <code>play</code> 和 <code>play.git</code>。你的 <code>fix.js</code> 開在它們旁邊。</p>
+    <p class="soft">練習場裡故意放了兩句一樣的「了解方案」，第 4 關會用到。</p>
+  </section>
+
+  <section>
+    <p class="tag">第 1 關</p>
+    <h2>在一個檔案裡找字</h2>
+    <div class="goal">寫一支程式，給它檔名和一段字，它告訴你那段字在檔案的第幾個位置，找不到就說找不到。</div>
+    <div class="need"><span>process.argv</span><span>fs.readFileSync</span><span>indexOf</span></div>
+
+    <h3>先玩一次：indexOf 回傳的是什麼</h3>
+    <div class="lab">
+      <div class="fields">
+        <label>檔案內容<input id="p-text" value="&lt;h1&gt;立即免費開始&lt;/h1&gt;" autocomplete="off" spellcheck="false"></label>
+        <label>要找的字<input id="p-find" value="立即免費開始" autocomplete="off" spellcheck="false"></label>
+      </div>
+      <div class="out" id="p-show" aria-live="polite"></div>
+      <div class="out" id="p-result"></div>
+    </div>
+    <p>位置從 0 開始數。<code>&lt;h1&gt;</code> 佔了 0 到 3，所以「立」在第 4 個位置。找不到的時候回傳 <code>-1</code>，把要找的字改掉試試看。</p>
+
+    <h3>驗收</h3>
+    <pre><code>node fix.js play/index.html "立即免費開始"
+<span class="dim">找到了，在第 4 個位置</span>
+
+node fix.js play/index.html "了解方案"
+<span class="dim">找到了，在第 19 個位置</span>
+
+node fix.js play/index.html "沒有這句"
+<span class="dim">找不到「沒有這句」</span></code></pre>
+
+    <details>
+      <summary>提示</summary>
+      <ul>
+        <li><code>process.argv</code> 是一個陣列，前兩個是 node 自己和你的檔名，你打的參數從第三個開始。用 <code>process.argv.slice(2)</code> 把前兩個切掉。</li>
+        <li><code>fs.readFileSync(檔名, 'utf8')</code> 會把整個檔案讀成一個字串。沒寫 <code>'utf8'</code> 拿到的不是字串，中文會出問題。</li>
+        <li>字串找字用 <code>內容.indexOf(要找的字)</code>。</li>
+      </ul>
+    </details>
+    <details>
+      <summary>我的寫法</summary>
+      <pre><code>const fs = require('node:fs');
+
+const [file, from] = process.argv.slice(2);
+const content = fs.readFileSync(file, 'utf8');
+const at = content.indexOf(from);
+
+if (at === -1) console.log('找不到「' + from + '」');
+else console.log('找到了，在第 ' + at + ' 個位置');</code></pre>
+    </details>
+  </section>
+
+  <section>
+    <p class="tag">第 2 關</p>
+    <h2>換掉並存檔</h2>
+    <div class="goal">多收一個參數「新的字」。找到之後把舊字換成新字，寫回檔案。</div>
+    <div class="need"><span>slice</span><span>fs.writeFileSync</span><span>process.exit</span></div>
+
+    <h3>先玩一次：為什麼不用 replace</h3>
+    <p>換字最直覺的寫法是 <code>內容.replace(舊字, 新字)</code>。它有一個坑：新字裡的 <code>$</code> 有特殊意思。下面兩種寫法同時跑給你看。</p>
+    <div class="lab">
+      <div class="fields three">
+        <label>檔案內容<input id="r-text" value="方案 100 元" autocomplete="off" spellcheck="false"></label>
+        <label>舊字<input id="r-from" value="100 元" autocomplete="off" spellcheck="false"></label>
+        <label>新字<input id="r-to" value="$& 起" autocomplete="off" spellcheck="false"></label>
+      </div>
+      <div class="picks" role="group" aria-label="換一組例子">
+        <button type="button" data-ex="0">$&amp; 起</button>
+        <button type="button" data-ex="1">$$50</button>
+        <button type="button" data-ex="2">普通的字</button>
+      </div>
+      <div class="rows" aria-live="polite">
+        <div class="rowx"><b>replace</b><span class="out" id="r-a"></span><i id="r-a-ok"></i></div>
+        <div class="rowx"><b>slice 接起來</b><span class="out" id="r-b"></span><i id="r-b-ok"></i></div>
+      </div>
+    </div>
+    <p>在 <code>replace</code> 的新字裡，<code>$&amp;</code> 代表「被換掉的那段字」，<code>$$</code> 代表一個 <code>$</code>。你要寫的是價錢，它卻當成指令。新字是人打的，什麼符號都可能出現，所以改用位置直接切：前半段、新字、後半段，三塊接起來。這樣新字裡寫什麼就是什麼。</p>
+
+    <h3>驗收</h3>
+    <pre><code>node fix.js play/index.html "立即免費開始" "先用再說"
+<span class="dim">改好了</span>
+
+git -C play diff
+<span class="dim">-&lt;h1&gt;立即免費開始&lt;/h1&gt;
++&lt;h1&gt;先用再說&lt;/h1&gt;</span></code></pre>
+    <p>看完用這行還原，下一關還要用原本的字：</p>
+    <pre><code>git -C play checkout -- index.html</code></pre>
+
+    <details>
+      <summary>提示</summary>
+      <ul>
+        <li><code>內容.slice(0, 位置)</code> 是舊字前面的全部。</li>
+        <li>舊字後面從哪裡開始？位置加上舊字的長度。</li>
+        <li>找不到就不該繼續往下寫檔。印完訊息用 <code>process.exit(1)</code> 結束，1 代表「沒成功」。</li>
+      </ul>
+    </details>
+    <details>
+      <summary>我的寫法</summary>
+      <pre><code>const fs = require('node:fs');
+
+const [file, from, to] = process.argv.slice(2);
+const content = fs.readFileSync(file, 'utf8');
+const at = content.indexOf(from);
+
+if (at === -1) {
+  console.log('找不到「' + from + '」');
+  process.exit(1);
+}
+
+const next = content.slice(0, at) + to + content.slice(at + from.length);
+fs.writeFileSync(file, next, 'utf8');
+console.log('改好了');</code></pre>
+    </details>
+  </section>
+
+  <section>
+    <p class="tag">第 3 關</p>
+    <h2>在整個專案裡找</h2>
+    <div class="goal">第一個參數從「檔名」改成「專案資料夾」。寫一個函式 <code>filesWith(字)</code>，回傳專案裡有這段字的所有檔名。這一關先只印出檔名，不用改字。</div>
+    <div class="need"><span>child_process.execFileSync</span><span>git grep</span><span>try / catch</span></div>
+    <p>自己一個一個資料夾去讀檔也做得到，但要自己跳過 <code>node_modules</code>、圖片、建置出來的檔案。git 本來就知道哪些檔案是專案的，叫它找最省事：</p>
+    <pre><code>git grep -l -F -z -e "了解方案"</code></pre>
+    <ul>
+      <li><code>-l</code>：只列檔名，不列內容。</li>
+      <li><code>-F</code>：把要找的字當普通文字，不要當成規則運算式。字裡有 <code>.</code> 或 <code>(</code> 才不會出事。</li>
+      <li><code>-z</code>：檔名之間用一個看不見的 0 字元隔開，不用換行。中文檔名才不會被改寫成一串跳脫碼。</li>
+      <li><code>-e</code>：後面接的就是要找的字。字剛好是 <code>-</code> 開頭也不會被當成選項。</li>
+    </ul>
+
+    <h3>驗收</h3>
+    <pre><code>node fix.js play "了解方案"
+<span class="dim">[ 'index.html' ]</span>
+
+node fix.js play "關於我們"
+<span class="dim">[ 'about.txt' ]</span>
+
+node fix.js play "沒有這句"
+<span class="dim">[]</span></code></pre>
+    <p>第三個最容易卡住：找不到的時候程式會直接壞掉。看提示之前先自己查為什麼。</p>
+
+    <details>
+      <summary>提示</summary>
+      <ul>
+        <li><code>execFileSync('git', ['grep', ...], { cwd: 專案資料夾, encoding: 'utf8' })</code>。<code>cwd</code> 是「在哪個資料夾跑」，<code>encoding</code> 讓它回傳字串。</li>
+        <li>參數用陣列一個一個給，不要自己拼成一整串指令。字裡有空白或引號時，拼字串會被拆錯。</li>
+        <li><code>git grep</code> 找不到東西時，結束碼是 1。<code>execFileSync</code> 看到結束碼不是 0 就丟錯誤。所以要用 <code>try / catch</code> 接住，看 <code>err.status === 1</code> 就回傳空陣列，其他錯誤照樣丟出去。</li>
+        <li><code>-z</code> 的輸出用 <code>.split('\0')</code> 切開，最後會多一個空字串，用 <code>.filter(Boolean)</code> 拿掉。</li>
+      </ul>
+    </details>
+    <details>
+      <summary>我的寫法</summary>
+      <pre><code>const { execFileSync } = require('node:child_process');
+
+const [repo, from] = process.argv.slice(2);
+
+<span class="dim">// 在專案資料夾裡跑一個 git 指令，回傳它印出來的字</span>
+function git(...args) {
+  return execFileSync('git', args, { cwd: repo, encoding: 'utf8' });
+}
+
+function filesWith(words) {
+  try {
+    return git('grep', '-l', '-F', '-z', '-e', words).split('\0').filter(Boolean);
+  } catch (err) {
+    if (err.status === 1) return [];   <span class="dim">// 找不到，不是壞掉</span>
+    throw err;
+  }
+}
+
+console.log(filesWith(from));</code></pre>
+      <p class="soft">多包一層 <code>git()</code> 是因為第 5 關還要叫三次 git，到時候直接用。</p>
+    </details>
+  </section>
+
+  <section>
+    <p class="tag">第 4 關</p>
+    <h2>好幾處就停</h2>
+    <div class="goal">把前三關接起來：找出所有出現的地方。剛好一處就換掉，零處或好幾處就印出原因然後停，一個字都不改。</div>
+    <div class="need"><span>while</span><span>indexOf 的第二個參數</span><span>path.join</span></div>
+    <p>這一關是整支程式最重要的判斷。改錯地方比沒改更糟，所以只要不確定是哪一處，就不動手。</p>
+    <p>注意同一個檔案裡也可能出現兩次。<code>filesWith</code> 只告訴你哪些檔案有，沒說有幾處，所以每個檔案還要自己數。</p>
+
+    <h3>驗收</h3>
+    <pre><code>node fix.js play "了解方案" "看價錢"
+<span class="dim">有 2 處一樣的字，不知道要改哪一個：
+  index.html 第 2 行
+  index.html 第 3 行</span>
+
+node fix.js play "沒有這句" "x"
+<span class="dim">找不到「沒有這句」</span>
+
+node fix.js play "立即免費開始" "先用再說"
+<span class="dim">改好了：index.html 第 1 行</span></code></pre>
+    <p>前兩個跑完，<code>git -C play status</code> 應該是乾淨的。第三個跑完先不要還原，第 5 關直接接著做。</p>
+
+    <details>
+      <summary>提示</summary>
+      <ul>
+        <li><code>indexOf(字, 從哪裡開始找)</code>。找到一處之後，從那一處的後面再找一次，直到回傳 <code>-1</code>。</li>
+        <li>把每一處記成一個物件放進陣列：哪個檔、位置、第幾行、檔案內容。最後看陣列長度是 0、1 還是更多。</li>
+        <li>第幾行怎麼算：位置前面有幾個換行，再加 1。<code>內容.slice(0, 位置).split('\n').length</code> 剛好就是。</li>
+        <li><code>git grep</code> 給的檔名是相對於專案資料夾的，讀檔時要用 <code>path.join(專案資料夾, 檔名)</code> 接起來。</li>
+      </ul>
+    </details>
+    <details>
+      <summary>我的寫法</summary>
+      <pre><code><span class="dim">// 這段字在一個檔案裡出現在哪些位置</span>
+function positions(content, words) {
+  const found = [];
+  let at = content.indexOf(words);
+  while (at !== -1) {
+    found.push(at);
+    at = content.indexOf(words, at + words.length);
+  }
+  return found;
+}
+
+const hits = [];
+for (const file of filesWith(from)) {
+  const content = fs.readFileSync(path.join(repo, file), 'utf8');
+  for (const at of positions(content, from)) {
+    const line = content.slice(0, at).split('\n').length;
+    hits.push({ file, at, line, content });
+  }
+}
+
+if (hits.length === 0) {
+  console.log('找不到「' + from + '」');
+  process.exit(1);
+}
+if (hits.length &gt; 1) {
+  console.log('有 ' + hits.length + ' 處一樣的字，不知道要改哪一個：');
+  for (const h of hits) console.log('  ' + h.file + ' 第 ' + h.line + ' 行');
+  process.exit(1);
+}
+
+const hit = hits[0];
+const next = hit.content.slice(0, hit.at) + to + hit.content.slice(hit.at + from.length);
+fs.writeFileSync(path.join(repo, hit.file), next, 'utf8');
+console.log('改好了：' + hit.file + ' 第 ' + hit.line + ' 行');</code></pre>
+    </details>
+  </section>
+
+  <section>
+    <p class="tag">第 5 關</p>
+    <h2>commit 和 push</h2>
+    <div class="goal">改完之後，只把改到的那一個檔案 commit，然後 push。</div>
+    <div class="need"><span>git add</span><span>git commit -m</span><span>git push</span></div>
+    <p>你的網站如果是 push 了就自動部署，這一步做完網站就會開始更新。這支程式不用管部署，它的工作到 push 為止。</p>
+
+    <h3>驗收</h3>
+    <pre><code>node fix.js play "關於我們" "我們是誰"
+<span class="dim">改好了：about.txt 第 1 行
+推上去了</span>
+
+git -C play.git log --oneline
+<span class="dim">xxxxxxx 改字：「關於我們」→「我們是誰」
+xxxxxxx init</span></code></pre>
+    <p>第二行看的是 <code>play.git</code>，也就是假的遠端。那裡看得到你的 commit，才代表真的推出去了。中間 git 自己還會印一兩行 <code>To ../play.git</code>，那是正常的。</p>
+    <p class="soft">第 4 關最後改的 <code>index.html</code> 還沒 commit，這是故意留著的。跑完這一關用 <code>git -C play status</code> 看一下，它應該還在「已修改」裡，沒有被一起帶進這次的 commit。這就是下面提示第一條的用意。</p>
+
+    <details>
+      <summary>提示</summary>
+      <ul>
+        <li><code>git add</code> 後面接那一個檔名，不要用 <code>git add -A</code>。專案裡可能有你正在改到一半的別的檔案，不該被一起送出去。</li>
+        <li>commit 訊息一樣用陣列參數傳：<code>git('commit', '-m', 訊息)</code>。訊息裡有引號和中文都不用特別處理。</li>
+        <li>三個指令任何一個失敗，<code>execFileSync</code> 都會丟錯誤讓程式停下來，後面的不會繼續跑。這裡正好就是要這樣。</li>
+      </ul>
+    </details>
+    <details>
+      <summary>我的寫法</summary>
+      <pre><code>git('add', hit.file);
+git('commit', '-m', '改字：「' + from + '」→「' + to + '」');
+git('push');
+console.log('推上去了');</code></pre>
+    </details>
+  </section>
+
+  <section>
+    <h2>全部跑一次</h2>
+    <p>把練習場刪掉重做一份，照順序跑這四行。四行都對，這支就寫完了。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>跑什麼</th><th>應該看到</th><th>檔案有沒有被改</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">node fix.js play "立即免費開始" "先用再說"</td><td>改好了、推上去了</td><td>有，遠端也有</td></tr>
+          <tr><td class="mono">node fix.js play "了解方案" "看價錢"</td><td>有 2 處，列出兩行</td><td>沒有</td></tr>
+          <tr><td class="mono">node fix.js play "沒有這句" "x"</td><td>找不到</td><td>沒有</td></tr>
+          <tr><td class="mono">node fix.js</td><td>用法說明</td><td>沒有</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>最後一行是加分題：什麼參數都沒給的時候，印出怎麼用，不要丟一長串錯誤。</p>
+    <details>
+      <summary>完整的檔案（60 行左右）</summary>
+      <pre><code>const fs = require('node:fs');
+const path = require('node:path');
+const { execFileSync } = require('node:child_process');
+
+const [repo, from, to] = process.argv.slice(2);
+if (!repo || !from || !to) {
+  console.log('用法：node fix.js &lt;專案資料夾&gt; "舊字" "新字"');
+  process.exit(1);
+}
+
+function git(...args) {
+  return execFileSync('git', args, { cwd: repo, encoding: 'utf8' });
+}
+
+function filesWith(words) {
+  try {
+    return git('grep', '-l', '-F', '-z', '-e', words).split('\0').filter(Boolean);
+  } catch (err) {
+    if (err.status === 1) return [];
+    throw err;
+  }
+}
+
+function positions(content, words) {
+  const found = [];
+  let at = content.indexOf(words);
+  while (at !== -1) {
+    found.push(at);
+    at = content.indexOf(words, at + words.length);
+  }
+  return found;
+}
+
+const hits = [];
+for (const file of filesWith(from)) {
+  const content = fs.readFileSync(path.join(repo, file), 'utf8');
+  for (const at of positions(content, from)) {
+    const line = content.slice(0, at).split('\n').length;
+    hits.push({ file, at, line, content });
+  }
+}
+
+if (hits.length === 0) {
+  console.log('找不到「' + from + '」');
+  process.exit(1);
+}
+if (hits.length &gt; 1) {
+  console.log('有 ' + hits.length + ' 處一樣的字，不知道要改哪一個：');
+  for (const h of hits) console.log('  ' + h.file + ' 第 ' + h.line + ' 行');
+  process.exit(1);
+}
+
+const hit = hits[0];
+const next = hit.content.slice(0, hit.at) + to + hit.content.slice(hit.at + from.length);
+fs.writeFileSync(path.join(repo, hit.file), next, 'utf8');
+console.log('改好了：' + hit.file + ' 第 ' + hit.line + ' 行');
+
+git('add', hit.file);
+git('commit', '-m', '改字：「' + from + '」→「' + to + '」');
+git('push');
+console.log('推上去了');</code></pre>
+    </details>
+  </section>
+
+  <section>
+    <h2>這支還不會的事</h2>
+    <p>拿去改真的網站，很快會遇到下面這些。每一項都是之後可以自己加的一關。</p>
+    <ul>
+      <li><b>同一句話出現很多次。</b> 現在是直接停。要能挑對那一處，得知道那句話前後還有什麼字，拿去跟原始碼的上下文比。</li>
+      <li><b>新字裡有引號或大括號。</b> 字如果寫在程式碼的字串裡，多一個引號整個檔案就壞了。要先檢查新字有沒有這類符號。</li>
+      <li><b>本機的專案比遠端舊。</b> push 會被拒絕。改之前要先 <code>git pull --ff-only</code>。</li>
+      <li><b>那個檔案你自己正改到一半。</b> 這支會把你還沒做完的修改一起 commit 出去。改之前要先看那個檔案乾不乾淨。</li>
+      <li><b>字不在原始碼裡。</b> 從資料庫來的、程式拼出來的字，這個做法找不到，也不該找到。</li>
+    </ul>
+    <p>下一步是把這支包成一個只聽本機的小服務，再寫一段在網頁上跑的腳本，點一下字就把「舊字、新字」送過來。那時候核心還是這 60 行。</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  // ---- 進度：記在這台瀏覽器裡，讀不到也照常能用 ----
+  var KEY = 'fix-tool-steps';
+  var boxes = document.querySelectorAll('#steps input');
+  var note = document.getElementById('steps-note');
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; }
+  }
+  function save(done) {
+    try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) { /* 不能存就算了 */ }
+  }
+  function count() {
+    var done = [];
+    boxes.forEach(function (b) { if (b.checked) done.push(b.dataset.step); });
+    note.textContent = done.length === boxes.length
+      ? '五關都過了。拿去改一個你自己網站上的字試試看。'
+      : '過一關就勾一關。勾選記在這台瀏覽器裡。（' + done.length + ' / ' + boxes.length + '）';
+    return done;
+  }
+  var saved = load();
+  boxes.forEach(function (b) {
+    b.checked = saved.indexOf(b.dataset.step) !== -1;
+    b.addEventListener('change', function () { save(count()); });
+  });
+  count();
+
+  // ---- 第 1 關：indexOf ----
+  var pText = document.getElementById('p-text');
+  var pFind = document.getElementById('p-find');
+  var pShow = document.getElementById('p-show');
+  var pResult = document.getElementById('p-result');
+  function showIndex() {
+    var text = pText.value;
+    var find = pFind.value;
+    var at = find ? text.indexOf(find) : -1;
+    pShow.textContent = '';
+    if (at === -1) {
+      pShow.textContent = text;
+    } else {
+      pShow.appendChild(document.createTextNode(text.slice(0, at)));
+      var mark = document.createElement('mark');
+      mark.textContent = find;
+      pShow.appendChild(mark);
+      pShow.appendChild(document.createTextNode(text.slice(at + find.length)));
+    }
+    pResult.textContent = 'indexOf 回傳 ' + at + (at === -1 ? '（找不到）' : '');
+  }
+  pText.addEventListener('input', showIndex);
+  pFind.addEventListener('input', showIndex);
+  showIndex();
+
+  // ---- 第 2 關：replace 和 slice 同時跑 ----
+  var rText = document.getElementById('r-text');
+  var rFrom = document.getElementById('r-from');
+  var rTo = document.getElementById('r-to');
+  var EXAMPLES = [
+    ['方案 100 元', '100 元', '$& 起'],
+    ['方案 100 元', '100 元', '$$50'],
+    ['方案 100 元', '100 元', '120 元']
+  ];
+  function verdict(cell, ok) {
+    cell.className = ok ? 'pass' : 'block';
+    cell.textContent = ok ? '跟你打的一樣' : '跟你打的不一樣';
+  }
+  function showReplace() {
+    var text = rText.value;
+    var from = rFrom.value;
+    var to = rTo.value;
+    var at = from ? text.indexOf(from) : -1;
+    var a = document.getElementById('r-a');
+    var b = document.getElementById('r-b');
+    if (at === -1) {
+      a.textContent = b.textContent = '（檔案內容裡沒有這段舊字）';
+      document.getElementById('r-a-ok').textContent = '';
+      document.getElementById('r-b-ok').textContent = '';
+      return;
+    }
+    var wanted = text.slice(0, at) + to + text.slice(at + from.length);
+    var byReplace = text.replace(from, to);
+    a.textContent = byReplace;
+    b.textContent = wanted;
+    verdict(document.getElementById('r-a-ok'), byReplace === wanted);
+    verdict(document.getElementById('r-b-ok'), true);
+  }
+  [rText, rFrom, rTo].forEach(function (el) { el.addEventListener('input', showReplace); });
+  document.querySelectorAll('.picks button').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var ex = EXAMPLES[Number(button.dataset.ex)];
+      rText.value = ex[0]; rFrom.value = ex[1]; rTo.value = ex[2];
+      showReplace();
+    });
+  });
+  showReplace();
+})();
+</script>
+</body>
+</html>
