@@ -309,9 +309,9 @@ function LoginForm() {
 
 ## 相關文章
 
-- [HTTP 請求套件：httpx vs axios](/Evernote/posts/http-client-packages) — 發請求拿資料
-- [FastAPI：為什麼我從 Flask 轉過來](/Evernote/posts/fastapi-why-i-switched-from-flask) — Pydantic 的實際應用
-- [TypeScript 的型別不是萬能的](/Evernote/posts/typescript-runtime-types) — 為什麼編譯時型別不夠
+- [HTTP 請求套件：httpx vs axios](/EverNote/posts/http-client-packages) — 發請求拿資料
+- [FastAPI：為什麼我從 Flask 轉過來](/EverNote/posts/fastapi-why-i-switched-from-flask) — Pydantic 的實際應用
+- [TypeScript 的型別不是萬能的](/EverNote/posts/typescript-runtime-types) — 為什麼編譯時型別不夠
 
 ---
 

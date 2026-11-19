@@ -140,7 +140,7 @@ Fastify 官方 benchmark：
 
 為什麼快？路由用 [find-my-way](https://github.com/delvedor/find-my-way)（radix tree），比 Express 的正則匹配快。
 
-想深入了解 Fastify，看這篇：[Fastify：比 Express 快的 Node.js 框架](/Evernote/posts/fastify-node-framework)
+想深入了解 Fastify，看這篇：[Fastify：比 Express 快的 Node.js 框架](/EverNote/posts/fastify-node-framework)
 
 ---
 
@@ -372,6 +372,6 @@ Express 還能用嗎？能。
 
 ## 相關文章
 
-- [Fastify：比 Express 快的 Node.js 框架](/Evernote/posts/fastify-node-framework) — Fastify 詳細介紹
-- [FastAPI：為什麼我從 Flask 轉過來](/Evernote/posts/fastapi-why-i-switched-from-flask) — Python 版的框架選擇
-- [前端打包工具，先搞懂在打包什麼](/Evernote/posts/bundler-overview) — 另一個「選擇指南」風格的文章
+- [Fastify：比 Express 快的 Node.js 框架](/EverNote/posts/fastify-node-framework) — Fastify 詳細介紹
+- [FastAPI：為什麼我從 Flask 轉過來](/EverNote/posts/fastapi-why-i-switched-from-flask) — Python 版的框架選擇
+- [前端打包工具，先搞懂在打包什麼](/EverNote/posts/bundler-overview) — 另一個「選擇指南」風格的文章

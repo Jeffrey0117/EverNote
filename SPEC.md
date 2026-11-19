@@ -74,7 +74,7 @@ export const SITE = {
 
   // GitHub Pages 用
   site: 'https://jeffrey0117.github.io',
-  base: '/Evernote',
+  base: '/EverNote',
 };
 
 export const SOCIAL = {
@@ -210,7 +210,7 @@ public/
 
 引用：
 ```markdown
-![截圖](/Evernote/images/posts/文章-slug/screenshot.png)
+![截圖](/EverNote/images/posts/文章-slug/screenshot.png)
 ```
 
 ### AI 生成文章的圖片 Prompt

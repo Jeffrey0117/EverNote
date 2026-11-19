@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://jeffrey0117.github.io',
-  base: '/Evernote',
+  base: '/EverNote',
 
   markdown: {
     shikiConfig: {

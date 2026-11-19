@@ -14,7 +14,7 @@ tags:
 
 | 文章 | 內容 |
 |------|------|
-| [聲聲慢：我做了一個離線語音轉文字工具](/Evernote/posts/shengshengman-intro) | 產品介紹、功能、未來計畫（APP 版） |
+| [聲聲慢：我做了一個離線語音轉文字工具](/EverNote/posts/shengshengman-intro) | 產品介紹、功能、未來計畫（APP 版） |
 
 ## 分類總覽
 
@@ -24,9 +24,9 @@ tags:
 
 | 文章 | 內容 |
 |------|------|
-| [名詞科普：VAD、ASR、STT 到底在講什麼？](/Evernote/posts/speech-recognition-glossary) | 術語解釋，看懂其他文章的前置知識 |
-| [那些我沒用過的開源語音辨識方案](/Evernote/posts/asr-alternatives-i-didnt-use) | Vosk、Kaldi、WeNet 等方案介紹 |
-| [該不該花錢買語音辨識 API？](/Evernote/posts/should-you-pay-for-asr-api) | 雲端 API vs 本地模型的分析 |
+| [名詞科普：VAD、ASR、STT 到底在講什麼？](/EverNote/posts/speech-recognition-glossary) | 術語解釋，看懂其他文章的前置知識 |
+| [那些我沒用過的開源語音辨識方案](/EverNote/posts/asr-alternatives-i-didnt-use) | Vosk、Kaldi、WeNet 等方案介紹 |
+| [該不該花錢買語音辨識 API？](/EverNote/posts/should-you-pay-for-asr-api) | 雲端 API vs 本地模型的分析 |
 
 ### 選型比較
 
@@ -34,7 +34,7 @@ tags:
 
 | 文章 | 內容 |
 |------|------|
-| [離線語音辨識模型大亂鬥](/Evernote/posts/speech-recognition-models-comparison) | Whisper、FunASR、Sherpa-ONNX 實測比較 |
+| [離線語音辨識模型大亂鬥](/EverNote/posts/speech-recognition-models-comparison) | Whisper、FunASR、Sherpa-ONNX 實測比較 |
 
 ### 實戰優化
 
@@ -42,11 +42,11 @@ tags:
 
 | 文章 | 內容 |
 |------|------|
-| [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide) | 並行載入、量化、執行緒調整 |
-| [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization) | 離線 + 串流雙模型、VAD、音頻預處理 |
-| [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization) | 端點偵測、int8 踩坑、參數平衡 |
-| [熱詞功能實作：讓語音辨識認得你的專有名詞](/Evernote/posts/hotwords-implementation) | Hotwords 原理與實作 |
-| [從 FunASR 遷移到 Sherpa-ONNX](/Evernote/posts/funasr-to-sherpa-migration) | 架構遷移的決策與過程 |
+| [FunASR 極限優化指南](/EverNote/posts/funasr-optimization-guide) | 並行載入、量化、執行緒調整 |
+| [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization) | 離線 + 串流雙模型、VAD、音頻預處理 |
+| [串流語音辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization) | 端點偵測、int8 踩坑、參數平衡 |
+| [熱詞功能實作：讓語音辨識認得你的專有名詞](/EverNote/posts/hotwords-implementation) | Hotwords 原理與實作 |
+| [從 FunASR 遷移到 Sherpa-ONNX](/EverNote/posts/funasr-to-sherpa-migration) | 架構遷移的決策與過程 |
 
 ### 周邊工具
 
@@ -54,8 +54,8 @@ tags:
 
 | 文章 | 內容 |
 |------|------|
-| [用 5KB 正規表達式幹掉 500MB 深度學習模型](/Evernote/posts/rule-based-punctuation-restoration) | 規則式標點恢復 |
-| [字典替換：語音辨識的後處理校正](/Evernote/posts/dictionary-replacement) | 熱詞搞不定的用字典補 |
+| [用 5KB 正規表達式幹掉 500MB 深度學習模型](/EverNote/posts/rule-based-punctuation-restoration) | 規則式標點恢復 |
+| [字典替換：語音辨識的後處理校正](/EverNote/posts/dictionary-replacement) | 熱詞搞不定的用字典補 |
 
 ### Electron 開發
 
@@ -63,15 +63,15 @@ tags:
 
 | 文章 | 內容 |
 |------|------|
-| [為什麼桌面應用不能多開？談 Electron 單實例鎖](/Evernote/posts/why-prevent-multiple-instances) | 多開會炸的原因，以及怎麼防止 |
-| [Electron 視窗控制：置頂與縮小到托盤](/Evernote/posts/electron-window-controls) | always on top、系統托盤 |
-| [Web Audio API 的坑：ScriptProcessor 已死，AudioWorklet 還沒活](/Evernote/posts/web-audio-api-pitfalls) | 音頻擷取的血淚史 |
+| [為什麼桌面應用不能多開？談 Electron 單實例鎖](/EverNote/posts/why-prevent-multiple-instances) | 多開會炸的原因，以及怎麼防止 |
+| [Electron 視窗控制：置頂與縮小到托盤](/EverNote/posts/electron-window-controls) | always on top、系統托盤 |
+| [Web Audio API 的坑：ScriptProcessor 已死，AudioWorklet 還沒活](/EverNote/posts/web-audio-api-pitfalls) | 音頻擷取的血淚史 |
 
 ### UI/UX 設計
 
 | 文章 | 內容 |
 |------|------|
-| [中文桌面應用的字體選擇](/Evernote/posts/chinese-font-selection) | 源雲明體、jf open 粉圓、開源字體推薦 |
+| [中文桌面應用的字體選擇](/EverNote/posts/chinese-font-selection) | 源雲明體、jf open 粉圓、開源字體推薦 |
 
 ### 方法論
 
@@ -79,7 +79,7 @@ tags:
 
 | 文章 | 內容 |
 |------|------|
-| [優化方法論：從語音辨識學到的事](/Evernote/posts/optimization-methodology) | 6 個優化原則 + SOP |
+| [優化方法論：從語音辨識學到的事](/EverNote/posts/optimization-methodology) | 6 個優化原則 + SOP |
 
 ---
 

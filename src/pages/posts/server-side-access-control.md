@@ -23,4 +23,4 @@ interactive: true
 
 下面的互動版可以換身分（沒登入／一般會員／管理員）親手試，看三層各自怎麼回應。
 
-<p style="margin:1.5em 0"><a href="/Evernote/w/server-side-access-control/" style="display:inline-block;padding:0.7em 1.4em;border-radius:8px;background:var(--text-primary,#222);color:var(--bg-primary,#fff);text-decoration:none;font-weight:600">▶ 打開互動拆解</a></p>
+<p style="margin:1.5em 0"><a href="/EverNote/w/server-side-access-control/" style="display:inline-block;padding:0.7em 1.4em;border-radius:8px;background:var(--text-primary,#222);color:var(--bg-primary,#fff);text-decoration:none;font-weight:600">▶ 打開互動拆解</a></p>

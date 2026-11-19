@@ -179,10 +179,10 @@ winget 適合裝那些「正常」的桌面軟體。Discord、Spotify、VS Code 
 - Linux 有 apt、yum、pacman，跟 winget 比較像
 
 **程式語言層級**：
-- Python 有 [pip](/Evernote/posts/python-package-managers)，還有 uv、poetry、conda
-- Node.js 有 [npm](/Evernote/posts/nodejs-package-managers)，還有 yarn、pnpm
-- Rust 有 [Cargo](/Evernote/posts/why-cargo-is-the-best)，公認設計最好的
-- Deno [根本不需要套件管理器](/Evernote/posts/deno-no-package-manager)，直接 URL import
+- Python 有 [pip](/EverNote/posts/python-package-managers)，還有 uv、poetry、conda
+- Node.js 有 [npm](/EverNote/posts/nodejs-package-managers)，還有 yarn、pnpm
+- Rust 有 [Cargo](/EverNote/posts/why-cargo-is-the-best)，公認設計最好的
+- Deno [根本不需要套件管理器](/EverNote/posts/deno-no-package-manager)，直接 URL import
 
 每個生態系都在解決同一個問題：**怎麼讓安裝軟體變簡單**。
 

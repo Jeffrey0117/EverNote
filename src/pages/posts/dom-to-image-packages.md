@@ -15,7 +15,7 @@ tags:
 - 「下載這張圖表」→ 要把 canvas/SVG 變成 PNG
 - 「儲存這個畫面」→ 要截圖
 
-你可能會想到用 [Playwright](/Evernote/posts/browser-automation-packages) 截圖，但那是後端方案，要開一個無頭瀏覽器。
+你可能會想到用 [Playwright](/EverNote/posts/browser-automation-packages) 截圖，但那是後端方案，要開一個無頭瀏覽器。
 
 **如果只是要在前端把 DOM 變成圖片，有更輕量的做法。**
 
@@ -211,7 +211,7 @@ async function captureElement(element, filename = 'screenshot.png') {
 - 截取整個網頁（包括滾動區域）
 - 截取 iframe 內容
 
-那就老實用 [Playwright](/Evernote/posts/browser-automation-packages) 吧。
+那就老實用 [Playwright](/EverNote/posts/browser-automation-packages) 吧。
 
 ---
 
@@ -309,8 +309,8 @@ display: none 的元素截不到，要用 visibility: hidden 或移到畫面外�
 
 ## 相關文章
 
-- [瀏覽器自動化：Playwright vs Puppeteer](/Evernote/posts/browser-automation-packages) — 後端截圖方案
-- [圖片處理套件：sharp vs Pillow](/Evernote/posts/image-processing-packages) — 截圖後處理
+- [瀏覽器自動化：Playwright vs Puppeteer](/EverNote/posts/browser-automation-packages) — 後端截圖方案
+- [圖片處理套件：sharp vs Pillow](/EverNote/posts/image-processing-packages) — 截圖後處理
 
 ---
 

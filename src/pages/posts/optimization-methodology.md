@@ -16,7 +16,7 @@ tags:
 
 不要亂槍打鳥。先找出**真正的瓶頸**在哪。
 
-在 [FunASR 優化](/Evernote/posts/funasr-optimization-guide)裡，我發現最大的瓶頸是**初始化時間**，不是推理速度。
+在 [FunASR 優化](/EverNote/posts/funasr-optimization-guide)裡，我發現最大的瓶頸是**初始化時間**，不是推理速度。
 
 三個模型順序載入要 15 秒。改成並行載入，直接砍到 5 秒。
 
@@ -28,7 +28,7 @@ tags:
 
 同樣的優化技術，在不同場景下可能完全相反。
 
-在 [Sherpa-ONNX 優化](/Evernote/posts/sherpa-onnx-optimization)裡：
+在 [Sherpa-ONNX 優化](/EverNote/posts/sherpa-onnx-optimization)裡：
 
 | 模型 | int8 量化效果 |
 |------|---------------|
@@ -41,7 +41,7 @@ tags:
 
 ## 原則三：一次只改一個變數
 
-這是我在[串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)學到最痛的教訓。
+這是我在[串流語音辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)學到最痛的教訓。
 
 當時我同時改了四個東西：
 
@@ -108,10 +108,10 @@ tags:
 
 相關實戰文章：
 
-- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
-- [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
-- [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization)
+- [FunASR 極限優化指南](/EverNote/posts/funasr-optimization-guide)
+- [串流語音辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)
 
 ---
 

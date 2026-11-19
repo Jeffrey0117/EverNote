@@ -226,9 +226,9 @@ const data = await response.json();
 
 ## 相關文章
 
-- [資料驗證套件：Pydantic vs Zod](/Evernote/posts/validation-packages) — 驗證 API 回傳的資料
-- [網頁爬蟲套件：Cheerio vs BeautifulSoup](/Evernote/posts/html-parsing-packages) — 發完請求後解析 HTML
-- [瀏覽器自動化：Playwright vs Puppeteer](/Evernote/posts/browser-automation-packages) — 需要 JavaScript 渲染的網頁
+- [資料驗證套件：Pydantic vs Zod](/EverNote/posts/validation-packages) — 驗證 API 回傳的資料
+- [網頁爬蟲套件：Cheerio vs BeautifulSoup](/EverNote/posts/html-parsing-packages) — 發完請求後解析 HTML
+- [瀏覽器自動化：Playwright vs Puppeteer](/EverNote/posts/browser-automation-packages) — 需要 JavaScript 渲染的網頁
 
 ---
 

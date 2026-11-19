@@ -10,7 +10,7 @@ tags:
   - Vibe Coding
 ---
 
-試過 [Electron](/Evernote/posts/electron-tree-shaking)、試過 [Tauri](/Evernote/posts/tauri-webview-pitfalls)，最後發現 Qt 配 Python 寫桌面應用超舒服。
+試過 [Electron](/EverNote/posts/electron-tree-shaking)、試過 [Tauri](/EverNote/posts/tauri-webview-pitfalls)，最後發現 Qt 配 Python 寫桌面應用超舒服。
 
 不用管前端那堆東西，純 Python 搞定。
 
@@ -79,7 +79,7 @@ GPL 像病毒，你用了它你的程式碼也要開源；LGPL 比較佛系，�
 pip install PySide6
 ```
 
-關於 Python 套件管理的選擇，可以看這篇：[Python 套件管理，pip 之外的選擇](/Evernote/posts/python-package-managers)
+關於 Python 套件管理的選擇，可以看這篇：[Python 套件管理，pip 之外的選擇](/EverNote/posts/python-package-managers)
 
 ## 開發體驗
 
@@ -156,7 +156,7 @@ app.exec()
 
 試了幾個方案，最後用 [watchdog](https://github.com/gorakhargosh/watchdog) 監聽檔案變更，然後重啟應用。
 
-更簡單的方式是用之前寫的 [Python 自動重載方案](/Evernote/posts/python-auto-reload)，改完 code 自動重跑。
+更簡單的方式是用之前寫的 [Python 自動重載方案](/EverNote/posts/python-auto-reload)，改完 code 自動重跑。
 
 ## 打包
 
@@ -218,15 +218,15 @@ PyInstaller 打包的 exe 有時候會被防毒軟體誤判，可以加數位簽
 
 Qt + Python 不是萬能的，有些情況還是用別的比較好：
 
-1. **介面很花俏** — 像 Figma、Notion 那種一堆動畫、拖拉互動的介面，Web 技術比較擅長，Qt 刻起來累。這時候還是考慮 [Electron](/Evernote/posts/electron-tree-shaking)。
+1. **介面很花俏** — 像 Figma、Notion 那種一堆動畫、拖拉互動的介面，Web 技術比較擅長，Qt 刻起來累。這時候還是考慮 [Electron](/EverNote/posts/electron-tree-shaking)。
 
 2. **團隊全是前端** — 硬要學 Qt 不如用熟悉的 Electron，至少 debug 不會瞎子摸象。
 
 3. **深度整合 Web 服務** — OAuth（第三方登入）、WebSocket（即時雙向通訊）這些 Web 原生支援，Qt 要自己刻。
 
-4. **要榨效能** — Python 還是有 overhead，真的要快就考慮 [原生開發](/Evernote/posts/when-to-go-native)。
+4. **要榨效能** — Python 還是有 overhead，真的要快就考慮 [原生開發](/EverNote/posts/when-to-go-native)。
 
-跨平台桌面開發的選擇很多，可以看這篇總覽：[跨平台桌面開發，選項太多了](/Evernote/posts/cross-platform-desktop-overview)
+跨平台桌面開發的選擇很多，可以看這篇總覽：[跨平台桌面開發，選項太多了](/EverNote/posts/cross-platform-desktop-overview)
 
 ## Vibe Coding 心得
 

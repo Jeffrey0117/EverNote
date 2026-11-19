@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * 把一頁自包的「互動拆解」HTML 歸檔進這個部落格。
- *   1. 互動頁  → public/w/<slug>/index.html（原樣服務於 /Evernote/w/<slug>/）
+ *   1. 互動頁  → public/w/<slug>/index.html（原樣服務於 /EverNote/w/<slug>/）
  *   2. 列表貼文 → src/pages/posts/<slug>.md（frontmatter + 文字摘要 + 「打開互動拆解」按鈕）
  * 零依賴。給 /walkthrough skill 呼叫，也能自己手跑。
  *
@@ -102,7 +102,7 @@ function main() {
   ].join("\n");
 
   const button =
-    `<p style="margin:1.5em 0"><a href="/Evernote/w/${slug}/" ` +
+    `<p style="margin:1.5em 0"><a href="/EverNote/w/${slug}/" ` +
     `style="display:inline-block;padding:0.7em 1.4em;border-radius:8px;` +
     `background:var(--text-primary,#222);color:var(--bg-primary,#fff);` +
     `text-decoration:none;font-weight:600">▶ 打開互動拆解</a></p>`;
@@ -111,7 +111,7 @@ function main() {
   fs.writeFileSync(postPath, frontmatter + body + "\n");
 
   console.log("已歸檔:");
-  console.log("  互動頁:", path.relative(ROOT, pagePath), "→ /Evernote/w/" + slug + "/");
+  console.log("  互動頁:", path.relative(ROOT, pagePath), "→ /EverNote/w/" + slug + "/");
   console.log("  貼文  :", path.relative(ROOT, postPath));
   console.log("接著 npm run build，然後 commit + push 部署。");
 }

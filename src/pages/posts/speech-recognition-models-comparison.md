@@ -82,7 +82,7 @@ result = model.generate(input="audio.wav")
 
 **經過一番優化後**，我把 FunASR 調到跟 Sherpa-ONNX 差不多快，甚至比 Whisper Flow 和 Typeless 都快。
 
-這個優化過程很有趣，之後會專門寫一篇：[FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)。
+這個優化過程很有趣，之後會專門寫一篇：[FunASR 極限優化指南](/EverNote/posts/funasr-optimization-guide)。
 
 ## Sherpa-ONNX：目前的最終選擇
 
@@ -126,7 +126,7 @@ Sherpa-ONNX 內建 Silero VAD，可以自動過濾靜音段落。
 
 我在串流辨識裡也自己實作了簡單的 VAD：用 RMS 音量判斷是否有聲音，超過一定時間的靜音就觸發分段。
 
-串流辨識的完整調教過程，包含 VAD、端點偵測、模型選擇，可以看這篇：[串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)。
+串流辨識的完整調教過程，包含 VAD、端點偵測、模型選擇，可以看這篇：[串流語音辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)。
 
 ## 標點恢復
 
@@ -139,7 +139,7 @@ Sherpa-ONNX 內建 Silero VAD，可以自動過濾靜音段落。
 
 我兩種都用。優先用 ct-punc，環境不支援就 fallback 到規則式。
 
-規則式的詳細設計，可以看這篇：[用 5KB 正規表達式幹掉 500MB 深度學習模型](/Evernote/posts/rule-based-punctuation-restoration)。
+規則式的詳細設計，可以看這篇：[用 5KB 正規表達式幹掉 500MB 深度學習模型](/EverNote/posts/rule-based-punctuation-restoration)。
 
 ## 選擇指南
 
@@ -177,7 +177,7 @@ VAD 過濾靜音（Silero VAD）
 
 相關文章：
 
-- [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
-- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
-- [名詞科普：VAD、ASR、STT 到底在講什麼？](/Evernote/posts/speech-recognition-glossary)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [FunASR 極限優化指南](/EverNote/posts/funasr-optimization-guide)
+- [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization)
+- [名詞科普：VAD、ASR、STT 到底在講什麼？](/EverNote/posts/speech-recognition-glossary)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)

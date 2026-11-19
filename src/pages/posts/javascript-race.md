@@ -62,7 +62,7 @@ console.log('刪除完成');
 
 100 個刪除請求同時打 API，互相踩來踩去，有的成功有的失敗，結果每次都不一樣。
 
-詳細解釋和解法看這篇：[forEach 配 async 是個陷阱](/Evernote/posts/foreach-async-trap)
+詳細解釋和解法看這篇：[forEach 配 async 是個陷阱](/EverNote/posts/foreach-async-trap)
 
 ## 好的賽跑：Promise.race
 
@@ -90,7 +90,7 @@ const result = await Promise.race([
 
 讓「實際工作」跟「計時器」比賽。計時器贏了就代表超時，不用繼續等。
 
-詳細實作看這篇：[Promise.race 處理 OCR 超時](/Evernote/posts/promise-race-timeout)
+詳細實作看這篇：[Promise.race 處理 OCR 超時](/EverNote/posts/promise-race-timeout)
 
 ## 怎麼分辨好壞
 

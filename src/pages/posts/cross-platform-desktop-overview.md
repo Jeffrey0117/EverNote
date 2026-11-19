@@ -19,7 +19,7 @@ tags:
 從那次之後，每次有人問我「Electron 還是 Tauri？」我都會反問：「你要做什麼？你團隊會什麼？」
 
 選工具的邏輯跟選套件管理工具一樣——選擇困難來自不了解各自定位。
-之前寫過一篇 [為什麼 Cargo 讓我覺得其他套件管理都是垃圾](/Evernote/posts/why-cargo-is-the-best)，聊的也是這件事。
+之前寫過一篇 [為什麼 Cargo 讓我覺得其他套件管理都是垃圾](/EverNote/posts/why-cargo-is-the-best)，聊的也是這件事。
 
 所以這篇不是要告訴你「選 X 就對了」，而是讓你搞懂每個方案在幹嘛，然後自己判斷。
 
@@ -70,7 +70,7 @@ Windows 用 WebView2（微軟的 Edge 內核），macOS 用 WKWebView（Apple �
 而且 Tauri 的後端是 Rust。
 如果你本來就會 Rust，那很好；如果不會，學習曲線會讓你懷疑人生。
 
-我踩過的坑都記在 [Tauri WebView 的各種坑](/Evernote/posts/tauri-webview-pitfalls)。
+我踩過的坑都記在 [Tauri WebView 的各種坑](/EverNote/posts/tauri-webview-pitfalls)。
 
 ### Qt：真正的原生 UI
 
@@ -84,7 +84,7 @@ Windows 用 WebView2（微軟的 Edge 內核），macOS 用 WKWebView（Apple �
 Qt 有自己一套 C++ 框架，或者用 Python 綁定。
 PySide 是 Qt 官方維護、LGPL 授權；PyQt 是第三方、GPL 授權。
 
-如果你是 Python 人，可以看看我寫的 [Qt + Python 快速開發桌面應用](/Evernote/posts/qt-python-vibe-coding)。
+如果你是 Python 人，可以看看我寫的 [Qt + Python 快速開發桌面應用](/EverNote/posts/qt-python-vibe-coding)。
 
 ### Flutter：自己畫一切
 
@@ -133,7 +133,7 @@ PySide 是 Qt 官方維護、LGPL 授權；PyQt 是第三方、GPL 授權。
 
 **先把東西做出來再說。**
 
-如果之後真的遇到效能瓶頸，可以看看 [Electron Tree Shaking 優化打包體積](/Evernote/posts/electron-tree-shaking)。
+如果之後真的遇到效能瓶頸，可以看看 [Electron Tree Shaking 優化打包體積](/EverNote/posts/electron-tree-shaking)。
 
 ### 打包要小？Tauri 可以，但有代價
 
@@ -173,13 +173,13 @@ PySide 是 Qt 官方維護、LGPL 授權；PyQt 是第三方、GPL 授權。
 
 | 主題 | 文章 |
 |------|------|
-| Electron 瘦身 | [Electron Tree Shaking 優化打包體積](/Evernote/posts/electron-tree-shaking) |
-| Tauri 踩坑 | [Tauri WebView 的各種坑](/Evernote/posts/tauri-webview-pitfalls) |
-| Qt + Python | [Qt + Python 快速開發桌面應用](/Evernote/posts/qt-python-vibe-coding) |
-| 何時用原生 | [不是每個專案都需要跨平台](/Evernote/posts/when-to-go-native) |
+| Electron 瘦身 | [Electron Tree Shaking 優化打包體積](/EverNote/posts/electron-tree-shaking) |
+| Tauri 踩坑 | [Tauri WebView 的各種坑](/EverNote/posts/tauri-webview-pitfalls) |
+| Qt + Python | [Qt + Python 快速開發桌面應用](/EverNote/posts/qt-python-vibe-coding) |
+| 何時用原生 | [不是每個專案都需要跨平台](/EverNote/posts/when-to-go-native) |
 
 選工具的邏輯跟選套件管理工具一樣，搞懂定位才能做對選擇。
-可以看看 [Python 套件管理工具怎麼選](/Evernote/posts/python-package-managers)，思路是類似的。
+可以看看 [Python 套件管理工具怎麼選](/EverNote/posts/python-package-managers)，思路是類似的。
 
 ---
 

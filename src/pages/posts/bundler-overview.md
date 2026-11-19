@@ -96,7 +96,7 @@ lodash 有幾百個函數，為什麼要載入整個 library？
 
 一個中型 Electron app（像是筆記軟體），Tree Shaking 前可能 150MB，處理後能壓到 50MB。
 
-想知道怎麼優化 Electron 打包體積，可以看這篇：[Electron 肥是你不會 Tree Shaking](/Evernote/posts/electron-tree-shaking)
+想知道怎麼優化 Electron 打包體積，可以看這篇：[Electron 肥是你不會 Tree Shaking](/EverNote/posts/electron-tree-shaking)
 
 ## 打包工具在做什麼
 
@@ -142,7 +142,7 @@ minify，前面講過了。
 
 CommonJS 是動態的，`require` 的參數可以是變數，沒辦法靜態分析。
 
-想了解更多關於 Node.js 的模組系統和套件管理，可以看這篇：[Node.js 套件管理器比較](/Evernote/posts/nodejs-package-managers)
+想了解更多關於 Node.js 的模組系統和套件管理，可以看這篇：[Node.js 套件管理器比較](/EverNote/posts/nodejs-package-managers)
 
 ## 現在有哪些選擇
 
@@ -168,7 +168,7 @@ CSS 要用 css-loader，圖片要用 file-loader，TypeScript 要用 ts-loader�
 
 **Webpack 的學習曲線不是一條線，是一道牆。**
 
-想體驗什麼叫「設定地獄」，可以看這篇：[Webpack 設定地獄](/Evernote/posts/webpack-config-hell)
+想體驗什麼叫「設定地獄」，可以看這篇：[Webpack 設定地獄](/EverNote/posts/webpack-config-hell)
 
 複雜的大型專案、需要高度客製化？選這個。
 
@@ -184,7 +184,7 @@ React、Vue、Three.js... 你打開它們的 `package.json`，看到 `"module": 
 
 打包 library、npm 套件？選這個。
 
-想知道為什麼打包 library 要用 Rollup 而不是 Webpack，可以看這篇：[打包 Library 為什麼用 Rollup](/Evernote/posts/rollup-for-libraries)
+想知道為什麼打包 library 要用 Rollup 而不是 Webpack，可以看這篇：[打包 Library 為什麼用 Rollup](/EverNote/posts/rollup-for-libraries)
 
 ### esbuild
 
@@ -200,7 +200,7 @@ Webpack 打包要 10 秒，esbuild 可能只要 0.1 秒。
 
 追求極致打包速度、CI/CD pipeline？選這個。
 
-想深入了解 esbuild 為什麼這麼快，可以看這篇：[esbuild 的速度秘密](/Evernote/posts/esbuild-speed)
+想深入了解 esbuild 為什麼這麼快，可以看這篇：[esbuild 的速度秘密](/EverNote/posts/esbuild-speed)
 
 ### Vite
 
@@ -275,7 +275,7 @@ Webpack 還是有它的場景，但新專案越來越少人用了。
 
 從 Grunt 到 Gulp 到 Webpack 到 Vite，每個階段都在解決不同的問題。
 
-想知道為什麼前端工具一直在換？下一篇講：[從 Grunt 到 Vite：前端打包的演進](/Evernote/posts/bundler-history)
+想知道為什麼前端工具一直在換？下一篇講：[從 Grunt 到 Vite：前端打包的演進](/EverNote/posts/bundler-history)
 
 ---
 

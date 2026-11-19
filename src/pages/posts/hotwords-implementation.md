@@ -189,6 +189,6 @@ def set_hotwords(self, config):
 
 相關文章：
 
-- [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
-- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [串流語音辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)
+- [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)

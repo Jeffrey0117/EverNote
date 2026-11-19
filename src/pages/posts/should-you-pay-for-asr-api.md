@@ -166,10 +166,10 @@ Sherpa-ONNX 的辨識品質不輸雲端 API，速度還更快（因為沒有網�
 
 相關文章：
 
-- [那些我沒用過的開源語音辨識方案](/Evernote/posts/asr-alternatives-i-didnt-use)
-- [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
-- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [那些我沒用過的開源語音辨識方案](/EverNote/posts/asr-alternatives-i-didnt-use)
+- [FunASR 極限優化指南](/EverNote/posts/funasr-optimization-guide)
+- [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)
 
 ---
 

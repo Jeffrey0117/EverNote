@@ -59,7 +59,7 @@ const configPath = path.join('.', 'config', 'settings.json')
 而且每個平台寫一份，然後你還要維護它們。
 
 用 Tauri 的話要寫 Rust，用 Electron 的話要處理主進程和渲染進程的 IPC（Inter-Process Communication，進程間通訊）。
-我在 [Tauri WebView 的各種坑](/Evernote/posts/tauri-webview-pitfalls) 裡面講過一些例子。
+我在 [Tauri WebView 的各種坑](/EverNote/posts/tauri-webview-pitfalls) 裡面講過一些例子。
 
 ### Bug 要在三個平台測
 
@@ -137,7 +137,7 @@ const configPath = path.join('.', 'config', 'settings.json')
 
 讓人用熟悉的技術做事，比學新技術快得多。
 
-[跨平台桌面方案，先搞懂在選什麼](/Evernote/posts/cross-platform-desktop-overview) 這篇有講各框架的選擇邏輯。
+[跨平台桌面方案，先搞懂在選什麼](/EverNote/posts/cross-platform-desktop-overview) 這篇有講各框架的選擇邏輯。
 
 ### 內部工具，不追求極致體驗
 
@@ -169,7 +169,7 @@ const configPath = path.join('.', 'config', 'settings.json')
 
 選工具不是選「最好」，是選「對我的情況最適合」。
 
-詳細可以看 [Qt + Python 快速開發桌面應用](/Evernote/posts/qt-python-vibe-coding)。
+詳細可以看 [Qt + Python 快速開發桌面應用](/EverNote/posts/qt-python-vibe-coding)。
 
 **對外產品**：看情況。
 
@@ -179,7 +179,7 @@ const configPath = path.join('.', 'config', 'settings.json')
 會 Web 就用 Electron，會 Rust 就用 Tauri，會 Dart 就用 [Flutter](https://flutter.dev/)。
 
 選工具的邏輯跟選套件管理工具一樣，先搞清楚自己要什麼。
-這點我在 [Python 套件管理工具怎麼選](/Evernote/posts/python-package-managers) 也講過。
+這點我在 [Python 套件管理工具怎麼選](/EverNote/posts/python-package-managers) 也講過。
 
 ---
 

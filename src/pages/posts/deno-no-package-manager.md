@@ -151,10 +151,10 @@ Deno 的設計是「把依賴當成 URL」，簡化管理但依賴網路。
 
 想了解其他語言怎麼處理套件管理，可以參考：
 
-- [Node.js 的三個套件管理器](/Evernote/posts/nodejs-package-managers)：npm、yarn、pnpm 的差異
-- [Python 套件管理的混亂](/Evernote/posts/python-package-managers)：pip、uv、poetry 各有擁護者
-- [Cargo 為什麼是最好的](/Evernote/posts/why-cargo-is-the-best)：Rust 的套件管理被公認設計得最好
-- [Windows 也有套件管理器了](/Evernote/posts/windows-package-managers)：winget 和 scoop 的選擇
+- [Node.js 的三個套件管理器](/EverNote/posts/nodejs-package-managers)：npm、yarn、pnpm 的差異
+- [Python 套件管理的混亂](/EverNote/posts/python-package-managers)：pip、uv、poetry 各有擁護者
+- [Cargo 為什麼是最好的](/EverNote/posts/why-cargo-is-the-best)：Rust 的套件管理被公認設計得最好
+- [Windows 也有套件管理器了](/EverNote/posts/windows-package-managers)：winget 和 scoop 的選擇
 
 Deno 說不要套件管理器，聽起來瘋，但說不定是對的。
 

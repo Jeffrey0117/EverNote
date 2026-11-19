@@ -148,7 +148,7 @@ debug 了一整天，最後發現是順序問題。
 
 **Webpack 的學習曲線不是一條線，是一道牆。**
 
-想體驗什麼叫「設定地獄」，可以看這篇：[Webpack 設定地獄](/Evernote/posts/webpack-config-hell)
+想體驗什麼叫「設定地獄」，可以看這篇：[Webpack 設定地獄](/EverNote/posts/webpack-config-hell)
 
 ### Rollup：專注打包
 
@@ -164,7 +164,7 @@ Rollup 假設你用 ES Module，產出的 code 更乾淨、更小。
 
 React、Vue、Three.js... 你打開它們的 `package.json`，看到 `"module": "dist/xxx.esm.js"` 通常就是 Rollup 產出的。
 
-想知道為什麼打包 library 要用 Rollup，可以看這篇：[打包 Library 為什麼用 Rollup](/Evernote/posts/rollup-for-libraries)
+想知道為什麼打包 library 要用 Rollup，可以看這篇：[打包 Library 為什麼用 Rollup](/EverNote/posts/rollup-for-libraries)
 
 ### 問題：越來越慢
 
@@ -192,7 +192,7 @@ Go 編譯成原生 binary，不用先跑 Node.js。多核心平行處理，吃�
 
 Webpack 打包要 10 秒，esbuild 可能只要 0.1 秒。
 
-想深入了解 esbuild 為什麼這麼快，可以看這篇：[esbuild 的速度秘密](/Evernote/posts/esbuild-speed)
+想深入了解 esbuild 為什麼這麼快，可以看這篇：[esbuild 的速度秘密](/EverNote/posts/esbuild-speed)
 
 ### Vite：開發體驗革命
 
@@ -301,7 +301,7 @@ Vite 把「開發不打包」這個概念帶進來，大家突然發現：原來
 - 舊專案有 Webpack 在跑，**不要為了換而換**，遷移成本很高
 - 如果你在 Vercel 生態系（Next.js），**跟著官方走**，他們會幫你選
 
-詳細的工具比較和選擇指南，可以看這篇：[前端打包工具，先搞懂在打包什麼](/Evernote/posts/bundler-overview)
+詳細的工具比較和選擇指南，可以看這篇：[前端打包工具，先搞懂在打包什麼](/EverNote/posts/bundler-overview)
 
 ## 未來會怎樣
 

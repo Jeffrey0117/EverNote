@@ -8,7 +8,7 @@ interface Props {
 const { title, description = 'Jeffrey0117 技術筆記', ogImage } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const defaultOgImage = new URL('/Evernote/og-default.png', Astro.site).href;
+const defaultOgImage = new URL('/EverNote/og-default.png', Astro.site).href;
 const ogImageURL = ogImage || defaultOgImage;
 
 const taglines = [
@@ -33,7 +33,7 @@ const randomTagline = taglines[Math.floor(Math.random() * taglines.length)];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/Evernote/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/EverNote/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
 
@@ -53,24 +53,24 @@ const randomTagline = taglines[Math.floor(Math.random() * taglines.length)];
     <meta name="twitter:image" content={ogImageURL} />
 
     <!-- Pagefind Search -->
-    <link href="/Evernote/pagefind/pagefind-ui.css" rel="stylesheet" />
-    <script src="/Evernote/pagefind/pagefind-ui.js" is:inline></script>
+    <link href="/EverNote/pagefind/pagefind-ui.css" rel="stylesheet" />
+    <script src="/EverNote/pagefind/pagefind-ui.js" is:inline></script>
 
     <!-- RSS -->
-    <link rel="alternate" type="application/rss+xml" title="Jeffrey0117 技術筆記" href="/Evernote/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Jeffrey0117 技術筆記" href="/EverNote/rss.xml" />
   </head>
   <body>
     <div class="container">
       <header class="site-header">
         <nav class="site-nav">
           <div class="site-brand">
-            <a href="/Evernote/" class="site-title">Jeffrey0117 - 沒有技術的技術部落格</a>
+            <a href="/EverNote/" class="site-title">Jeffrey0117 - 沒有技術的技術部落格</a>
             <p class="site-tagline">{randomTagline}</p>
           </div>
           <ul class="nav-links">
-            <li><a href="/Evernote/">文章</a></li>
-            <li><a href="/Evernote/notes/">筆記</a></li>
-            <li><a href="/Evernote/about">關於</a></li>
+            <li><a href="/EverNote/">文章</a></li>
+            <li><a href="/EverNote/notes/">筆記</a></li>
+            <li><a href="/EverNote/about">關於</a></li>
             <li><button id="search-btn" class="search-btn">搜尋</button></li>
           </ul>
         </nav>
@@ -89,7 +89,7 @@ const randomTagline = taglines[Math.floor(Math.random() * taglines.length)];
       </main>
 
       <footer class="site-footer">
-        <p>Built with Astro · Jeffrey0117 技術筆記 · <a href="/Evernote/rss.xml">RSS</a></p>
+        <p>Built with Astro · Jeffrey0117 技術筆記 · <a href="/EverNote/rss.xml">RSS</a></p>
       </footer>
     </div>
 

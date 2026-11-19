@@ -271,7 +271,7 @@ Sherpa-ONNX 輸出的是純文字，沒有標點。
 
 我用 [FunASR](https://github.com/modelscope/FunASR) 的 `ct-punc` 模型做標點恢復。
 
-但後來發現 ct-punc 太重了（500MB），我另外做了一個[純規則式的輕量方案](/Evernote/posts/rule-based-punctuation-restoration)，只有 5KB，用正規表達式就能達到 80% 的效果。
+但後來發現 ct-punc 太重了（500MB），我另外做了一個[純規則式的輕量方案](/EverNote/posts/rule-based-punctuation-restoration)，只有 5KB，用正規表達式就能達到 80% 的效果。
 
 ct-punc 的用法：
 
@@ -324,6 +324,6 @@ else:
 
 相關文章：
 
-- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
-- [用 5KB 正規表達式幹掉 500MB 深度學習模型](/Evernote/posts/rule-based-punctuation-restoration)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization)
+- [用 5KB 正規表達式幹掉 500MB 深度學習模型](/EverNote/posts/rule-based-punctuation-restoration)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)

@@ -204,5 +204,5 @@ functional programming 的寫法，但可讀性差。
 
 ## 延伸閱讀
 
-- [JavaScript 的賽跑問題](/Evernote/posts/javascript-race) — race condition 是什麼？這篇講完整觀念
-- [Promise.race 處理 OCR 超時](/Evernote/posts/promise-race-timeout) — 反過來的問題：不想無限等，怎麼設停損
+- [JavaScript 的賽跑問題](/EverNote/posts/javascript-race) — race condition 是什麼？這篇講完整觀念
+- [Promise.race 處理 OCR 超時](/EverNote/posts/promise-race-timeout) — 反過來的問題：不想無限等，怎麼設停損

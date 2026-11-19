@@ -38,7 +38,7 @@ TypeScript 編譯、CSS 預處理、圖片壓縮、程式碼分割——全部�
 
 我第一次不懂這件事，把 loader 和 plugin 搞混，改了設定噴了一堆錯，debug 了一整個下午。
 
-想深入了解前端打包工具的發展脈絡，可以看這篇：[前端打包工具演進史](/Evernote/posts/bundler-history)
+想深入了解前端打包工具的發展脈絡，可以看這篇：[前端打包工具演進史](/EverNote/posts/bundler-history)
 
 ## 設定為什麼這麼複雜
 
@@ -115,7 +115,7 @@ Webpack 的生態系是所有打包工具裡最大的。
 
 有些 loader 可能年久失修，但至少有得選。
 
-如果你對「為什麼前端需要打包」還有疑惑，可以先看這篇總覽：[前端打包工具，到底在打包什麼](/Evernote/posts/bundler-overview)
+如果你對「為什麼前端需要打包」還有疑惑，可以先看這篇總覽：[前端打包工具，到底在打包什麼](/EverNote/posts/bundler-overview)
 
 ## 常見設定踩坑
 
@@ -182,9 +182,9 @@ output: {
 |------|------|
 | 複雜大型專案，需要細緻控制 | Webpack |
 | 需要各種 loader 和 plugin | Webpack |
-| 新專案，想要開發體驗好 | [Vite](/Evernote/posts/bundler-overview) |
-| 打包 library | [Rollup](/Evernote/posts/rollup-for-libraries) |
-| 追求極致速度 | [esbuild](/Evernote/posts/esbuild-speed) |
+| 新專案，想要開發體驗好 | [Vite](/EverNote/posts/bundler-overview) |
+| 打包 library | [Rollup](/EverNote/posts/rollup-for-libraries) |
+| 追求極致速度 | [esbuild](/EverNote/posts/esbuild-speed) |
 
 我自己的判斷：
 
@@ -208,6 +208,6 @@ Webpack 的設定確實是地獄，但搞懂之後會發現它什麼都能做。
 
 其他工具把這些藏起來了，但藏起來不代表不存在。
 
-Webpack 和 Rollup 都嫌慢？下一篇聊聊 [esbuild 怎麼做到比它們快 100 倍](/Evernote/posts/esbuild-speed)。
+Webpack 和 Rollup 都嫌慢？下一篇聊聊 [esbuild 怎麼做到比它們快 100 倍](/EverNote/posts/esbuild-speed)。
 
-想了解 Node.js 生態系的套件管理，可以看這篇：[npm、yarn、pnpm 怎麼選](/Evernote/posts/nodejs-package-managers)
+想了解 Node.js 生態系的套件管理，可以看這篇：[npm、yarn、pnpm 怎麼選](/EverNote/posts/nodejs-package-managers)

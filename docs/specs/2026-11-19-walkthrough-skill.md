@@ -40,7 +40,7 @@
 
 EverNote = Astro 靜態站，貼文是 `src/pages/posts/*.md`（frontmatter 驅動列表/RSS/分類）。互動頁是帶 JS 的完整 HTML，不硬塞 markdown。所以一篇拆解 = 兩個檔：
 
-1. **互動頁**：`public/w/<slug>/index.html`（自包，原樣服務於 `/Evernote/w/<slug>/`）。
+1. **互動頁**：`public/w/<slug>/index.html`（自包，原樣服務於 `/EverNote/w/<slug>/`）。
 2. **列表貼文**：`src/pages/posts/<slug>.md`，frontmatter：
    ```
    layout: ../../layouts/PostLayout.astro
@@ -61,7 +61,7 @@ EverNote = Astro 靜態站，貼文是 `src/pages/posts/*.md`（frontmatter 驅�
 
 ## v1 驗收（整條線跑通）
 
-- 用今天 coursebloom 的「管理員驗證鎖」當第一篇：產互動頁（沿用身分切換模型）→ 跑腳本落地 → `npm install` → `npm run build` 綠 → commit + push → GitHub Actions 部署 → 打得開 `https://jeffrey0117.github.io/Evernote/w/<slug>/` 且首頁列得到。
+- 用今天 coursebloom 的「管理員驗證鎖」當第一篇：產互動頁（沿用身分切換模型）→ 跑腳本落地 → `npm install` → `npm run build` 綠 → commit + push → GitHub Actions 部署 → 打得開 `https://jeffrey0117.github.io/EverNote/w/<slug>/` 且首頁列得到。
 - EverNote 停擺半年，順便復活（build 綠、部署成功）。
 
 ## 之後（backlog）

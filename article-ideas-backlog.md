@@ -16,7 +16,7 @@ draft: true
 
 ### ✅ Web Audio API 的坑（ScriptProcessor → AudioWorklet）
 
-**已完成** → [web-audio-api-pitfalls.md](/Evernote/posts/web-audio-api-pitfalls)
+**已完成** → [web-audio-api-pitfalls.md](/EverNote/posts/web-audio-api-pitfalls)
 
 ---
 
@@ -58,7 +58,7 @@ draft: true
 
 ### ✅ 視窗控制：置頂與縮小到托盤
 
-**已完成** → [electron-window-controls.md](/Evernote/posts/electron-window-controls)
+**已完成** → [electron-window-controls.md](/EverNote/posts/electron-window-controls)
 
 ---
 
@@ -66,7 +66,7 @@ draft: true
 
 ### ✅ 中文桌面應用的字體選擇
 
-**已完成** → [chinese-font-selection.md](/Evernote/posts/chinese-font-selection)
+**已完成** → [chinese-font-selection.md](/EverNote/posts/chinese-font-selection)
 
 ---
 
@@ -96,7 +96,7 @@ draft: true
 
 ### ✅ 字典替換：自動校正專有名詞
 
-**已完成** → [dictionary-replacement.md](/Evernote/posts/dictionary-replacement)
+**已完成** → [dictionary-replacement.md](/EverNote/posts/dictionary-replacement)
 
 ---
 

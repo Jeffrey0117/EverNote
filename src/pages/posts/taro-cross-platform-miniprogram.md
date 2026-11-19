@@ -218,9 +218,9 @@ if (process.env.TARO_ENV === 'weapp') {
 
 ## 相關文章
 
-- [Preact 和 Nerv：輕量版 React](/Evernote/posts/preact-nerv-lightweight-react) — Nerv 是同一個團隊做的
-- [跨平台桌面開發](/Evernote/posts/cross-platform-desktop-overview) — 桌面端的跨平台方案
-- [寫程式解決問題之前，先決定你要做什麼](/Evernote/posts/what-should-i-build) — 什麼時候需要 App
+- [Preact 和 Nerv：輕量版 React](/EverNote/posts/preact-nerv-lightweight-react) — Nerv 是同一個團隊做的
+- [跨平台桌面開發](/EverNote/posts/cross-platform-desktop-overview) — 桌面端的跨平台方案
+- [寫程式解決問題之前，先決定你要做什麼](/EverNote/posts/what-should-i-build) — 什麼時候需要 App
 
 ---
 

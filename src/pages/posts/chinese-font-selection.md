@@ -194,5 +194,5 @@ button, .ui-element {
 
 相關文章：
 
-- [聲聲慢：我做了一個離線語音轉文字工具](/Evernote/posts/shengshengman-intro)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [聲聲慢：我做了一個離線語音轉文字工具](/EverNote/posts/shengshengman-intro)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)

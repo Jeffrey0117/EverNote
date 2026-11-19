@@ -23,7 +23,7 @@ tags:
 
 用什麼工具？
 
-底層都是 [ImageMagick](/Evernote/posts/opensource-giants)，但各語言有更好用的包裝。
+底層都是 [ImageMagick](/EverNote/posts/opensource-giants)，但各語言有更好用的包裝。
 
 ---
 
@@ -294,15 +294,15 @@ ffmpeg -i input.png -vf scale=800:600 output.png
 cwebp -q 80 input.png -o output.webp
 ```
 
-這些 CLI 工具的詳細介紹在 [這篇文章](/Evernote/posts/opensource-giants)。
+這些 CLI 工具的詳細介紹在 [這篇文章](/EverNote/posts/opensource-giants)。
 
 ---
 
 ## 相關文章
 
-- [這些開源專案，重要性不輸你學的任何框架](/Evernote/posts/opensource-giants) — ImageMagick 和其他 CLI 工具
-- [HTTP 請求套件：httpx vs axios](/Evernote/posts/http-client-packages) — 下載圖片
-- [瀏覽器自動化：Playwright vs Puppeteer](/Evernote/posts/browser-automation-packages) — 截圖功能
+- [這些開源專案，重要性不輸你學的任何框架](/EverNote/posts/opensource-giants) — ImageMagick 和其他 CLI 工具
+- [HTTP 請求套件：httpx vs axios](/EverNote/posts/http-client-packages) — 下載圖片
+- [瀏覽器自動化：Playwright vs Puppeteer](/EverNote/posts/browser-automation-packages) — 截圖功能
 
 ---
 

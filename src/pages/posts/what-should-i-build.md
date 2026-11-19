@@ -126,7 +126,7 @@ document.querySelectorAll('.ad').forEach(el => el.remove());
 
 如果你只是想在「某個網站」加功能，甚至不用做擴充套件——用 [Tampermonkey](https://www.tampermonkey.net/) 寫 userscript 就好。
 
-更多細節見：[Tampermonkey：在任何網站注入你的程式碼](/Evernote/posts/tampermonkey-inject-code-into-any-website)
+更多細節見：[Tampermonkey：在任何網站注入你的程式碼](/EverNote/posts/tampermonkey-inject-code-into-any-website)
 
 ---
 
@@ -219,7 +219,7 @@ async def get_user(user_id: int):
 
 如果網頁能解決，優先考慮網頁。
 
-跨平台桌面應用的選擇，見：[跨平台桌面開發：Electron、Tauri、還是原生？](/Evernote/posts/cross-platform-desktop-overview)
+跨平台桌面應用的選擇，見：[跨平台桌面開發：Electron、Tauri、還是原生？](/EverNote/posts/cross-platform-desktop-overview)
 
 ---
 
@@ -298,10 +298,10 @@ async def get_user(user_id: int):
 
 ## 相關文章
 
-- [Python 套件管理的混亂現狀](/Evernote/posts/python-package-managers) — 寫腳本的環境
-- [Tampermonkey：在任何網站注入程式碼](/Evernote/posts/tampermonkey-inject-code-into-any-website) — 最簡單的擴充套件
-- [跨平台桌面開發](/Evernote/posts/cross-platform-desktop-overview) — App 的技術選擇
-- [FastAPI：為什麼我從 Flask 轉過來](/Evernote/posts/fastapi-why-i-switched-from-flask) — API 的技術選擇
+- [Python 套件管理的混亂現狀](/EverNote/posts/python-package-managers) — 寫腳本的環境
+- [Tampermonkey：在任何網站注入程式碼](/EverNote/posts/tampermonkey-inject-code-into-any-website) — 最簡單的擴充套件
+- [跨平台桌面開發](/EverNote/posts/cross-platform-desktop-overview) — App 的技術選擇
+- [FastAPI：為什麼我從 Flask 轉過來](/EverNote/posts/fastapi-why-i-switched-from-flask) — API 的技術選擇
 
 ---
 

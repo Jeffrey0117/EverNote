@@ -19,7 +19,7 @@ Jotai？Recoil？MobX？選項太多，每個都要學。
 
 後來我發現，大部分 side project 根本不需要這麼複雜的東西。
 
-![選對工具](/Evernote/images/posts/zustand-simple.png)
+![選對工具](/EverNote/images/posts/zustand-simple.png)
 <p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>你只是要去巷口買個早餐，不需要開卡車。</small></p>
 
 ## 先問自己需要管什麼
@@ -40,7 +40,7 @@ Jotai？Recoil？MobX？選項太多，每個都要學。
 
 ## Redux 哪裡重
 
-![Redux 的 boilerplate](/Evernote/images/posts/zustand-mess.png)
+![Redux 的 boilerplate](/EverNote/images/posts/zustand-mess.png)
 <p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>左邊是 Redux 專案，右邊是 Zustand 專案。你想維護哪個？</small></p>
 
 Redux 本身的概念不複雜：單一 store、action、reducer。
@@ -87,7 +87,7 @@ Redux Toolkit 改善了很多，但還是需要 slice、thunk 那些概念。
 
 ## Zustand 長怎樣
 
-![簡單的小店](/Evernote/images/posts/zustand-store.png)
+![簡單的小店](/EverNote/images/posts/zustand-store.png)
 <p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>Zustand 在德文是「狀態」的意思。這隻熊就是你的狀態管理員。</small></p>
 
 同樣的功能，用 [Zustand](https://github.com/pmndrs/zustand)：
@@ -134,7 +134,7 @@ setToken('new-token');
 
 ## 加上 localStorage 持久化
 
-![持久化儲存](/Evernote/images/posts/zustand-persist.png)
+![持久化儲存](/EverNote/images/posts/zustand-persist.png)
 <p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>localStorage 就像寶箱，關掉瀏覽器東西還在。</small></p>
 
 登入狀態通常要存到 localStorage，這樣重新整理才不會登出：
@@ -204,7 +204,7 @@ Redux 的優勢是生態系成熟，devtools 很強，大型專案有規範可�
 
 ---
 
-![選對大小的工具](/Evernote/images/posts/zustand-right.png)
+![選對大小的工具](/EverNote/images/posts/zustand-right.png)
 <p align="center" style="margin-top: -1em; margin-bottom: 3em; color: #666;"><small>背包大小要看你走多遠，不是看別人背多大。</small></p>
 
 不是說 Redux 不好，是很多專案根本用不到那些功能。

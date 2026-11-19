@@ -124,7 +124,7 @@ Zellij 是比較新的選擇，用 Rust 寫的，介面下面會顯示快捷鍵�
 
 `Alt + Shift + +` 水平分割，`Alt + Shift + -` 垂直分割。
 
-詳情見：[讓我棄坑 VS Code 的神物 Windows Terminal](/Evernote/posts/windows-terminal-split-pane)
+詳情見：[讓我棄坑 VS Code 的神物 Windows Terminal](/EverNote/posts/windows-terminal-split-pane)
 
 tmux 的優勢是 **session 保存**。
 

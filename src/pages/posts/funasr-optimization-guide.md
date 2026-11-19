@@ -90,7 +90,7 @@ model = AutoModel(
 
 `quantize=True` 會把 PyTorch 模型轉成 ONNX 格式，並做 int8 量化。
 
-注意：這裡的 int8 是針對 Paraformer 這個非串流模型，跟我在[串流辨識文章](/Evernote/posts/streaming-speech-recognition-optimization)裡踩的坑不一樣。Paraformer 是整段音頻一起處理，量化後品質穩定，不會像串流 Zipformer 那樣出亂碼。
+注意：這裡的 int8 是針對 Paraformer 這個非串流模型，跟我在[串流辨識文章](/EverNote/posts/streaming-speech-recognition-optimization)裡踩的坑不一樣。Paraformer 是整段音頻一起處理，量化後品質穩定，不會像串流 Zipformer 那樣出亂碼。
 
 效果：推理速度提升約 **1.5-2 倍**。
 
@@ -231,10 +231,10 @@ print(f"RTF: {result['rtf']}")
 
 相關文章：
 
-- [離線語音辨識模型大亂鬥](/Evernote/posts/speech-recognition-models-comparison)
-- [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
-- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [離線語音辨識模型大亂鬥](/EverNote/posts/speech-recognition-models-comparison)
+- [串流語音辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)
+- [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)
 
 ---
 

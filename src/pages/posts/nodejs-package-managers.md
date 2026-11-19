@@ -162,10 +162,10 @@ JavaScript 的套件管理一直被吐槽，那其他語言呢？
 
 | 語言 | 套件管理器 | 特色 |
 |------|-----------|------|
-| Python | pip / uv / poetry | [各有優缺，uv 最近很紅](/Evernote/posts/python-package-managers) |
-| Rust | Cargo | [公認最好用的套件管理器](/Evernote/posts/why-cargo-is-the-best) |
-| Windows | winget / scoop | [系統層級的套件管理](/Evernote/posts/windows-package-managers) |
-| Deno | 不需要 | [直接 import URL](/Evernote/posts/deno-no-package-manager) |
+| Python | pip / uv / poetry | [各有優缺，uv 最近很紅](/EverNote/posts/python-package-managers) |
+| Rust | Cargo | [公認最好用的套件管理器](/EverNote/posts/why-cargo-is-the-best) |
+| Windows | winget / scoop | [系統層級的套件管理](/EverNote/posts/windows-package-managers) |
+| Deno | 不需要 | [直接 import URL](/EverNote/posts/deno-no-package-manager) |
 
 Rust 的 Cargo 常被拿來當標竿，Node.js 社群一直在想辦法追上。
 

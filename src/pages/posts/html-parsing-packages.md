@@ -245,7 +245,7 @@ Cheerio 和 BeautifulSoup 只能解析 HTML。
 
 如果網頁內容是 JavaScript 動態產生的（SPA、無限滾動、需要登入），它們拿到的只是空殼。
 
-這時候要用 [Playwright](/Evernote/posts/browser-automation-packages)：
+這時候要用 [Playwright](/EverNote/posts/browser-automation-packages)：
 
 ```python
 # 需要 JavaScript 渲染
@@ -267,9 +267,9 @@ soup = BeautifulSoup(html, 'lxml')
 
 ## 相關文章
 
-- [HTTP 請求套件：httpx vs axios](/Evernote/posts/http-client-packages) — 發請求拿 HTML
-- [瀏覽器自動化：Playwright vs Puppeteer](/Evernote/posts/browser-automation-packages) — 需要 JS 渲染時
-- [yt-dlp：YouTube 下載背後的黑魔法](/Evernote/posts/yt-dlp-how-youtube-download-works) — 爬蟲的極端案例
+- [HTTP 請求套件：httpx vs axios](/EverNote/posts/http-client-packages) — 發請求拿 HTML
+- [瀏覽器自動化：Playwright vs Puppeteer](/EverNote/posts/browser-automation-packages) — 需要 JS 渲染時
+- [yt-dlp：YouTube 下載背後的黑魔法](/EverNote/posts/yt-dlp-how-youtube-download-works) — 爬蟲的極端案例
 
 ---
 

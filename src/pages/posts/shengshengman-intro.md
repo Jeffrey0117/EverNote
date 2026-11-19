@@ -82,7 +82,7 @@ tags:
 
 底層的語音辨識用 [Sherpa-ONNX](https://github.com/k2-fsa/sherpa-onnx)，一個基於 ONNX Runtime 的離線辨識框架。
 
-整個優化過程寫在這個系列：[所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)。
+整個優化過程寫在這個系列：[所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)。
 
 簡單講：
 
@@ -140,9 +140,9 @@ Sherpa-ONNX 本身就支援移動平台，技術上可行。
 
 相關技術文章：
 
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
-- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
-- [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)
+- [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization)
+- [串流語音辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)
 
 ---
 

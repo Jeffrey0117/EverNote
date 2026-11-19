@@ -265,8 +265,8 @@ const tomorrow = date.add(1, 'day');  // date 沒變，tomorrow 是新物件
 
 ## 相關文章
 
-- [HTTP 請求套件：httpx vs axios](/Evernote/posts/http-client-packages) — 從 API 拿日期資料
-- [資料驗證套件：Pydantic vs Zod](/Evernote/posts/validation-packages) — 驗證日期格式
+- [HTTP 請求套件：httpx vs axios](/EverNote/posts/http-client-packages) — 從 API 拿日期資料
+- [資料驗證套件：Pydantic vs Zod](/EverNote/posts/validation-packages) — 驗證日期格式
 
 ---
 

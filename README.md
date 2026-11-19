@@ -7,7 +7,7 @@
 [![Astro](https://img.shields.io/badge/Astro-FF5D01?logo=astro&logoColor=white)](https://astro.build)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
 
-[線上預覽](https://jeffrey0117.github.io/Evernote/)
+[線上預覽](https://jeffrey0117.github.io/EverNote/)
 
 </div>
 
@@ -99,7 +99,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 **2. 在其他專案安裝 hook**
 
 ```bash
-cd C:/Users/jeffb/Desktop/code/Evernote
+cd C:/Users/jeffb/Desktop/code/EverNote
 node scripts/install-hook.cjs --target C:/path/to/your/project
 ```
 
@@ -170,7 +170,7 @@ Pagefind       全站搜尋
 
 ```bash
 # Clone
-git clone https://github.com/Jeffrey0117/Evernote.git
+git clone https://github.com/Jeffrey0117/EverNote.git
 cd Evernote
 
 # 安裝

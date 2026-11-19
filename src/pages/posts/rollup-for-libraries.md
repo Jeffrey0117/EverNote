@@ -69,7 +69,7 @@ Rollup 從第一天就支援這個功能，因為它從一開始就是用 ES mod
 
 Webpack 後來也支援 tree shaking，但效果就是沒 Rollup 好。
 
-想了解更多打包工具的歷史，可以看這篇：[前端打包工具演進史](/Evernote/posts/bundler-history)
+想了解更多打包工具的歷史，可以看這篇：[前端打包工具演進史](/EverNote/posts/bundler-history)
 
 ## 跟 Webpack 的差異
 
@@ -91,7 +91,7 @@ Webpack 後來也支援 tree shaking，但效果就是沒 Rollup 好。
 
 我用 Webpack 打包 library 踩了一堆坑，後來才知道該用 Rollup。
 
-Webpack 的踩坑紀錄：[Webpack 設定讓我崩潰，然後真香](/Evernote/posts/webpack-config-hell)
+Webpack 的踩坑紀錄：[Webpack 設定讓我崩潰，然後真香](/EverNote/posts/webpack-config-hell)
 
 ## 為什麼 library 適合用 Rollup
 
@@ -234,9 +234,9 @@ export default {
 | 打包 npm 套件 | Rollup |
 | 需要乾淨的輸出 | Rollup |
 | 需要多格式輸出 | Rollup |
-| 打包應用程式 | [Webpack](/Evernote/posts/webpack-config-hell) 或 Vite |
+| 打包應用程式 | [Webpack](/EverNote/posts/webpack-config-hell) 或 Vite |
 | 需要開發伺服器、HMR | Webpack 或 Vite |
-| 追求極致速度 | [esbuild](/Evernote/posts/esbuild-speed) |
+| 追求極致速度 | [esbuild](/EverNote/posts/esbuild-speed) |
 
 我自己的判斷：
 
@@ -252,7 +252,7 @@ export default {
 
 對了，Vite 的生產環境打包其實就是用 Rollup，所以如果你用 Vite，某種程度上也在用 Rollup。
 
-想了解完整的打包工具生態，可以看這篇總覽：[前端打包工具，到底在打包什麼](/Evernote/posts/bundler-overview)
+想了解完整的打包工具生態，可以看這篇總覽：[前端打包工具，到底在打包什麼](/EverNote/posts/bundler-overview)
 
 ---
 
@@ -262,6 +262,6 @@ Rollup 就做一件事：打包 library。
 
 **工具沒有好壞，只有適不適合。打包 library 用 Rollup，打包應用程式用 Webpack 或 Vite。**
 
-Webpack 和 Rollup 都嫌慢？下一篇聊聊 [esbuild 怎麼做到比它們快 100 倍](/Evernote/posts/esbuild-speed)。
+Webpack 和 Rollup 都嫌慢？下一篇聊聊 [esbuild 怎麼做到比它們快 100 倍](/EverNote/posts/esbuild-speed)。
 
-想了解 Node.js 的套件管理生態，可以看這篇：[npm、yarn、pnpm 怎麼選](/Evernote/posts/nodejs-package-managers)
+想了解 Node.js 的套件管理生態，可以看這篇：[npm、yarn、pnpm 怎麼選](/EverNote/posts/nodejs-package-managers)

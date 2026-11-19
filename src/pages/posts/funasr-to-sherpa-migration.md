@@ -121,7 +121,7 @@ text = sherpa_transcribe(audio)
 text_with_punc = funasr_punc(text)
 ```
 
-或者用我寫的[規則式標點恢復](/Evernote/posts/rule-based-punctuation-restoration)，完全不依賴 FunASR。
+或者用我寫的[規則式標點恢復](/EverNote/posts/rule-based-punctuation-restoration)，完全不依賴 FunASR。
 
 ### 2. 模型格式不同
 
@@ -233,10 +233,10 @@ Sherpa-ONNX 不是萬能的。這些情況可能 FunASR 更適合：
 
 相關文章：
 
-- [離線語音辨識模型大亂鬥](/Evernote/posts/speech-recognition-models-comparison)
-- [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
-- [Sherpa-ONNX 雙模型架構優化實戰](/Evernote/posts/sherpa-onnx-optimization)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [離線語音辨識模型大亂鬥](/EverNote/posts/speech-recognition-models-comparison)
+- [FunASR 極限優化指南](/EverNote/posts/funasr-optimization-guide)
+- [Sherpa-ONNX 雙模型架構優化實戰](/EverNote/posts/sherpa-onnx-optimization)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)
 
 ---
 

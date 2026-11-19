@@ -1,6 +1,6 @@
 # Evernote
 
-Astro-based technical notes blog (`vibe-notes-blog`) with AI-assisted writing and auto-generated notes from git commits. Deployed to GitHub Pages at `/Evernote`.
+Astro-based technical notes blog (`vibe-notes-blog`) with AI-assisted writing and auto-generated notes from git commits. Deployed to GitHub Pages at `/EverNote`.
 
 ## Stack
 - Astro v5 (static site generator), TypeScript (`astro/tsconfigs/strict`, `@/*` → `src/*`)
@@ -49,7 +49,7 @@ dist/                   ← build output (static files)
 
 一段 code 改動拆成一頁「能動手玩」的互動 HTML（動手玩的模型 + 逐段拆 + 驗證表），歸檔進這個部落格。由全域 skill `/walkthrough`（源頭 `myclaudeset/skills/walkthrough/`）產生與驅動。
 
-- 一篇 = 兩個檔：互動頁 `public/w/<slug>/index.html`（自包、原樣服務於 `/Evernote/w/<slug>/`）＋ 列表貼文 `src/pages/posts/<slug>.md`（frontmatter 多一個 `interactive: true`，內文是文字摘要 + 「▶ 打開互動拆解」按鈕）。
+- 一篇 = 兩個檔：互動頁 `public/w/<slug>/index.html`（自包、原樣服務於 `/EverNote/w/<slug>/`）＋ 列表貼文 `src/pages/posts/<slug>.md`（frontmatter 多一個 `interactive: true`，內文是文字摘要 + 「▶ 打開互動拆解」按鈕）。
 - 落地別手刻，跑 `node scripts/add-walkthrough.cjs --html <檔> --slug <slug> --title <t> --desc <d> --tags <逗號> --stub <摘要.md>`（`--force` 覆蓋）。
 - `interactive: true` 的貼文首頁會標「互動」徽章（`index.astro`）。
 - 互動頁是公開頁：別寫密鑰、內部網域、未公開的攻擊細節；程式片段可簡化改名。
@@ -74,7 +74,7 @@ No test setup or linter configured.
 
 ## Deployment
 - GitHub Actions auto-deploys to GitHub Pages on push to `main`. Build output in `dist/` (also deployable to Vercel / Netlify / Cloudflare Pages / any static host).
-- `astro.config.mjs`: `site: https://jeffrey0117.github.io`, `base: /Evernote` — keep `base` prefix on internal asset/image links.
+- `astro.config.mjs`: `site: https://jeffrey0117.github.io`, `base: /EverNote` — keep `base` prefix on internal asset/image links.
 
 ## Notes
 - Many `tmpclaude-*-cwd` files in repo root are stray temp files, not part of the project.

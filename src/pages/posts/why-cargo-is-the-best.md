@@ -97,7 +97,7 @@ vitest.config.ts
 
 Rust 只要一個 `Cargo.toml`。
 
-詳細的 Python 套件管理比較可以看這篇：[Python 套件管理的混亂現狀](/Evernote/posts/python-package-managers)
+詳細的 Python 套件管理比較可以看這篇：[Python 套件管理的混亂現狀](/EverNote/posts/python-package-managers)
 
 ## Cargo.toml 清楚到不行
 
@@ -214,7 +214,7 @@ uv sync
 
 這跟 `cargo build` 自動處理依賴的邏輯很像。
 
-更多 Python 套件管理工具的比較：[Python 套件管理的混亂現狀](/Evernote/posts/python-package-managers)
+更多 Python 套件管理工具的比較：[Python 套件管理的混亂現狀](/EverNote/posts/python-package-managers)
 
 ### Bun 學了什麼
 
@@ -233,7 +233,7 @@ Bun 基本上就是在說：npm + node + webpack + jest 太多了，我全包。
 
 跟 Cargo 的設計哲學一模一樣。
 
-JavaScript 套件管理的詳細比較：[npm vs yarn vs pnpm vs bun](/Evernote/posts/nodejs-package-managers)
+JavaScript 套件管理的詳細比較：[npm vs yarn vs pnpm vs bun](/EverNote/posts/nodejs-package-managers)
 
 ### Go 學了什麼
 
@@ -286,7 +286,7 @@ Cargo 從一開始就是跟 Rust 綁在一起的，安裝 Rust 就有 Cargo，�
 
 所以 Python 和 JavaScript 的新工具只能說「我要當這個語言的 Cargo」，但永遠沒辦法真的變成唯一選項。
 
-Windows 的套件管理也有類似的問題，可以參考：[Windows 套件管理：winget vs scoop](/Evernote/posts/windows-package-managers)
+Windows 的套件管理也有類似的問題，可以參考：[Windows 套件管理：winget vs scoop](/EverNote/posts/windows-package-managers)
 
 ---
 
@@ -296,7 +296,7 @@ Deno 是另一個有趣的例子。
 
 這算是另一種「不想重蹈覆轍」的方式——既然套件管理那麼亂，那乾脆不要有。
 
-詳情見：[Deno 為什麼不需要 node_modules](/Evernote/posts/deno-no-package-manager)
+詳情見：[Deno 為什麼不需要 node_modules](/EverNote/posts/deno-no-package-manager)
 
 ---
 

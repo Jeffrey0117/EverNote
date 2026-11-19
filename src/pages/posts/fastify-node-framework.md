@@ -251,15 +251,15 @@ fastify.register(userRoutes, { prefix: '/users' });
 | [Koa](https://koajs.com/) | Express 團隊做的，更簡潔 |
 | [NestJS](https://nestjs.com/) | 企業級、類似 Angular 的架構 |
 
-如果是 Python 後端，我會用 [FastAPI](/Evernote/posts/fastapi-why-i-switched-from-flask)——它的設計理念跟 Fastify 很像（都強調 schema、async、效能）。
+如果是 Python 後端，我會用 [FastAPI](/EverNote/posts/fastapi-why-i-switched-from-flask)——它的設計理念跟 Fastify 很像（都強調 schema、async、效能）。
 
 ---
 
 ## 相關文章
 
-- [FastAPI：為什麼我從 Flask 轉過來](/Evernote/posts/fastapi-why-i-switched-from-flask) — Python 版的 Fastify
-- [資料驗證套件：Pydantic vs Zod](/Evernote/posts/validation-packages) — Schema 驗證
-- [寫程式解決問題之前，先決定你要做什麼](/Evernote/posts/what-should-i-build) — 什麼時候需要 API 服務
+- [FastAPI：為什麼我從 Flask 轉過來](/EverNote/posts/fastapi-why-i-switched-from-flask) — Python 版的 Fastify
+- [資料驗證套件：Pydantic vs Zod](/EverNote/posts/validation-packages) — Schema 驗證
+- [寫程式解決問題之前，先決定你要做什麼](/EverNote/posts/what-should-i-build) — 什麼時候需要 API 服務
 
 ---
 

@@ -62,7 +62,7 @@ recognizer = sherpa_onnx.OfflineRecognizer.from_paraformer(
 
 Zipformer 用 int8 就慘了。
 
-我在[串流辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)踩過這個坑：
+我在[串流辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)踩過這個坑：
 
 | 實際說的話 | int8 辨識結果 |
 |------------|---------------|
@@ -101,7 +101,7 @@ num_threads = min(os.cpu_count() or 4, 8)
 
 實測發現，超過 8 個執行緒後，效能提升有限，反而因為切換開銷變慢。
 
-這跟 [FunASR 優化](/Evernote/posts/funasr-optimization-guide)的結論一樣。不管用什麼引擎，執行緒數都有甜蜜點。
+這跟 [FunASR 優化](/EverNote/posts/funasr-optimization-guide)的結論一樣。不管用什麼引擎，執行緒數都有甜蜜點。
 
 ## VAD：跳過靜音，省運算
 
@@ -201,7 +201,7 @@ recognizer = sherpa_onnx.OnlineRecognizer.from_transducer(
 - 太激進（靜音閾值太短）：講話稍微停頓就被切斷
 - 太保守（靜音閾值太長）：要等很久才會分段
 
-詳細的調參過程在[串流辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)。
+詳細的調參過程在[串流辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)。
 
 ## 最終架構
 
@@ -258,17 +258,17 @@ int8 量化對 Paraformer 是加速神器，對 Zipformer 是品質殺手。
 
 不能無腦套用「最佳實踐」，要理解背後的原理，才能做出正確的取捨。
 
-這個思路我之後會整理成一篇[優化方法論](/Evernote/posts/optimization-methodology)，把從這些專案學到的抽象原則抽出來。
+這個思路我之後會整理成一篇[優化方法論](/EverNote/posts/optimization-methodology)，把從這些專案學到的抽象原則抽出來。
 
 ---
 
 相關文章：
 
-- [串流語音辨識的參數調教之路](/Evernote/posts/streaming-speech-recognition-optimization)
-- [FunASR 極限優化指南](/Evernote/posts/funasr-optimization-guide)
-- [離線語音辨識模型大亂鬥](/Evernote/posts/speech-recognition-models-comparison)
-- [優化方法論：從語音辨識學到的事](/Evernote/posts/optimization-methodology)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [串流語音辨識的參數調教之路](/EverNote/posts/streaming-speech-recognition-optimization)
+- [FunASR 極限優化指南](/EverNote/posts/funasr-optimization-guide)
+- [離線語音辨識模型大亂鬥](/EverNote/posts/speech-recognition-models-comparison)
+- [優化方法論：從語音辨識學到的事](/EverNote/posts/optimization-methodology)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)
 
 ---
 

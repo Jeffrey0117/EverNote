@@ -148,7 +148,7 @@ if (currentPlatform === 'darwin') {
 
 如果你發現相容性問題多到處理不完，也許 Electron 才是正確答案。
 
-[Electron 打包很肥？那是你不會 Tree Shaking](/Evernote/posts/electron-tree-shaking)
+[Electron 打包很肥？那是你不會 Tree Shaking](/EverNote/posts/electron-tree-shaking)
 
 Electron 自帶 Chromium，三個平台的行為一致。
 肥是肥了點，但至少不用處理這些相容性問題。
@@ -193,11 +193,11 @@ Electron 自帶 Chromium，三個平台的行為一致。
 | Qt | 中（20-40MB） | 一致 | 高 | 老牌穩定，但學 C++/PyQt |
 | 原生開發 | 最小 | N/A（每平台獨立寫） | 最高 | 效能最好，但工作量 x3 |
 
-想了解更多桌面應用開發選項，可以看這篇總覽：[跨平台桌面應用開發](/Evernote/posts/cross-platform-desktop-overview)
+想了解更多桌面應用開發選項，可以看這篇總覽：[跨平台桌面應用開發](/EverNote/posts/cross-platform-desktop-overview)
 
-如果你考慮用 Python 做桌面應用，Qt 是個選擇：[Qt + Python 的搭配](/Evernote/posts/qt-python-vibe-coding)
+如果你考慮用 Python 做桌面應用，Qt 是個選擇：[Qt + Python 的搭配](/EverNote/posts/qt-python-vibe-coding)
 
-如果跨平台框架都不滿意，可以考慮[何時該原生開發](/Evernote/posts/when-to-go-native)。
+如果跨平台框架都不滿意，可以考慮[何時該原生開發](/EverNote/posts/when-to-go-native)。
 
 想看官方怎麼說體積差異：[Tauri vs Electron 官方比較](https://tauri.app/concept/size)
 

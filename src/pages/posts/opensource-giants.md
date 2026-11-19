@@ -112,7 +112,7 @@ GUI 對不會用 CLI（命令列）的人確實方便。
 
 但如果你會寫程式，與其花錢買套殼，不如自己學著用。
 
-yt-dlp 的原理和用法，我之前寫過一篇詳細的：[yt-dlp：YouTube 下載背後的黑魔法](/Evernote/posts/yt-dlp-how-youtube-download-works)
+yt-dlp 的原理和用法，我之前寫過一篇詳細的：[yt-dlp：YouTube 下載背後的黑魔法](/EverNote/posts/yt-dlp-how-youtube-download-works)
 
 ---
 
@@ -166,7 +166,7 @@ def download_youtube(url, output_dir):
 
 **其實很多 Python 套件底層就是這樣做的**，只是幫你包好了而已。
 
-更進階的 Python 工具整合，可以看：[Python 套件管理的混亂現狀](/Evernote/posts/python-package-managers)
+更進階的 Python 工具整合，可以看：[Python 套件管理的混亂現狀](/EverNote/posts/python-package-managers)
 
 ---
 
@@ -210,7 +210,7 @@ VS Code、Slack、Discord 都是這樣做的。
 
 一開始我也覺得 Electron 肥，後來發現是打包方式的問題。
 
-詳細的 Electron 優化可以看：[Electron 肥是你不會 Tree Shaking](/Evernote/posts/electron-tree-shaking)
+詳細的 Electron 優化可以看：[Electron 肥是你不會 Tree Shaking](/EverNote/posts/electron-tree-shaking)
 
 ### yt-dlp：下載器
 
@@ -240,7 +240,7 @@ VS Code、Slack、Discord 都是這樣做的。
 
 這些開源工具在各自的領域裡，就是標準答案。就像 Cargo 在 Rust 生態裡一樣，做得夠好就沒有其他選項。
 
-詳情見：[為什麼大家都在抄 Cargo](/Evernote/posts/why-cargo-is-the-best)
+詳情見：[為什麼大家都在抄 Cargo](/EverNote/posts/why-cargo-is-the-best)
 
 ---
 

@@ -224,9 +224,9 @@ Svelte 通常效能最好（沒有 Virtual DOM diff），但要學新語法。
 
 ## 相關文章
 
-- [Taro：跨平台小程式框架](/Evernote/posts/taro-cross-platform-miniprogram) — Nerv 同一個團隊做的
-- [前端打包工具總覽](/Evernote/posts/bundler-overview) — 怎麼看 bundle size
-- [esbuild 快到不講道理](/Evernote/posts/esbuild-speed) — 打包工具
+- [Taro：跨平台小程式框架](/EverNote/posts/taro-cross-platform-miniprogram) — Nerv 同一個團隊做的
+- [前端打包工具總覽](/EverNote/posts/bundler-overview) — 怎麼看 bundle size
+- [esbuild 快到不講道理](/EverNote/posts/esbuild-speed) — 打包工具
 
 ---
 

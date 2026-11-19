@@ -37,7 +37,7 @@ export async function GET(context: APIContext) {
       title: item.mod.frontmatter.title,
       pubDate: new Date(item.mod.frontmatter.date),
       description: item.mod.frontmatter.description || '',
-      link: `/Evernote/${item.prefix}/${item.slug}/`,
+      link: `/EverNote/${item.prefix}/${item.slug}/`,
     })),
     customData: `<language>zh-TW</language>`,
   });

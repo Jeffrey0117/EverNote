@@ -8,7 +8,7 @@ tags:
   - 功能實作
 ---
 
-在[熱詞功能](/Evernote/posts/hotwords-implementation)那篇，我講了怎麼用 Hotwords 提升專有名詞辨識率。
+在[熱詞功能](/EverNote/posts/hotwords-implementation)那篇，我講了怎麼用 Hotwords 提升專有名詞辨識率。
 
 但有些詞，加了熱詞還是不行。
 
@@ -211,6 +211,6 @@ def build_automaton(replacements):
 
 相關文章：
 
-- [熱詞功能實作：讓語音辨識認得你的專有名詞](/Evernote/posts/hotwords-implementation)
-- [用 5KB 正規表達式幹掉 500MB 深度學習模型](/Evernote/posts/rule-based-punctuation-restoration)
-- [所有你應該知道的語音辨識，都在這](/Evernote/posts/speech-recognition-series-index)
+- [熱詞功能實作：讓語音辨識認得你的專有名詞](/EverNote/posts/hotwords-implementation)
+- [用 5KB 正規表達式幹掉 500MB 深度學習模型](/EverNote/posts/rule-based-punctuation-restoration)
+- [所有你應該知道的語音辨識，都在這](/EverNote/posts/speech-recognition-series-index)

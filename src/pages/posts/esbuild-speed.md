@@ -69,7 +69,7 @@ Go 是編譯語言，會事先編譯成原生機器碼。
 
 這差距就像：你每次開車都要先組裝引擎，跟車子本來就組好的差別。
 
-之前寫過一篇關於 Rust/Go 帶來的效能革命：[為什麼大家都在抄 Cargo](/Evernote/posts/why-cargo-is-the-best)
+之前寫過一篇關於 Rust/Go 帶來的效能革命：[為什麼大家都在抄 Cargo](/EverNote/posts/why-cargo-is-the-best)
 
 裡面提到的 [uv](https://github.com/astral-sh/uv)（Python 套件管理）和 [Ruff](https://github.com/astral-sh/ruff)（Python linter）也是用 Rust 寫的，速度比原本的 Python 工具快 10-100 倍。
 
@@ -149,7 +149,7 @@ esbuild 的 plugin 機制比較簡單，生態也小很多。
 
 如果你的專案需要自訂 AST 轉換、複雜 code splitting、IE11 支援，esbuild 不夠用，還是要用 webpack 或 Rollup。
 
-想深入了解各種打包工具的定位，可以參考這篇總覽：[前端打包工具演進史](/Evernote/posts/bundler-history)
+想深入了解各種打包工具的定位，可以參考這篇總覽：[前端打包工具演進史](/EverNote/posts/bundler-history)
 
 ## 怎麼用
 
@@ -268,7 +268,7 @@ watch();
 
 手感完全不同，像從撥接網路換成光纖。
 
-詳情可以看這篇：[Electron 肥是你不會 Tree Shaking](/Evernote/posts/electron-tree-shaking)
+詳情可以看這篇：[Electron 肥是你不會 Tree Shaking](/EverNote/posts/electron-tree-shaking)
 
 ### Vite 底層就是 esbuild
 
@@ -315,10 +315,10 @@ esbuild 內建 TypeScript 支援，不用另外裝 ts-loader。
 | Electron 渲染進程 | esbuild | 快，而且輸出乾淨 |
 
 想了解更多打包工具的比較，可以看：
-- [前端打包工具總覽](/Evernote/posts/bundler-overview) — 各工具的定位
-- [前端打包工具演進史](/Evernote/posts/bundler-history) — 為什麼會有這麼多工具
-- [webpack 設定地獄](/Evernote/posts/webpack-config-hell) — webpack 為什麼這麼難設定
-- [Rollup 適合打包 Library](/Evernote/posts/rollup-for-libraries) — 什麼時候該用 Rollup
+- [前端打包工具總覽](/EverNote/posts/bundler-overview) — 各工具的定位
+- [前端打包工具演進史](/EverNote/posts/bundler-history) — 為什麼會有這麼多工具
+- [webpack 設定地獄](/EverNote/posts/webpack-config-hell) — webpack 為什麼這麼難設定
+- [Rollup 適合打包 Library](/EverNote/posts/rollup-for-libraries) — 什麼時候該用 Rollup
 
 **我自己的判斷：**
 

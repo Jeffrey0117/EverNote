@@ -18,7 +18,7 @@ tags:
 - 登入牆：要登入才能看內容
 - 反爬蟲：偵測到是機器就擋你
 
-這些情況，[httpx](/Evernote/posts/http-client-packages) + [Cheerio](/Evernote/posts/html-parsing-packages) 搞不定。
+這些情況，[httpx](/EverNote/posts/http-client-packages) + [Cheerio](/EverNote/posts/html-parsing-packages) 搞不定。
 
 **你需要開一個真正的瀏覽器。**
 
@@ -306,9 +306,9 @@ const context = await browser.newContext({
 
 ## 相關文章
 
-- [HTTP 請求套件：httpx vs axios](/Evernote/posts/http-client-packages) — 不需要瀏覽器時
-- [HTML 解析套件：Cheerio vs BeautifulSoup](/Evernote/posts/html-parsing-packages) — 解析 HTML
-- [yt-dlp：YouTube 下載背後的黑魔法](/Evernote/posts/yt-dlp-how-youtube-download-works) — 複雜的爬蟲案例
+- [HTTP 請求套件：httpx vs axios](/EverNote/posts/http-client-packages) — 不需要瀏覽器時
+- [HTML 解析套件：Cheerio vs BeautifulSoup](/EverNote/posts/html-parsing-packages) — 解析 HTML
+- [yt-dlp：YouTube 下載背後的黑魔法](/EverNote/posts/yt-dlp-how-youtube-download-works) — 複雜的爬蟲案例
 
 ---
 

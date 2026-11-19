@@ -244,10 +244,10 @@ Python 的套件管理為什麼這麼亂？
 
 對比一下其他語言：
 
-- [Rust 的 Cargo](/Evernote/posts/why-cargo-is-the-best)：從一開始就設計好了，公認最好用
-- [Node.js 的 npm/yarn/pnpm](/Evernote/posts/nodejs-package-managers)：也有混亂期，但現在穩定了
-- [Deno](/Evernote/posts/deno-no-package-manager)：直接用 URL import，根本不需要套件管理器
-- [Windows 的 winget/scoop](/Evernote/posts/windows-package-managers)：作業系統層級的套件管理
+- [Rust 的 Cargo](/EverNote/posts/why-cargo-is-the-best)：從一開始就設計好了，公認最好用
+- [Node.js 的 npm/yarn/pnpm](/EverNote/posts/nodejs-package-managers)：也有混亂期，但現在穩定了
+- [Deno](/EverNote/posts/deno-no-package-manager)：直接用 URL import，根本不需要套件管理器
+- [Windows 的 winget/scoop](/EverNote/posts/windows-package-managers)：作業系統層級的套件管理
 
 Python 正在往 uv 統一的方向走。
 

@@ -200,7 +200,7 @@ Tauri 不自帶 Chromium，而是用系統內建的 WebView。
 我的專案有用到一些比較新的 CSS 特性，不想為了相容性再燒時間。
 所以最後還是選 Electron，然後認真優化打包。
 
-但 Tauri 有自己的坑，想了解更多可以看這篇：[Tauri 輕是輕，但坑也不少](/Evernote/posts/tauri-webview-pitfalls)
+但 Tauri 有自己的坑，想了解更多可以看這篇：[Tauri 輕是輕，但坑也不少](/EverNote/posts/tauri-webview-pitfalls)
 
 ## 什麼時候選哪個
 
@@ -219,11 +219,11 @@ Tauri 不自帶 Chromium，而是用系統內建的 WebView。
 
 ## 還有更多可以聊的
 
-關於桌面應用開發，我之前整理過一篇總覽：[跨平台桌面應用開發](/Evernote/posts/cross-platform-desktop-overview)
+關於桌面應用開發，我之前整理過一篇總覽：[跨平台桌面應用開發](/EverNote/posts/cross-platform-desktop-overview)
 
-如果你考慮用 Python 做桌面應用，可以看看 [Qt + Python 的搭配](/Evernote/posts/qt-python-vibe-coding)。
+如果你考慮用 Python 做桌面應用，可以看看 [Qt + Python 的搭配](/EverNote/posts/qt-python-vibe-coding)。
 
-如果跨平台框架都不滿意，也可以考慮[何時該原生開發](/Evernote/posts/when-to-go-native)。
+如果跨平台框架都不滿意，也可以考慮[何時該原生開發](/EverNote/posts/when-to-go-native)。
 
 ---
 
@@ -235,7 +235,7 @@ Tauri 不自帶 Chromium，而是用系統內建的 WebView。
 - 20MB 是一些只有主進程用的套件跑進渲染進程
 
 node_modules 肥大不只 Electron 有，這是整個 Node.js 生態的通病。
-想了解更多可以看這篇：[Node.js 套件管理器比較](/Evernote/posts/nodejs-package-managers)
+想了解更多可以看這篇：[Node.js 套件管理器比較](/EverNote/posts/nodejs-package-managers)
 
 Electron 肥不肥，看你怎麼打包。
 會 Tree Shaking 的人笑著用，不會的人罵著用。
