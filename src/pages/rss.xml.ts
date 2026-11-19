@@ -18,7 +18,13 @@ export async function GET(context: APIContext) {
   }));
 
   const allItems = [...postEntries, ...noteEntries]
-    .filter(item => !item.mod.frontmatter.title?.includes('（必填）'))
+    // 只收有標題、日期也解析得出來的（新版 @astrojs/rss 對壞資料會整個擋下 build）
+    .filter(item => {
+      const fm = item.mod.frontmatter || {};
+      const title = typeof fm.title === 'string' ? fm.title.trim() : '';
+      if (!title || title.includes('（必填）')) return false;
+      return !Number.isNaN(new Date(fm.date).getTime());
+    })
     .sort((a, b) =>
       new Date(b.mod.frontmatter.date).getTime() - new Date(a.mod.frontmatter.date).getTime()
     );

@@ -45,6 +45,16 @@ dist/                   ← build output (static files)
 - **Theming**: edit CSS variables in `src/styles/global.css` (`--bg-primary`, `--text-primary`, `--accent`, fonts).
 - **Image rules** (AI-generated articles, see SPEC.md): prefer Unsplash permanent URLs (`images.unsplash.com/photo-...?w=800&q=80`); never Google Image search or arbitrary site URLs.
 
+## 互動拆解（walkthrough）
+
+一段 code 改動拆成一頁「能動手玩」的互動 HTML（動手玩的模型 + 逐段拆 + 驗證表），歸檔進這個部落格。由全域 skill `/walkthrough`（源頭 `myclaudeset/skills/walkthrough/`）產生與驅動。
+
+- 一篇 = 兩個檔：互動頁 `public/w/<slug>/index.html`（自包、原樣服務於 `/Evernote/w/<slug>/`）＋ 列表貼文 `src/pages/posts/<slug>.md`（frontmatter 多一個 `interactive: true`，內文是文字摘要 + 「▶ 打開互動拆解」按鈕）。
+- 落地別手刻，跑 `node scripts/add-walkthrough.cjs --html <檔> --slug <slug> --title <t> --desc <d> --tags <逗號> --stub <摘要.md>`（`--force` 覆蓋）。
+- `interactive: true` 的貼文首頁會標「互動」徽章（`index.astro`）。
+- 互動頁是公開頁：別寫密鑰、內部網域、未公開的攻擊細節；程式片段可簡化改名。
+- 設計與取捨:`docs/specs/2026-11-19-walkthrough-skill.md`。
+
 ## Commands
 
 ```bash

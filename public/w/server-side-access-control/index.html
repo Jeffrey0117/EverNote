@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>登入牆要擋在伺服器，不是畫面</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* 版面:單欄講義,整頁同一個底色;一張瀏覽器/伺服器分界圖 + 可切換身分的小實驗 + 驗證表 */
+:root {
+  --paper: #efe4d6;
+  --ink: #14110e;
+  --soft: #5d5348;
+  --line: rgba(20, 17, 14, 0.16);
+  --panel: rgba(255, 255, 255, 0.5);
+  --code-bg: #14110e;
+  --code-fg: #efe4d6;
+  --code-dim: #a3978a;
+  --pass: #1f6b3a;
+  --block: #a32a1c;
+  --font-text: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-code: "JetBrains Mono", Consolas, "Courier New", monospace;
+  color-scheme: light;
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14110e; --ink: #efe4d6; --soft: #a3978a; --line: rgba(239, 228, 214, 0.2);
+    --panel: rgba(239, 228, 214, 0.06); --code-bg: #0a0807; --code-fg: #efe4d6; --code-dim: #8d8277;
+    --pass: #6fcf8f; --block: #f08a7a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14110e; --ink: #efe4d6; --soft: #a3978a; --line: rgba(239, 228, 214, 0.2);
+  --panel: rgba(239, 228, 214, 0.06); --code-bg: #0a0807; --code-fg: #efe4d6; --code-dim: #8d8277;
+  --pass: #6fcf8f; --block: #f08a7a; color-scheme: dark;
+}
+html, body { margin: 0; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--font-text);
+  font-size: 17px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 80px;
+}
+main { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 52px; }
+section { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+h1 { font-size: clamp(28px, 6vw, 42px); font-weight: 900; line-height: 1.2; margin: 0; text-wrap: balance; }
+h2 { font-size: 25px; font-weight: 900; line-height: 1.3; margin: 0; padding-top: 24px; border-top: 2px solid var(--line); text-wrap: balance; }
+h3 { font-size: 18px; font-weight: 900; margin: 8px 0 0; }
+p { margin: 0; }
+.lead { font-size: 19px; font-weight: 700; }
+.soft { color: var(--soft); font-size: 15px; }
+code { font-family: var(--font-code); font-size: 0.86em; background: var(--panel); border: 1px solid var(--line); padding: 1px 6px; border-radius: 4px; word-break: break-all; }
+pre { margin: 0; background: var(--code-bg); color: var(--code-fg); border-radius: 12px; padding: 18px 20px; overflow-x: auto; font-family: var(--font-code); font-size: 13.5px; line-height: 1.7; }
+pre code { background: none; border: 0; padding: 0; font-size: inherit; word-break: normal; }
+pre .dim { color: var(--code-dim); }
+.file { font-family: var(--font-code); font-size: 13px; color: var(--soft); }
+ul { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; }
+
+/* 分界圖 */
+.map { display: grid; grid-template-columns: 1fr 1.6fr; gap: 12px; }
+.side { border: 2px solid var(--ink); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.side.server { background: var(--panel); }
+.side h3 { margin: 0; }
+.box { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: 15px; line-height: 1.5; font-weight: 700; }
+.box small { display: block; font-weight: 400; color: var(--soft); font-size: 13px; }
+.gate { background: var(--ink); color: var(--paper); border-radius: 8px; padding: 10px 12px; font-size: 15px; line-height: 1.5; font-weight: 700; }
+.gate small { display: block; font-weight: 400; opacity: 0.75; font-size: 13px; }
+.arrow { text-align: center; font-size: 13px; color: var(--soft); line-height: 1.2; }
+@media (max-width: 560px) { .map { grid-template-columns: 1fr; } }
+
+/* 小實驗 */
+.who { display: flex; flex-wrap: wrap; gap: 8px; }
+.who button { font: inherit; font-weight: 700; font-size: 15px; padding: 8px 16px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
+.who button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.who button:focus-visible { outline: 3px solid var(--soft); outline-offset: 2px; }
+.results { display: flex; flex-direction: column; border: 2px solid var(--ink); border-radius: 14px; overflow: hidden; }
+.row { display: grid; grid-template-columns: 9em 1fr; gap: 12px; padding: 14px 16px; border-top: 1px solid var(--line); align-items: baseline; }
+.row:first-child { border-top: 0; }
+.row b { font-weight: 900; }
+.row span { font-weight: 700; min-width: 0; }
+.row span.pass { color: var(--pass); }
+.row span.block { color: var(--block); }
+@media (max-width: 480px) { .row { grid-template-columns: 1fr; gap: 2px; } }
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pair > div { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0; font-size: 15px; line-height: 1.7; }
+.pair h3 { margin: 0 0 4px; font-size: 16px; }
+.pair .bad h3 { color: var(--block); }
+.pair .good h3 { color: var(--pass); }
+@media (max-width: 560px) { .pair { grid-template-columns: 1fr; } }
+
+/* 驗證表 */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--soft); font-weight: 700; white-space: nowrap; }
+td.mono { font-family: var(--font-code); font-size: 13px; }
+td .pass { color: var(--pass); font-weight: 700; }
+td .block { color: var(--block); font-weight: 700; }
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>登入牆要擋在伺服器，不是畫面</h1>
+    <p class="lead">我做一個只有平台管理員能用的工具頁，驗證只寫了一個小函式，卻擋在三個地方。這裡面有一個很多人會寫錯的觀念：能不能做，只能在伺服器判斷，不能靠畫面。</p>
+    <p class="soft">用 Next.js，有些檔案長得像前端 React，其實跑在伺服器上。看「在哪裡跑」，不要看「長得像什麼」。</p>
+  </section>
+
+  <section>
+    <h2>一張圖看懂</h2>
+    <div class="map">
+      <div class="side">
+        <h3>瀏覽器（訪客的電腦）</h3>
+        <div class="box">畫面<small>按鈕、表單、編輯器</small></div>
+        <div class="box">登入憑證<small>登入後瀏覽器自動帶著</small></div>
+        <p class="soft">這邊的東西訪客都看得到、改得了，所以這邊不做判斷。</p>
+      </div>
+      <div class="side server">
+        <h3>伺服器</h3>
+        <div class="box">第 1 層：頁面</div>
+        <div class="box">第 2 層：開站、讀取、儲存</div>
+        <div class="box">第 3 層：圖片上傳</div>
+        <div class="arrow">三層都先問同一個函式</div>
+        <div class="gate">verifyPlatformAdmin()<small>先問你是誰，再查你在不在名單上</small></div>
+        <div class="arrow">名單從這裡讀</div>
+        <div class="gate">伺服器環境變數<small>只在伺服器，瀏覽器拿不到</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>先玩一次：換個身分試試看</h2>
+    <p>選一種人，看三層各自怎麼回應。</p>
+    <div class="who" role="group" aria-label="選擇身分">
+      <button type="button" data-who="guest" aria-pressed="true">沒登入的人</button>
+      <button type="button" data-who="member" aria-pressed="false">有登入的一般會員</button>
+      <button type="button" data-who="admin" aria-pressed="false">管理員</button>
+    </div>
+    <div class="results" aria-live="polite">
+      <div class="row"><b>打開頁面</b><span id="r-page"></span></div>
+      <div class="row"><b>直接呼叫後端</b><span id="r-action"></span></div>
+      <div class="row"><b>直接上傳圖片</b><span id="r-upload"></span></div>
+    </div>
+    <p class="soft">這是照程式邏輯做的示意，不是連到正式站實測。</p>
+  </section>
+
+  <section>
+    <h2>核心：一個守門函式</h2>
+    <p class="file">一個共用的驗證函式</p>
+    <pre><code>export async function verifyPlatformAdmin() {
+  const supabase = await createServerClient();
+  const { data: { user } } = await supabase.auth.getUser();   <span class="dim">// ① 你是誰</span>
+  if (!user) return { authorized: false, error: "請先登入" };
+
+  if (!isPlatformAdminId(user.id))                            <span class="dim">// ② 在不在名單上</span>
+    return { authorized: false, error: "無權限存取" };
+
+  return { authorized: true, userId: user.id };               <span class="dim">// ③ 過關</span>
+}</code></pre>
+    <ul>
+      <li><b>① 你是誰</b>：伺服器拿瀏覽器帶來的登入憑證，去問認證系統「這張憑證是誰的」。不是相信瀏覽器自己說「我是某某某」。<code>getUser()</code> 會把 token 拿回去跟認證系統核對，偽造或過期的當場被打回。</li>
+      <li><b>② 在不在名單上</b>：拿帳號 ID 去比對名單。名單放在伺服器的環境變數裡，名字前面沒有 <code>NEXT_PUBLIC_</code>，不會被打包進前端，瀏覽器看不到。</li>
+      <li><b>③ 過關</b>：把確認過的帳號 ID 交回去。後面的程式用這個 ID，不用瀏覽器傳來的任何身分資料。</li>
+    </ul>
+    <p class="soft">名單沒設時，解析出來是空的，任何人比對都不會中 → 沒有人是管理員，而不是人人都過。用帳號 ID 不用 Email：Email 可以改，ID 不會變。</p>
+  </section>
+
+  <section>
+    <h2>為什麼每一層都要自己驗一次</h2>
+    <p>關鍵在第 2 層。那些開站、儲存的函式，檔案開頭是 <code>"use server"</code>，代表只在伺服器執行，但它們同時也是<b>外面打得到的入口</b>——不經過頁面也能直接呼叫。所以每一個的第一行都要自己驗：</p>
+    <pre><code>"use server";
+
+export async function instantCreate(input) {
+  const auth = await verifyPlatformAdmin();          <span class="dim">// 第一行就驗</span>
+  if (!auth.authorized) return { error: auth.error };
+  <span class="dim">// ...通過了才往下做,而且掛在 auth.userId 名下</span>
+}</code></pre>
+    <p>第 1 層頁面擋住的，只是「不是管理員就看不到畫面」。第 2、3 層才是真的門鎖。畫面藏不藏按鈕是好不好看的問題，不是安全的問題。</p>
+  </section>
+
+  <section>
+    <h2>為什麼不能只在畫面那邊擋</h2>
+    <div class="pair">
+      <div class="bad">
+        <h3>只在畫面上擋</h3>
+        「不是管理員就不顯示按鈕」。按鈕不見了，但後面的入口還開著。懂的人不用按鈕，直接對入口送請求，一樣能做。
+      </div>
+      <div class="good">
+        <h3>在伺服器擋</h3>
+        不管請求從哪來、畫面被怎麼改，每個入口都先確認身分。畫面只是方便，不是防線。
+      </div>
+    </div>
+    <p>記一句話就好：<b>畫面決定看起來怎樣，伺服器決定能不能做。</b> 攻擊者站在網路外面，他只能控制送進來的輸入（網址、標頭、cookie），碰不到你伺服器裡跑的程式。所以判斷放在伺服器才有意義。</p>
+  </section>
+
+  <section>
+    <h2>怎麼確認真的擋住</h2>
+    <p>拿三種身分分別打三個入口，看回應。管理員全過，其他兩種在每一層都被擋——這就是上面那個小實驗在演的。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>身分</th><th>打開頁面</th><th>呼叫後端</th><th>上傳圖片</th></tr></thead>
+        <tbody>
+          <tr><td>沒登入</td><td class="mono"><span class="block">跳登入</span></td><td class="mono"><span class="block">擋</span></td><td class="mono"><span class="block">403</span></td></tr>
+          <tr><td>一般會員</td><td class="mono"><span class="block">404</span></td><td class="mono"><span class="block">擋</span></td><td class="mono"><span class="block">403</span></td></tr>
+          <tr><td>管理員</td><td class="mono"><span class="pass">看得到</span></td><td class="mono"><span class="pass">過</span></td><td class="mono"><span class="pass">過</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>這套做法避開的三個常見錯</h2>
+    <ul>
+      <li><b>把名單放到瀏覽器看得到的地方</b>（例如 <code>NEXT_PUBLIC_</code> 開頭的變數）。名單外流，等於告訴別人該去偷哪個帳號。</li>
+      <li><b>用 Email 當身分</b>。Email 可以改，也可能被別種登入方式綁到同一個信箱。</li>
+      <li><b>名單沒設就當作通過</b>。設定漏一次，整個後台就對所有人打開。這裡反過來：沒設就全部擋。</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+(function () {
+  var OUTCOMES = {
+    guest: {
+      page: ["block", "跳去登入頁"],
+      action: ["block", "被擋，回「請先登入」"],
+      upload: ["block", "被擋，回 403"]
+    },
+    member: {
+      page: ["block", "看到 404，當作這頁不存在"],
+      action: ["block", "被擋，回「無權限存取」"],
+      upload: ["block", "被擋，回 403"]
+    },
+    admin: {
+      page: ["pass", "看到編輯畫面"],
+      action: ["pass", "通過，掛在這個帳號名下"],
+      upload: ["pass", "通過，存進這個帳號的資料夾"]
+    }
+  };
+  var buttons = document.querySelectorAll(".who button");
+  function show(who) {
+    var outcome = OUTCOMES[who];
+    [["r-page", outcome.page], ["r-action", outcome.action], ["r-upload", outcome.upload]].forEach(function (pair) {
+      var cell = document.getElementById(pair[0]);
+      cell.className = pair[1][0];
+      cell.textContent = pair[1][1];
+    });
+    buttons.forEach(function (button) {
+      button.setAttribute("aria-pressed", String(button.dataset.who === who));
+    });
+  }
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () { show(button.dataset.who); });
+  });
+  show("guest");
+})();
+</script>
+</body>
+</html>

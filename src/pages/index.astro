@@ -112,6 +112,7 @@ const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
             </time>
             <h2 class="post-title">
               {post.frontmatter.pinned && <span class="pinned-badge">置頂</span>}
+              {post.frontmatter.interactive && <span class="interactive-badge">互動</span>}
               <a href={post.url}>{post.frontmatter.title}</a>
             </h2>
             {post.frontmatter.description && (
@@ -376,6 +377,19 @@ const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
     background: var(--text-primary);
     color: var(--bg-primary);
     border-color: var(--text-primary);
+  }
+
+  /* 互動拆解徽章 */
+  .interactive-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--bg-primary);
+    background: var(--accent);
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 0.4em;
+    letter-spacing: 0.03em;
   }
 
   /* 底部標籤區 */
