@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>本機服務為什麼只收 JSON</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* 版面:單欄講義,整頁同一個底色;上面一條進度,五關各一節,每關有目標、驗收、可展開的提示與寫法 */
+:root {
+  --paper: #efe4d6;
+  --ink: #14110e;
+  --soft: #5d5348;
+  --line: rgba(20, 17, 14, 0.16);
+  --panel: rgba(255, 255, 255, 0.5);
+  --code-bg: #14110e;
+  --code-fg: #efe4d6;
+  --code-dim: #a3978a;
+  --pass: #1f6b3a;
+  --block: #a32a1c;
+  --mark: #f2c14e;
+  --font-text: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-code: "JetBrains Mono", Consolas, "Courier New", monospace;
+  color-scheme: light;
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14110e; --ink: #efe4d6; --soft: #a3978a; --line: rgba(239, 228, 214, 0.2);
+    --panel: rgba(239, 228, 214, 0.06); --code-bg: #0a0807; --code-fg: #efe4d6; --code-dim: #8d8277;
+    --pass: #6fcf8f; --block: #f08a7a; --mark: #8a6a12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14110e; --ink: #efe4d6; --soft: #a3978a; --line: rgba(239, 228, 214, 0.2);
+  --panel: rgba(239, 228, 214, 0.06); --code-bg: #0a0807; --code-fg: #efe4d6; --code-dim: #8d8277;
+  --pass: #6fcf8f; --block: #f08a7a; --mark: #8a6a12; color-scheme: dark;
+}
+html, body { margin: 0; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--font-text);
+  font-size: 17px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 80px;
+}
+main { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 52px; }
+section { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+h1 { font-size: clamp(28px, 6vw, 42px); font-weight: 900; line-height: 1.2; margin: 0; text-wrap: balance; }
+h2 { font-size: 25px; font-weight: 900; line-height: 1.3; margin: 0; padding-top: 24px; border-top: 2px solid var(--line); text-wrap: balance; }
+h3 { font-size: 18px; font-weight: 900; margin: 8px 0 0; }
+p { margin: 0; }
+.lead { font-size: 19px; font-weight: 700; }
+.soft { color: var(--soft); font-size: 15px; }
+code { font-family: var(--font-code); font-size: 0.86em; background: var(--panel); border: 1px solid var(--line); padding: 1px 6px; border-radius: 4px; word-break: break-all; }
+pre { margin: 0; background: var(--code-bg); color: var(--code-fg); border-radius: 12px; padding: 18px 20px; overflow-x: auto; font-family: var(--font-code); font-size: 13.5px; line-height: 1.7; }
+pre code { background: none; border: 0; padding: 0; font-size: inherit; word-break: normal; }
+pre .dim { color: var(--code-dim); }
+ul, ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; }
+
+/* 進度 */
+.steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.steps label { display: flex; flex-direction: column; gap: 4px; border: 2px solid var(--ink); border-radius: 12px; padding: 10px 12px; font-size: 14px; line-height: 1.4; font-weight: 700; cursor: pointer; min-width: 0; }
+.steps label small { font-weight: 400; color: var(--soft); font-size: 12px; }
+.steps input { width: 18px; height: 18px; margin: 0; accent-color: var(--pass); }
+.steps label:has(input:checked) { background: var(--panel); border-color: var(--pass); }
+.steps label:has(input:focus-visible) { outline: 3px solid var(--soft); outline-offset: 2px; }
+@media (max-width: 620px) { .steps { grid-template-columns: 1fr 1fr; } }
+
+/* 每關的小標籤 */
+.tag { font-size: 13px; font-weight: 700; color: var(--soft); letter-spacing: 0.04em; }
+.goal { border: 2px solid var(--ink); border-radius: 14px; padding: 14px 16px; font-weight: 700; }
+.need { display: flex; flex-wrap: wrap; gap: 6px; }
+.need span { font-family: var(--font-code); font-size: 13px; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; background: var(--panel); }
+
+details { border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; }
+details[open] { padding-bottom: 16px; }
+summary { cursor: pointer; font-weight: 700; padding: 12px 0; }
+summary:focus-visible { outline: 3px solid var(--soft); outline-offset: 2px; border-radius: 4px; }
+details > * + * { margin-top: 12px; }
+
+/* 小實驗 */
+.lab { border: 2px solid var(--ink); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fields.three { grid-template-columns: 1.4fr 1fr 1fr; }
+.fields label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--soft); min-width: 0; }
+.fields input { font: 16px var(--font-code); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); width: 100%; min-width: 0; }
+.fields input:focus-visible { outline: 3px solid var(--soft); outline-offset: 1px; }
+@media (max-width: 560px) { .fields, .fields.three { grid-template-columns: 1fr; } }
+.out { font-family: var(--font-code); font-size: 15px; line-height: 1.7; word-break: break-all; }
+.out mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+.rows { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.rowx { display: grid; grid-template-columns: 11em 1fr auto; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--line); align-items: baseline; }
+.rowx:first-child { border-top: 0; }
+.rowx b { font-family: var(--font-code); font-size: 13px; }
+.rowx i { font-style: normal; font-weight: 700; font-size: 14px; white-space: nowrap; }
+.rowx i.pass { color: var(--pass); }
+.rowx i.block { color: var(--block); }
+@media (max-width: 560px) { .rowx { grid-template-columns: 1fr; gap: 2px; } }
+.picks { display: flex; flex-wrap: wrap; gap: 8px; }
+.picks button { font: inherit; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
+.picks button:focus-visible { outline: 3px solid var(--soft); outline-offset: 2px; }
+
+/* 表 */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--soft); font-weight: 700; white-space: nowrap; }
+td.mono { font-family: var(--font-code); font-size: 13px; }
+</style>
+<style>
+/* 這頁多的:三組選項按鈕 + 一條由上往下的步驟 + 最後一格結果 */
+.ctl { display: flex; flex-direction: column; gap: 6px; }
+.ctl > b { font-size: 13px; color: var(--soft); }
+.ctl[aria-disabled="true"] { opacity: 0.4; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opts button { font: inherit; font-size: 14px; font-weight: 700; padding: 7px 14px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; text-align: left; }
+.opts button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.opts button:disabled { cursor: default; }
+.opts button:focus-visible { outline: 3px solid var(--soft); outline-offset: 2px; }
+.flow { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.flow li { display: grid; grid-template-columns: 5.5em 1fr; gap: 12px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; font-size: 15px; line-height: 1.6; }
+.flow li b { font-weight: 900; }
+.flow li.stop { border-color: var(--block); }
+@media (max-width: 480px) { .flow li { grid-template-columns: 1fr; gap: 0; } }
+.verdict { border-radius: 12px; padding: 14px 16px; font-weight: 900; font-size: 18px; border: 2px solid currentColor; }
+.verdict.pass { color: var(--pass); }
+.verdict.block { color: var(--block); }
+.verdict small { display: block; font-weight: 400; font-size: 14px; color: var(--ink); }
+td .pass { color: var(--pass); font-weight: 700; }
+td .block { color: var(--block); font-weight: 700; }
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>網頁顯示失敗，伺服器卻已經照做了</h1>
+    <p class="lead">我寫了一個跑在自己電腦上的小服務，它會改我硬碟裡的檔案。這種服務有一個很多人不知道的問題：你開的任何一個網頁，都能對它送請求。這篇講瀏覽器到底擋了什麼、沒擋什麼，以及為什麼我的服務只收 JSON。</p>
+    <p class="soft">裡面的結果都是用真的瀏覽器跑出來的，不是照規格推的。</p>
+  </section>
+
+  <section>
+    <h2>問題在哪</h2>
+    <p>我的服務開在 <code>127.0.0.1:4480</code>，只有這台電腦連得到。聽起來很安全，外面的人進不來。</p>
+    <p>但你的瀏覽器也在這台電腦上。你打開一個別人的網頁，那個網頁裡的程式是在<b>你的瀏覽器</b>裡跑的，所以它也連得到 <code>127.0.0.1:4480</code>。它可以寫：</p>
+    <pre><code>fetch('http://127.0.0.1:4480/fix', { method: 'POST', body: '...' })</code></pre>
+    <p>多數人以為瀏覽器會擋下這種「跨網站的請求」。它確實會擋，但擋的東西跟你想的不一樣。</p>
+  </section>
+
+  <section>
+    <h2>先玩一次</h2>
+    <p>選誰送、怎麼送、伺服器怎麼寫，看請求走到哪一步，檔案最後有沒有被改。</p>
+    <div class="lab">
+      <div class="ctl">
+        <b>誰送的</b>
+        <div class="opts" data-group="who" role="group" aria-label="誰送的">
+          <button type="button" data-v="page" aria-pressed="true">你逛到的別人的網頁</button>
+          <button type="button" data-v="script" aria-pressed="false">我自己的油猴腳本</button>
+        </div>
+      </div>
+      <div class="ctl" id="ctl-format">
+        <b>用什麼格式送</b>
+        <div class="opts" data-group="format" role="group" aria-label="用什麼格式送">
+          <button type="button" data-v="text" aria-pressed="true">純文字（text/plain）</button>
+          <button type="button" data-v="json" aria-pressed="false">JSON（application/json）</button>
+        </div>
+      </div>
+      <div class="ctl">
+        <b>伺服器怎麼寫</b>
+        <div class="opts" data-group="server" role="group" aria-label="伺服器怎麼寫">
+          <button type="button" data-v="naive" aria-pressed="true">收到什麼都解析</button>
+          <button type="button" data-v="cors" aria-pressed="false">加了「誰都可以連」</button>
+          <button type="button" data-v="json" aria-pressed="false">只收 JSON</button>
+          <button type="button" data-v="both" aria-pressed="false">只收 JSON，還要金鑰</button>
+        </div>
+      </div>
+      <ol class="flow" id="flow" aria-live="polite"></ol>
+      <div class="verdict" id="verdict"></div>
+    </div>
+    <p class="soft">第一種和第四種伺服器我用真的瀏覽器驗過，結果在下面的表。其他兩種是照同一套規則演的。</p>
+    <p>先看預設那一組：別人的網頁、純文字、伺服器收到什麼都解析。網頁那邊拿到的是「失敗」，但檔案已經被改了。這就是標題那句話。</p>
+  </section>
+
+  <section>
+    <h2>觀念一：瀏覽器擋的是「讀回應」，不是「送出去」</h2>
+    <p>網頁從很久以前就能對別的網站送表單，這是 HTML 本來就有的功能，瀏覽器沒辦法事後禁掉，不然一堆舊網站會壞。所以瀏覽器的規矩是這樣定的：</p>
+    <ul>
+      <li><b>表單送得出來的那種請求，照樣放行。</b> 請求會真的送到伺服器。</li>
+      <li><b>回應不給網頁讀。</b> 除非伺服器明講「這個網站可以讀」，不然網頁的程式只會拿到一個錯誤。</li>
+    </ul>
+    <p>對「讀資料」的服務來說這就夠了，別人的網頁讀不到你的資料。但對「改東西」的服務來說完全不夠。請求送到的那一刻伺服器就動手了，網頁讀不讀得到回應根本不重要。</p>
+    <p>所以在開發工具裡看到紅色的跨網站錯誤，只代表網頁沒讀到回應，不代表伺服器沒收到。</p>
+  </section>
+
+  <section>
+    <h2>觀念二：不像表單的請求，瀏覽器會先問</h2>
+    <p>表單送不出來的請求就不一樣了。這種請求以前的網頁做不到，所以瀏覽器可以定新規矩：<b>先問伺服器同不同意，同意才送。</b></p>
+    <p>這個「先問」叫預檢。瀏覽器會自己先送一個 <code>OPTIONS</code> 請求，內容是「有個網站想對你送這種請求，可以嗎」。伺服器沒有明確回答可以，正式的請求就不會送出去。伺服器連看都看不到它。</p>
+    <p>哪些算「像表單」：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>像表單，直接送</th><th>不像表單，要先問</th></tr></thead>
+        <tbody>
+          <tr><td>內容格式</td><td class="mono">text/plain<br>application/x-www-form-urlencoded<br>multipart/form-data</td><td class="mono">application/json<br>其他任何格式</td></tr>
+          <tr><td>方法</td><td class="mono">GET、POST、HEAD</td><td class="mono">PUT、DELETE、PATCH…</td></tr>
+          <tr><td>標頭</td><td>只有少數幾個基本的</td><td>任何自己加的，包含放金鑰的 <code>Authorization</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>重點在第一列。JSON 不是表單送得出來的格式，所以<b>網頁要送 JSON，一定會先被瀏覽器問一次</b>。</p>
+  </section>
+
+  <section>
+    <h2>觀念三：所以伺服器只收 JSON</h2>
+    <p>把兩個觀念接起來，做法就出來了。伺服器只做兩件事：</p>
+    <pre><code><span class="dim">// 1. 不是 JSON 就不收</span>
+if (!/^application\/json\b/i.test(req.headers['content-type'] || '')) {
+  throw new HttpError(415, '只收 application/json');
+}
+
+<span class="dim">// 2. 沒有回答任何預檢。OPTIONS 進來就是 404，沒有「可以」這句話</span></code></pre>
+    <ul>
+      <li>別人的網頁用<b>純文字</b>送：不用預檢，送得到，但伺服器看到不是 JSON，不收。</li>
+      <li>別人的網頁用 <b>JSON</b> 送：要預檢，伺服器不回答可以，瀏覽器就不送。</li>
+    </ul>
+    <p>兩條路都斷了。第二點是「什麼都不做」，不需要寫程式，只要記得<b>不要</b>加上允許跨網站的設定。</p>
+    <p>注意那個很常見的漏洞長什麼樣子：伺服器自己把內容讀進來，直接 <code>JSON.parse</code>，沒看格式標頭。這時候網頁把一段 JSON 文字標成純文字送過來，瀏覽器當它是表單放行，伺服器照樣解析成功。上面小實驗的第一種伺服器就是這樣。</p>
+  </section>
+
+  <section>
+    <h2>那金鑰呢</h2>
+    <p>我的服務另外還要一把金鑰，放在 <code>Authorization</code> 標頭裡。別人的網頁不知道金鑰，光這一點就會被擋下來。那為什麼還要管 JSON？</p>
+    <ul>
+      <li><b>兩層互相補。</b> 金鑰哪天不小心外流，或是某個入口忘了檢查金鑰，JSON 這一層還在。</li>
+      <li><b>金鑰擋的是「不知道的人」，JSON 這層擋的是「不該來的地方」。</b> 就算網頁猜對了金鑰，帶著 <code>Authorization</code> 標頭的請求也要先預檢，一樣送不出來。</li>
+    </ul>
+    <p>那我自己的油猴腳本為什麼送得到？它用的是瀏覽器外掛提供的送法，不是網頁的 <code>fetch</code>，不受這套規矩管。它本來就是我裝的，手上有金鑰，也用 JSON 送。</p>
+  </section>
+
+  <section>
+    <h2>實際跑出來的結果</h2>
+    <p>我開了一個假的「別人的網站」，讓它裡面的程式對兩種伺服器送請求，然後看伺服器那邊真正收到什麼。瀏覽器是 Chromium。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>伺服器</th><th>網頁怎麼送</th><th>網頁看到</th><th>伺服器收到</th></tr></thead>
+        <tbody>
+          <tr><td>收到什麼都解析</td><td>純文字</td><td class="mono">Failed to fetch</td><td><span class="block">收到 POST，內容解析成功</span></td></tr>
+          <tr><td>收到什麼都解析</td><td>JSON</td><td class="mono">Failed to fetch</td><td><span class="pass">只收到 OPTIONS，沒有 POST</span></td></tr>
+          <tr><td>只收 JSON 加金鑰</td><td>純文字</td><td class="mono">Failed to fetch</td><td><span class="pass">收到 POST，回 401 不處理</span></td></tr>
+          <tr><td>只收 JSON 加金鑰</td><td>JSON</td><td class="mono">Failed to fetch</td><td><span class="pass">只收到 OPTIONS，沒有 POST</span></td></tr>
+          <tr><td>只收 JSON 加金鑰</td><td>JSON 加亂猜的金鑰</td><td class="mono">Failed to fetch</td><td><span class="pass">只收到 OPTIONS，沒有 POST</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>五次網頁看到的都是同一句 <code>Failed to fetch</code>。只看網頁那邊，完全分不出第一列其實已經成功了。</p>
+    <p>再不經過瀏覽器，直接對第二種伺服器送，確認每一層各自擋在哪：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>送什麼</th><th>回應</th></tr></thead>
+        <tbody>
+          <tr><td>OPTIONS（預檢）</td><td class="mono">404，沒有任何允許的標頭</td></tr>
+          <tr><td>純文字，沒金鑰</td><td class="mono">401 金鑰不對</td></tr>
+          <tr><td>純文字，金鑰正確</td><td class="mono">415 只收 application/json</td></tr>
+          <tr><td>JSON，金鑰錯</td><td class="mono">401 金鑰不對</td></tr>
+          <tr><td>JSON，金鑰正確</td><td class="mono">200</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>第三列是重點：就算拿到金鑰，格式不對一樣不收。</p>
+  </section>
+
+  <section>
+    <h2>三個常見的錯</h2>
+    <ul>
+      <li><b>以為只聽本機就安全。</b> 外面的人連不進來，但你瀏覽器裡的每個網頁都連得到。</li>
+      <li><b>看到跨網站錯誤就以為擋住了。</b> 那個錯誤是說網頁讀不到回應。改東西的請求可能已經做完了。</li>
+      <li><b>為了讓錯誤消失，加一行「允許所有來源」。</b> 很多教學會這樣教。這等於對預檢一律回答可以，JSON 這層保護就整個沒了。小實驗的第二種伺服器就是這樣。</li>
+    </ul>
+    <p>記一句話就好：<b>會改東西的本機服務，只收 JSON，而且不要回答預檢。</b></p>
+  </section>
+</main>
+
+<script>
+(function () {
+  var state = { who: 'page', format: 'text', server: 'naive' };
+  var flow = document.getElementById('flow');
+  var verdict = document.getElementById('verdict');
+  var formatCtl = document.getElementById('ctl-format');
+
+  var SERVER_ON_DIRECT = {
+    naive: ['伺服器', '把內容讀進來直接解析。解析成功，照做。', true],
+    cors: ['伺服器', '把內容讀進來直接解析。解析成功，照做。', true],
+    json: ['伺服器', '看格式標頭：不是 JSON，回 415，不處理。', false],
+    both: ['伺服器', '沒有金鑰，回 401，不處理。', false]
+  };
+
+  function steps() {
+    if (state.who === 'script') {
+      return {
+        list: [
+          ['油猴腳本', '用 JSON 加金鑰送出。它用的是外掛的送法，不是網頁的 fetch，不用預檢，直接送到。'],
+          ['伺服器', state.server === 'both' ? '是 JSON，金鑰也對，照做。' : (state.server === 'json' ? '是 JSON，照做。' : '解析成功，照做。')]
+        ],
+        changed: true, wanted: true
+      };
+    }
+    if (state.format === 'text') {
+      var s = SERVER_ON_DIRECT[state.server];
+      var list = [
+        ['網頁', '送出一個標成純文字的請求，內容其實是一段 JSON。'],
+        ['瀏覽器', '純文字是表單也送得出來的格式，不用先問，直接送。'],
+        [s[0], s[1]]
+      ];
+      list.push(['瀏覽器', state.server === 'cors'
+        ? '伺服器說誰都可以讀，所以把回應交給網頁。'
+        : '伺服器沒說這個網站可以讀回應，所以網頁只拿到「失敗」。']);
+      return { list: list, changed: s[2], wanted: false };
+    }
+    if (state.server === 'cors') {
+      return {
+        list: [
+          ['網頁', '送出一個 JSON 請求。'],
+          ['瀏覽器', 'JSON 不是表單送得出來的格式，先送 OPTIONS 問伺服器。'],
+          ['伺服器', '回答：誰都可以。'],
+          ['瀏覽器', '預檢過了，送出正式的請求。'],
+          ['伺服器', '解析成功，照做。']
+        ],
+        changed: true, wanted: false
+      };
+    }
+    return {
+      list: [
+        ['網頁', '送出一個 JSON 請求。'],
+        ['瀏覽器', 'JSON 不是表單送得出來的格式，先送 OPTIONS 問伺服器。'],
+        ['伺服器', '沒有回答可以。'],
+        ['瀏覽器', '預檢沒過，正式的請求不送。伺服器從頭到尾沒看到它。', true]
+      ],
+      changed: false, wanted: false
+    };
+  }
+
+  function render() {
+    document.querySelectorAll('.opts').forEach(function (group) {
+      group.querySelectorAll('button').forEach(function (button) {
+        button.setAttribute('aria-pressed', String(state[group.dataset.group] === button.dataset.v));
+      });
+    });
+    var isScript = state.who === 'script';
+    formatCtl.setAttribute('aria-disabled', String(isScript));
+    formatCtl.querySelectorAll('button').forEach(function (button) { button.disabled = isScript; });
+
+    var result = steps();
+    flow.textContent = '';
+    result.list.forEach(function (step) {
+      var li = document.createElement('li');
+      if (step[2]) li.className = 'stop';
+      var who = document.createElement('b');
+      who.textContent = step[0];
+      var what = document.createElement('span');
+      what.textContent = step[1];
+      li.appendChild(who);
+      li.appendChild(what);
+      flow.appendChild(li);
+    });
+
+    verdict.textContent = '';
+    var small = document.createElement('small');
+    if (result.wanted) {
+      verdict.className = 'verdict pass';
+      verdict.appendChild(document.createTextNode('檔案改了，這是我要的'));
+      small.textContent = '自己的腳本在四種伺服器上都能用，保護沒有擋到正常使用。';
+    } else if (result.changed) {
+      verdict.className = 'verdict block';
+      verdict.appendChild(document.createTextNode('檔案被別人的網頁改了'));
+      small.textContent = state.server === 'cors'
+        ? '伺服器自己把門打開了，預檢形同沒有。'
+        : '網頁那邊顯示失敗，但請求早就送到，伺服器已經做完了。';
+    } else {
+      verdict.className = 'verdict pass';
+      verdict.appendChild(document.createTextNode('檔案沒被改'));
+      small.textContent = state.format === 'json'
+        ? (state.server === 'naive' ? '這次是瀏覽器擋的，伺服器本身沒有防護。換成純文字再看一次。' : '在瀏覽器這關就停了。')
+        : '請求有送到，是伺服器自己拒絕的。';
+    }
+    verdict.appendChild(small);
+  }
+
+  document.querySelectorAll('.opts button').forEach(function (button) {
+    button.addEventListener('click', function () {
+      state[button.parentNode.dataset.group] = button.dataset.v;
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>
